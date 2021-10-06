@@ -10,10 +10,10 @@ import 'package:hot_tours/utils/map_to_list.dart';
 import 'package:hot_tours/utils/sorted.dart';
 
 import 'package:hot_tours/models/country.model.dart';
-import 'package:hot_tours/select_tour/models/data.model.dart';
+import 'package:hot_tours/select_tours/models/data.model.dart';
 
-import 'package:hot_tours/select_tour/routes/select_many.route.dart';
-import 'package:hot_tours/select_tour/routes/select_what.route.dart';
+import 'package:hot_tours/select_tours/routes/select_many.route.dart';
+import 'package:hot_tours/select_tours/routes/select_what.route.dart';
 
 void showSelectTargetCountryRoute({
   required BuildContext context,
@@ -70,13 +70,13 @@ class SelectTargetCountryRoute extends HookWidget {
     useEffect(() {
       setState<bool>(isLoading)(true);
 
-      if (connection.value.isNotNone)
+      if (connection.value.isNotNone) {
         Api.getCountries(townFromId: data.departCity!.id).then((value) {
-          setState<bool>(isLoading)(false);
-
           targetCountries.value =
               value.sorted((a, b) => a.name.compareTo(b.name));
+          setState<bool>(isLoading)(false);
         });
+      }
     }, [connection.value]);
 
     return SelectManyRoute(

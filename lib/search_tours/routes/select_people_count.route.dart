@@ -85,7 +85,7 @@ class SelectPeopleCount extends HookWidget {
                       color: const Color(0xff2eaeee),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Icon(
                         Icons.remove,
                         color: Colors.white,
@@ -94,18 +94,15 @@ class SelectPeopleCount extends HookWidget {
                   ),
                 ),
               ),
-              Container(
-                child: Text(
-                  '$value ' +
-                      (value <= 1 || value >= 5 ? 'человек' : 'человека'),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 22.0,
-                    color: const Color(0xff4d4948),
-                  ),
+              Text(
+                '$value ' + (value <= 1 || value >= 5 ? 'человек' : 'человека'),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 22.0,
+                  color: Color(0xff4d4948),
                 ),
               ),
               GestureDetector(
@@ -120,7 +117,7 @@ class SelectPeopleCount extends HookWidget {
                       color: const Color(0xff2eaeee),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Icon(
                         Icons.add,
                         color: Colors.white,
@@ -162,7 +159,7 @@ class SelectPeopleCount extends HookWidget {
                     color: const Color(0xff2eaeee),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.remove,
                       color: Colors.white,
@@ -170,19 +167,17 @@ class SelectPeopleCount extends HookWidget {
                   ),
                 ),
               ),
-              Container(
-                child: Text(
-                  '$value ' +
-                      (value >= 5 ? 'лет' : 'год') +
-                      (value > 1 && value < 5 ? 'а' : ''),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 22.0,
-                    color: const Color(0xff4d4948),
-                  ),
+              Text(
+                '$value ' +
+                    (value >= 5 ? 'лет' : 'год') +
+                    (value > 1 && value < 5 ? 'а' : ''),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 22.0,
+                  color: Color(0xff4d4948),
                 ),
               ),
               Opacity(
@@ -194,7 +189,7 @@ class SelectPeopleCount extends HookWidget {
                     color: const Color(0xff2eaeee),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.remove,
                       color: Colors.white,
@@ -211,47 +206,46 @@ class SelectPeopleCount extends HookWidget {
     required int value,
     required bool isActive,
     required void Function(int) onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: isActive ? () => onTap(value) : () {},
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 350),
-          opacity: isActive ? 1.0 : 0.5,
-          child: Container(
-            width: 85.0,
-            height: 45.0,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  offset: const Offset(1.0, 1.0),
-                  blurRadius: 10.0,
-                  color: Colors.black.withAlpha(25),
+  }) =>
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          onTap: isActive ? () => onTap(value) : () {},
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 350),
+            opacity: isActive ? 1.0 : 0.5,
+            child: Container(
+              width: 85.0,
+              height: 45.0,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    offset: const Offset(1.0, 1.0),
+                    blurRadius: 10.0,
+                    color: Colors.black.withAlpha(25),
+                  ),
+                ],
+              ),
+              child: Text(
+                '$value ' +
+                    (value >= 5 ? 'лет' : 'год') +
+                    (value > 1 && value < 5 ? 'а' : ''),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18.0,
+                  color: Color(0xff4d4948),
                 ),
-              ],
-            ),
-            child: Text(
-              '$value ' +
-                  (value >= 5 ? 'лет' : 'год') +
-                  (value > 1 && value < 5 ? 'а' : ''),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontFamily: 'Roboto',
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.normal,
-                fontSize: 18.0,
-                color: const Color(0xff4d4948),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   Widget _buildAddChildDialog({
     required BuildContext context,
@@ -267,7 +261,7 @@ class SelectPeopleCount extends HookWidget {
       backgroundColor: Colors.black.withOpacity(0.5),
       body: SafeArea(
         child: Center(
-          child: Container(
+          child: SizedBox(
             width: 320.0,
             height: 320.0,
             child: Container(
@@ -279,7 +273,6 @@ class SelectPeopleCount extends HookWidget {
               ),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -394,7 +387,7 @@ class SelectPeopleCount extends HookWidget {
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.normal,
                         fontSize: 18.0,
-                        color: const Color(0xff7d7d7d),
+                        color: Color(0xff7d7d7d),
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -414,7 +407,7 @@ class SelectPeopleCount extends HookWidget {
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.normal,
                         fontSize: 18.0,
-                        color: const Color(0xff7d7d7d),
+                        color: Color(0xff7d7d7d),
                       ),
                     ),
                     const SizedBox(height: 5.0),

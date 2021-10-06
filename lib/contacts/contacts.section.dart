@@ -17,7 +17,7 @@ void showContactsRoute({
       context: context,
       model: null,
       builder: (data) => PageRouteBuilder(
-        pageBuilder: (context, fst, snd) => ContactsRoute(),
+        pageBuilder: (context, fst, snd) => const ContactsRoute(),
         transitionsBuilder: (context, fst, snd, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;
@@ -40,11 +40,9 @@ class ContactsRoute extends HookWidget {
   Widget _buildButton({
     required String path,
     required String text,
-    required onTap,
+    required void Function() onTap,
   }) =>
       ListButtonWidget(
-        width: double.infinity,
-        height: 45.0,
         path: path,
         text: text,
         onTap: onTap,
@@ -62,7 +60,7 @@ class ContactsRoute extends HookWidget {
           behavior: SnackBarBehavior.floating,
           content: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Roboto',
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.normal,
@@ -77,11 +75,12 @@ class ContactsRoute extends HookWidget {
     required BuildContext context,
     required bool value,
   }) {
-    if (!value)
+    if (!value) {
       _showSnackBar(
         context: context,
         text: 'Ошибка: не удалось открыть приложение',
       );
+    }
   }
 
   Future<void> _makeLaunchRequest({

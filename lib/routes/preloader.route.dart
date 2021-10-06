@@ -26,7 +26,6 @@ class PreloaderRoute extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             Align(
-              alignment: Alignment.center,
               child: Image.asset(
                 'assets/preloader.png',
                 fit: BoxFit.cover,
@@ -36,17 +35,17 @@ class PreloaderRoute extends StatelessWidget {
             ),
             const Align(
               alignment: Alignment.bottomCenter,
-              child: const Padding(
-                padding: const EdgeInsets.only(bottom: 130.0),
-                child: const Text(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 130.0),
+                child: Text(
                   'Горящие туры',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w400,
                     fontStyle: FontStyle.normal,
                     fontSize: 30.0,
-                    color: const Color(0xff4d4948),
+                    color: Color(0xff4d4948),
                   ),
                 ),
               ),

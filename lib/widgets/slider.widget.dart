@@ -22,17 +22,19 @@ class SliderWidget extends HookWidget {
     final photosCount = data.photosCount.value;
 
     void prev() {
-      if (currentIndex.value == 0)
+      if (currentIndex.value == 0) {
         currentIndex.value = photosCount - 1;
-      else
+      } else {
         currentIndex.value = currentIndex.value - 1;
+      }
     }
 
     void next() {
-      if (currentIndex.value == photosCount - 1)
+      if (currentIndex.value == photosCount - 1) {
         currentIndex.value = 0;
-      else
+      } else {
         currentIndex.value = currentIndex.value + 1;
+      }
     }
 
     return SizedBox(
@@ -40,8 +42,7 @@ class SliderWidget extends HookWidget {
       child: Stack(
         children: <Widget>[
           Align(
-            alignment: Alignment.center,
-            child: Container(
+            child: SizedBox(
               width: double.infinity,
               child: data.photosCount.value == 0
                   ? blackPlug()
@@ -84,7 +85,7 @@ class SliderWidget extends HookWidget {
                   width: 26.0,
                   height: 26.0,
                   decoration: const BoxDecoration(
-                    color: const Color(0xffd6d6d6),
+                    color: Color(0xffd6d6d6),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.chevron_left),
@@ -102,7 +103,7 @@ class SliderWidget extends HookWidget {
                   width: 26.0,
                   height: 26.0,
                   decoration: const BoxDecoration(
-                    color: const Color(0xffd6d6d6),
+                    color: Color(0xffd6d6d6),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.chevron_right),

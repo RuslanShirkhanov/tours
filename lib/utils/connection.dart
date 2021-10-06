@@ -19,8 +19,8 @@ extension on ConnectivityResult? {
 }
 
 extension Check on ConnectivityResult? {
-  bool get isNone => this.transform == ConnectivityResult.none;
-  bool get isNotNone => this.transform != ConnectivityResult.none;
+  bool get isNone => transform == ConnectivityResult.none;
+  bool get isNotNone => transform != ConnectivityResult.none;
 }
 
 @immutable
@@ -30,7 +30,8 @@ abstract class ConnectionUtil {
   const ConnectionUtil();
 
   static late final Connectivity _instance;
-  static late final _isInitialized = false;
+  // ignore: prefer_const_declarations
+  static late final bool _isInitialized = false;
   static late var _lastValue = ConnectivityResult.none;
 
   static Future<void> init() async {
@@ -78,7 +79,7 @@ abstract class ConnectionUtil {
           behavior: SnackBarBehavior.floating,
           content: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Roboto',
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.normal,
@@ -93,10 +94,11 @@ abstract class ConnectionUtil {
     ConnectivityResult connectivityResult,
   ) =>
       SchedulerBinding.instance!.addPostFrameCallback((_) {
-        if (connectivityResult.isNone)
+        if (connectivityResult.isNone) {
           _showSnackBar('Отсутствует подключение к сети');
-        else if (_lastValue.isNone)
+        } else if (_lastValue.isNone) {
           _showSnackBar('Подключение к сети восстановлено');
+        }
         _lastValue = connectivityResult;
       });
 }

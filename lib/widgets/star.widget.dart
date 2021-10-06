@@ -15,16 +15,14 @@ class StarWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: radius,
-      height: radius,
-      child: GestureDetector(
-        onTap: onSelect == null ? null : () => onSelect!(),
-        child: SvgPicture.asset(
-          isActive ? 'assets/star_active.svg' : 'assets/star.svg',
+  Widget build(BuildContext context) => SizedBox(
+        width: radius,
+        height: radius,
+        child: GestureDetector(
+          onTap: onSelect == null ? null : () => onSelect!(),
+          child: SvgPicture.asset(
+            isActive ? 'assets/star_active.svg' : 'assets/star.svg',
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

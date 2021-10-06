@@ -34,34 +34,32 @@ class FormWidget extends HookWidget {
     final numberFocusNode = useFocusNode();
     void setNumber(String value) => formData.value.number = value;
 
-    return Container(
-      child: Form(
-        key: formKey.value,
-        child: Column(
-          children: <Widget>[
-            nameFormField(
-              focusNode: nameFocusNode,
-              onChange: setName,
-            ),
-            const SizedBox(height: 30.0),
-            numberFormField(
-              focusNode: numberFocusNode,
-              onChange: setNumber,
-            ),
-            const SizedBox(height: 45.0),
-            FormSubmitWidget(
-              text: 'Отправить',
-              onTap: () {
-                nameFocusNode.unfocus();
-                numberFocusNode.unfocus();
-                if (formKey.value.currentState!.validate())
-                  onSubmit(formData.value);
-              },
-              textColor: Colors.white,
-              backgroundColor: const Color(0xff2eaeee),
-            ),
-          ],
-        ),
+    return Form(
+      key: formKey.value,
+      child: Column(
+        children: <Widget>[
+          nameFormField(
+            focusNode: nameFocusNode,
+            onChange: setName,
+          ),
+          const SizedBox(height: 30.0),
+          numberFormField(
+            focusNode: numberFocusNode,
+            onChange: setNumber,
+          ),
+          const SizedBox(height: 45.0),
+          FormSubmitWidget(
+            text: 'Отправить',
+            onTap: () {
+              nameFocusNode.unfocus();
+              numberFocusNode.unfocus();
+              if (formKey.value.currentState!.validate()) {
+                onSubmit(formData.value);
+              }
+            },
+            backgroundColor: const Color(0xff2eaeee),
+          ),
+        ],
       ),
     );
   }

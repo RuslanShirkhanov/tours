@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/select_tour/models/data.model.dart';
+import 'package:hot_tours/select_tours/models/data.model.dart';
 
-import 'package:hot_tours/select_tour/routes/form.route.dart';
-import 'package:hot_tours/select_tour/routes/select_many.route.dart';
+import 'package:hot_tours/select_tours/routes/form.route.dart';
+import 'package:hot_tours/select_tours/routes/select_many.route.dart';
 
 void showSelectHowLongRoute({
   required BuildContext context,
@@ -49,25 +49,23 @@ class SelectHowLongRoute extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SelectManyRoute(
-      sectionIndex: data.sectionIndex,
-      primaryText: 'Сколько примерно\nпланируете отдыхать?',
-      primaryData: const <String>[
-        '5 дней',
-        '1 неделю',
-        '10 дней',
-        '2 недели',
-        '3 недели',
-        '1 месяц',
-        'Предложите варианты',
-      ],
-      isPrimarySingle: true,
-      secondaryData: const <String>[],
-      isSecondarySingle: true,
-      onContinue: (value) => onContinue(
-        data.setHowLong(value),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SelectManyRoute(
+        sectionIndex: data.sectionIndex,
+        primaryText: 'Сколько примерно\nпланируете отдыхать?',
+        primaryData: const <String>[
+          '5 дней',
+          '1 неделю',
+          '10 дней',
+          '2 недели',
+          '3 недели',
+          '1 месяц',
+          'Предложите варианты',
+        ],
+        isPrimarySingle: true,
+        secondaryData: const <String>[],
+        isSecondarySingle: true,
+        onContinue: (value) => onContinue(
+          data.setHowLong(value),
+        ),
+      );
 }

@@ -40,94 +40,90 @@ class HeaderWidget extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 48.0,
-          color: backgroundColor,
-          child: Stack(
-            children: <Widget>[
-              if (hasBackButton)
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 14.0),
-                  child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: SvgPicture.asset(
-                      'assets/arrow_back.svg',
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          Container(
+            height: 48.0,
+            color: backgroundColor,
+            child: Stack(
+              children: <Widget>[
+                if (hasBackButton)
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 14.0),
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: SvgPicture.asset(
+                        'assets/arrow_back.svg',
+                        color: textColor,
+                      ),
+                    ),
+                  ),
+                Align(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 24.0,
                       color: textColor,
                     ),
                   ),
                 ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 24.0,
-                    color: textColor,
-                  ),
-                ),
-              ),
-              if (hasLoadingIndicator)
-                Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.only(right: 14.0),
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 350),
-                    opacity: isLoading ? 1.0 : 0.0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: SizedBox(
-                        width: 24.0,
-                        height: 24.0,
-                        child: CircularProgressIndicator(
-                          color: loadingIndicatorColor,
-                          strokeWidth: 2.5,
+                if (hasLoadingIndicator)
+                  Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 14.0),
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 350),
+                      opacity: isLoading ? 1.0 : 0.0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: SizedBox(
+                          width: 24.0,
+                          height: 24.0,
+                          child: CircularProgressIndicator(
+                            color: loadingIndicatorColor,
+                            strokeWidth: 2.5,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-            ],
-          ),
-        ),
-        if (hasSectionIndicator)
-          Container(
-            width: double.infinity,
-            height: 5.0,
-            color: const Color(0xffc9f1c8),
-            alignment: Alignment.centerLeft,
-            child: FractionallySizedBox(
-              widthFactor:
-                  ((sectionIndex + const U<int>(1)) / sectionsCount).toDouble(),
-              child: Container(color: const Color(0xff04ce00)),
+              ],
             ),
           ),
-        if (hasSubtitle)
-          Container(
-            width: double.infinity,
-            height: 30.0,
-            color: const Color(0xff93d0f4),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                subtitle,
-                style: const TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 18.0,
-                  color: Colors.white,
+          if (hasSectionIndicator)
+            Container(
+              width: double.infinity,
+              height: 5.0,
+              color: const Color(0xffc9f1c8),
+              alignment: Alignment.centerLeft,
+              child: FractionallySizedBox(
+                widthFactor:
+                    ((sectionIndex + const U(1)) / sectionsCount).toDouble(),
+                child: Container(color: const Color(0xff04ce00)),
+              ),
+            ),
+          if (hasSubtitle)
+            Container(
+              width: double.infinity,
+              height: 30.0,
+              color: const Color(0xff93d0f4),
+              child: Align(
+                child: Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-      ],
-    );
-  }
+        ],
+      );
 }

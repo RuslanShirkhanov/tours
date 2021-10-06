@@ -6,10 +6,10 @@ import 'package:hot_tours/utils/connection.dart';
 
 import 'package:hot_tours/routes/preloader.route.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ConnectionUtil.init();
-  runApp(Application());
+  runApp(const Application());
 }
 
 class Application extends HookWidget {
@@ -20,7 +20,7 @@ class Application extends HookWidget {
     ConnectionUtil.useConnectionAlert();
     return MaterialApp(
       scaffoldMessengerKey: ConnectionUtil.scaffoldMessengerKey,
-      home: PreloaderRoute(),
+      home: const PreloaderRoute(),
     );
   }
 }

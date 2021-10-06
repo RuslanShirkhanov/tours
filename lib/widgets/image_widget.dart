@@ -26,27 +26,25 @@ class NetworkImageWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: backgroundColor,
-      child: Image.network(
-        url,
-        fit: fit,
-        errorBuilder: (context, _, trace) => blackPlug(),
-        loadingBuilder: (context, child, event) => event == null
-            ? child
-            : Center(
-                child: SizedBox(
-                  width: 30.0,
-                  height: 30.0,
-                  child: CircularProgressIndicator(
-                    color: indicatorColor,
-                    strokeWidth: 2.0,
+  Widget build(BuildContext context) => Container(
+        width: double.infinity,
+        color: backgroundColor,
+        child: Image.network(
+          url,
+          fit: fit,
+          errorBuilder: (context, _, trace) => blackPlug(),
+          loadingBuilder: (context, child, event) => event == null
+              ? child
+              : Center(
+                  child: SizedBox(
+                    width: 30.0,
+                    height: 30.0,
+                    child: CircularProgressIndicator(
+                      color: indicatorColor,
+                      strokeWidth: 2.0,
+                    ),
                   ),
                 ),
-              ),
-      ),
-    );
-  }
+        ),
+      );
 }

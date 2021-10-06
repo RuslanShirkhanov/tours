@@ -71,11 +71,12 @@ class HotToursSection extends HookWidget {
     useEffect(() {
       setState<bool>(isLoading)(true);
 
-      if (connection.value.isNotNone)
+      if (connection.value.isNotNone) {
         Api.getDepartCities().then((value) {
           departCities.value = value.sorted((a, b) => a.name.compareTo(b.name));
           setState<DepartCityModel?>(selectedCity)(value[0]);
         });
+      }
     }, [connection.value]);
 
     final targetCountries = useState(const <CountryModel>[]);
@@ -84,16 +85,18 @@ class HotToursSection extends HookWidget {
     useEffect(() {
       setState<bool>(isLoading)(true);
 
-      if (selectedCity.value != null)
+      if (selectedCity.value != null) {
         Api.getCountries(townFromId: selectedCity.value!.id).then((value) {
           targetCountries.value =
               value.sorted((a, b) => a.name.compareTo(b.name));
-          if (!targetCountries.value.contains(selectedCountry))
+          if (!targetCountries.value.contains(selectedCountry.value)) {
             setState<CountryModel?>(selectedCountry)(value[0]);
+          }
         });
+      }
     }, [selectedCity.value]);
 
-    final selectedStars = useState(StarModel.getStars());
+    final selectedStars = useState(StarModel.getStars);
 
     final tours = useState(<TourModel>[]);
 
@@ -161,12 +164,12 @@ class HotToursSection extends HookWidget {
               children: <Widget>[
                 const Text(
                   'Отель от',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w400,
                     fontStyle: FontStyle.normal,
                     fontSize: 16.0,
-                    color: const Color(0xff7d7d7d),
+                    color: Color(0xff7d7d7d),
                   ),
                 ),
                 const SizedBox(width: 6.0),
@@ -177,18 +180,18 @@ class HotToursSection extends HookWidget {
               ],
             ),
             if (!isLoading.value && tours.value.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 18.0),
-                child: const Center(
-                  child: const Text(
+              const Padding(
+                padding: EdgeInsets.only(top: 18.0),
+                child: Center(
+                  child: Text(
                     'Туры не найдены :(',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Roboto',
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.normal,
                       fontSize: 20.0,
-                      color: const Color(0xff4d4948),
+                      color: Color(0xff4d4948),
                     ),
                   ),
                 ),

@@ -4,16 +4,14 @@ import 'package:hot_tours/models/tour.model.dart';
 
 class DataModel extends AbstractDataModel {
   final TourModel? tour;
-  final String? name;
-  final String? number;
 
   const DataModel({
     required this.tour,
-    required this.name,
-    required this.number,
-  });
+    required String? name,
+    required String? number,
+  }) : super(name: name, number: number);
 
-  static DataModel empty() => DataModel(
+  static DataModel empty() => const DataModel(
         tour: null,
         name: null,
         number: null,
@@ -43,12 +41,14 @@ class DataModel extends AbstractDataModel {
         number: number,
       );
 
+  @override
   DataModel setName(String value) => DataModel(
         tour: tour,
         name: value,
         number: number,
       );
 
+  @override
   DataModel setNumber(String value) => DataModel(
         tour: tour,
         name: name,

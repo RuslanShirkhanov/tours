@@ -8,7 +8,7 @@ import 'package:hot_tours/search_tours/search_tours.section.dart';
 import 'package:hot_tours/widgets/header.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 
-import 'package:hot_tours/select_tour/routes/form.route.dart';
+import 'package:hot_tours/select_tours/routes/form.route.dart';
 
 void showNoSearchResultsRoute({
   required BuildContext context,
@@ -45,106 +45,103 @@ class NoSearchResultsRoute extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
-              child: HeaderWidget(
-                backgroundColor: const Color(0xff2Eaeee),
-                hasSectionIndicator: false,
-                title: 'Результаты поиска',
-                hasSubtitle: false,
-                hasBackButton: true,
-                hasLoadingIndicator: false,
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 60.0),
-                child: ListView(
-                  children: <Widget>[
-                    Text(
-                      '${data.departCity!.name} - ${data.targetCountry!.name}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 18.0,
-                        color: const Color(0xff4d4948),
-                      ),
-                    ),
-                    const SizedBox(height: 6.0),
-                    Text(
-                      'ночей: ${data.nightsCount!.fst} - ${data.nightsCount!.snd}, '
-                      'взрослых: ${data.peopleCount!.fst}, '
-                      'детей: ${data.peopleCount!.snd}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 13.0,
-                        color: const Color(0xff4d4948),
-                      ),
-                    ),
-                    const SizedBox(height: 18.0),
-                    const Text(
-                      'По вашим параметрам туры не найдены,\nпопробуйте поменять параметры',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 13.0,
-                        color: const Color(0xff0093dd),
-                      ),
-                    ),
-                    const SizedBox(height: 22.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 80.0),
-                      child: ListButtonWidget(
-                        text: 'Поменять параметры',
-                        onTap: () => showSearchToursSection(
-                          context: context,
-                          data: data,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 68.0),
-                    const Text(
-                      'или мы подберём тур\nпо вашим параметрам',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 18.0,
-                        color: const Color(0xff0093dd),
-                      ),
-                    ),
-                    const SizedBox(height: 22.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 80.0),
-                      child: ListButtonWidget(
-                        text: 'Подобрать тур',
-                        onTap: () => showFormRoute(
-                          context: context,
-                          data: data,
-                        ),
-                      ),
-                    ),
-                  ],
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: HeaderWidget(
+                  backgroundColor: const Color(0xff2Eaeee),
+                  hasSectionIndicator: false,
+                  title: 'Результаты поиска',
+                  hasSubtitle: false,
+                  hasBackButton: true,
+                  hasLoadingIndicator: false,
                 ),
               ),
-            ),
-          ],
+              Align(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 60.0),
+                  child: ListView(
+                    children: <Widget>[
+                      Text(
+                        '${data.departCity!.name} - ${data.targetCountry!.name}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: 'Roboto',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18.0,
+                          color: Color(0xff4d4948),
+                        ),
+                      ),
+                      const SizedBox(height: 6.0),
+                      Text(
+                        'ночей: ${data.nightsCount!.fst} - ${data.nightsCount!.snd}, '
+                        'взрослых: ${data.peopleCount!.fst}, '
+                        'детей: ${data.peopleCount!.snd}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: 'Roboto',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 13.0,
+                          color: Color(0xff4d4948),
+                        ),
+                      ),
+                      const SizedBox(height: 18.0),
+                      const Text(
+                        'По вашим параметрам туры не найдены,\nпопробуйте поменять параметры',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 13.0,
+                          color: Color(0xff0093dd),
+                        ),
+                      ),
+                      const SizedBox(height: 22.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 80.0),
+                        child: ListButtonWidget(
+                          text: 'Поменять параметры',
+                          onTap: () => showSearchToursSection(
+                            context: context,
+                            data: data,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 68.0),
+                      const Text(
+                        'или мы подберём тур\nпо вашим параметрам',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18.0,
+                          color: Color(0xff0093dd),
+                        ),
+                      ),
+                      const SizedBox(height: 22.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 80.0),
+                        child: ListButtonWidget(
+                          text: 'Подобрать тур',
+                          onTap: () => showFormRoute(
+                            context: context,
+                            data: data,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

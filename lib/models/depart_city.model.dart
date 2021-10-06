@@ -11,7 +11,7 @@ class DepartCityModel {
     required this.isPopular,
   });
 
-  factory DepartCityModel.empty() => DepartCityModel(
+  factory DepartCityModel.empty() => const DepartCityModel(
         id: U<int>(0),
         name: '',
         isPopular: false,
@@ -24,7 +24,8 @@ class DepartCityModel {
         isPopular: data['IsPopular'] as bool,
       );
 
-  static Map<String, dynamic> deserialize(DepartCityModel data) => {
+  static Map<String, dynamic> deserialize(DepartCityModel data) =>
+      <String, dynamic>{
         'Id': data.id.value,
         'Name': data.name,
         'IsPopular': data.isPopular,

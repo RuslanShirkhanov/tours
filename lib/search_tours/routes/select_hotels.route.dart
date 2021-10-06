@@ -85,8 +85,7 @@ class SelectHotelsRoute extends HookWidget {
       title: 'Поиск туров',
       subtitle: 'Выберите отель',
       primaryData: hotels.value,
-      isPrimarySingle: false,
-      secondaryData: [],
+      secondaryData: const [],
       isSecondarySingle: true,
       transform: (city) => city.name,
       onContinue: (indices) => onContinue(

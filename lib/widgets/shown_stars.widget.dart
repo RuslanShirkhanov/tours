@@ -16,7 +16,7 @@ class ShownStarsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stars = StarModel.getStars();
+    const stars = StarModel.getStars;
     final currentIndex = stars
         .indexWhere((star) => star.id == data.id || star.name == data.name);
 

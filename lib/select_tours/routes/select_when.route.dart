@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/select_tour/models/data.model.dart';
+import 'package:hot_tours/select_tours/models/data.model.dart';
 
-import 'package:hot_tours/select_tour/routes/select_how_long.route.dart';
-import 'package:hot_tours/select_tour/routes/select_many.route.dart';
+import 'package:hot_tours/select_tours/routes/select_how_long.route.dart';
+import 'package:hot_tours/select_tours/routes/select_many.route.dart';
 
 void showSelectWhenRoute({
   required BuildContext context,
@@ -49,35 +49,33 @@ class SelectWhenRoute extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SelectManyRoute(
-      sectionIndex: data.sectionIndex,
-      primaryText: 'Когда хотите полететь?',
-      primaryData: const <String>[
-        'Чем быстрее, тем лучше',
-        'Ближайшие 2 недели',
-        'Ближайший месяц',
-      ],
-      isPrimarySingle: true,
-      secondaryText: 'или выберите месяц',
-      secondaryData: const <String>[
-        'Январь',
-        'Февраль',
-        'Март',
-        'Апрель',
-        'Май',
-        'Июнь',
-        'Июль',
-        'Август',
-        'Сентябрь',
-        'Октябрь',
-        'Ноябрь',
-        'Декабрь',
-      ],
-      isSecondarySingle: false,
-      onContinue: (value) => onContinue(
-        data.setWhen(value),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SelectManyRoute(
+        sectionIndex: data.sectionIndex,
+        primaryText: 'Когда хотите полететь?',
+        primaryData: const <String>[
+          'Чем быстрее, тем лучше',
+          'Ближайшие 2 недели',
+          'Ближайший месяц',
+        ],
+        isPrimarySingle: true,
+        secondaryText: 'или выберите месяц',
+        secondaryData: const <String>[
+          'Январь',
+          'Февраль',
+          'Март',
+          'Апрель',
+          'Май',
+          'Июнь',
+          'Июль',
+          'Август',
+          'Сентябрь',
+          'Октябрь',
+          'Ноябрь',
+          'Декабрь',
+        ],
+        isSecondarySingle: false,
+        onContinue: (value) => onContinue(
+          data.setWhen(value),
+        ),
+      );
 }

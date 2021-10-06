@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:hot_tours/select_tour/widgets/button.widget.dart';
+import 'package:hot_tours/select_tours/widgets/button.widget.dart';
 
 enum FooterButtonKind { ok, cancel, reset }
 
@@ -40,33 +40,30 @@ class FooterButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ButtonWidget(
-      isFlexible: false,
-      text: const {
-        'ok': 'ОК',
-        'cancel': 'отмена',
-        'reset': 'сброс',
-      }[data.kind.toKey()]!,
-      textColor: const {
-        'ok': Colors.white,
-        'cancel': const Color(0xffa0a0a0),
-        'reset': const Color(0xffa0a0a0),
-      }[data.kind.toKey()]!,
-      borderColor: const {
-        'ok': const Color(0xff2eaeee),
-        'cancel': const Color(0xffb4b4b4),
-        'reset': const Color(0xffb4b4b4),
-      }[data.kind.toKey()]!,
-      backgroundColor: const {
-        'ok': const Color(0xff2eaeee),
-        'cancel': Colors.white,
-        'reset': Colors.white,
-      }[data.kind.toKey()]!,
-      onTap: data.onTap,
-      isActive: data.isActive,
-    );
-  }
+  Widget build(BuildContext context) => ButtonWidget(
+        text: const {
+          'ok': 'ОК',
+          'cancel': 'отмена',
+          'reset': 'сброс',
+        }[data.kind.toKey()]!,
+        textColor: const {
+          'ok': Colors.white,
+          'cancel': Color(0xffa0a0a0),
+          'reset': Color(0xffa0a0a0),
+        }[data.kind.toKey()]!,
+        borderColor: const {
+          'ok': Color(0xff2eaeee),
+          'cancel': Color(0xffb4b4b4),
+          'reset': Color(0xffb4b4b4),
+        }[data.kind.toKey()]!,
+        backgroundColor: const {
+          'ok': Color(0xff2eaeee),
+          'cancel': Colors.white,
+          'reset': Colors.white,
+        }[data.kind.toKey()]!,
+        onTap: data.onTap,
+        isActive: data.isActive,
+      );
 }
 
 class FooterWidget extends StatelessWidget {
@@ -82,25 +79,23 @@ class FooterWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 70.0,
-      color: const Color(0xffececec),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          FooterButtonWidget(data: ok),
-          if (cancel != null)
-            FooterButtonWidget(
-              data: cancel!,
-            ),
-          if (reset != null)
-            FooterButtonWidget(
-              data: reset!,
-            ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+        width: double.infinity,
+        height: 70.0,
+        color: const Color(0xffececec),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FooterButtonWidget(data: ok),
+            if (cancel != null)
+              FooterButtonWidget(
+                data: cancel!,
+              ),
+            if (reset != null)
+              FooterButtonWidget(
+                data: reset!,
+              ),
+          ],
+        ),
+      );
 }

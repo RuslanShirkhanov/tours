@@ -52,11 +52,11 @@ class SelectNightsCountRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const ranges = const [
-      const Pair(7, 11),
-      const Pair(12, 15),
-      const Pair(16, 21),
-      const Pair(22, 28),
+    const ranges = [
+      Pair(7, 11),
+      Pair(12, 15),
+      Pair(16, 21),
+      Pair(22, 28),
     ];
 
     return SelectManyRoute<Pair<int, int>>(

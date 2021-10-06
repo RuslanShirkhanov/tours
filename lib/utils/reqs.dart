@@ -44,7 +44,7 @@ class ReqsModel {
 
   const ReqsModel(this.data);
 
-  factory ReqsModel.empty() => ReqsModel({
+  factory ReqsModel.empty() => const ReqsModel({
         ReqKind.hot: null,
         ReqKind.search: null,
         ReqKind.select: null,
@@ -93,23 +93,26 @@ abstract class ReqsController {
       File('${await _localPath}/requests.json');
 
   static Future<ReqsModel> _read() async {
-    if (kIsWeb) return ReqsModel.empty();
+    if (kIsWeb) {
+      return ReqsModel.empty();
+    }
     try {
       final file = await _localFile;
       final contents = await file.readAsString();
-      final data = (jsonDecode(contents) as Map<String, dynamic>).map(
+      final data = (jsonDecode(contents) as Map<String, String>).map(
         (key, value) =>
             MapEntry(serializeReqKind(key), DateTime.tryParse(value)),
       );
       return ReqsModel(data);
     } catch (e) {
-      print(e);
       return ReqsModel.empty();
     }
   }
 
   static Future _write() async {
-    if (kIsWeb) return;
+    if (kIsWeb) {
+      return;
+    }
     final file = await _localFile;
     final contents = jsonEncode(_model.data.map(
       (key, value) => MapEntry(
@@ -117,13 +120,13 @@ abstract class ReqsController {
         value.toString(),
       ),
     ));
-    return await file.writeAsString(contents);
+    return file.writeAsString(contents);
   }
 
   static Future<void> _update(ReqsModel data) async {
     _checkIsInitialized();
     _model = data;
-    return await _write();
+    return _write();
   }
 
   static Future<void> init() async {
@@ -143,7 +146,7 @@ abstract class ReqsController {
     return _model.getReq(kind);
   }
 
-  static final rollback = U<int>(15);
+  static const rollback = U<int>(15);
 
   static bool canSetReq(ReqKind kind) => _model.canSetReq(kind);
 

@@ -3,8 +3,8 @@ abstract class AbstractDataModel {
   final String? number;
 
   const AbstractDataModel({
-    this.name,
-    this.number,
+    required this.name,
+    required this.number,
   });
 
   AbstractDataModel setName(String value);

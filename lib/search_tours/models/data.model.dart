@@ -10,7 +10,7 @@ import 'package:hot_tours/models/hotel.model.dart';
 import 'package:hot_tours/models/meal.model.dart';
 import 'package:hot_tours/models/tour.model.dart';
 
-class DataModel implements AbstractDataModel {
+class DataModel extends AbstractDataModel {
   final DepartCityModel? departCity;
   final CountryModel? targetCountry;
   final List<DateTime>? tourDates;
@@ -23,8 +23,6 @@ class DataModel implements AbstractDataModel {
   final List<MealModel>? meals;
   final U<double>? rate;
   final TourModel? tour;
-  final String? name;
-  final String? number;
 
   const DataModel({
     required this.departCity,
@@ -39,9 +37,9 @@ class DataModel implements AbstractDataModel {
     required this.meals,
     required this.rate,
     required this.tour,
-    required this.name,
-    required this.number,
-  });
+    required String? name,
+    required String? number,
+  }) : super(name: name, number: number);
 
   factory DataModel.empty() => const DataModel(
         departCity: null,
@@ -296,6 +294,7 @@ class DataModel implements AbstractDataModel {
         number: number,
       );
 
+  @override
   DataModel setName(String value) => DataModel(
         departCity: departCity,
         targetCountry: targetCountry,
@@ -313,6 +312,7 @@ class DataModel implements AbstractDataModel {
         number: number,
       );
 
+  @override
   DataModel setNumber(String value) => DataModel(
         departCity: departCity,
         targetCountry: targetCountry,

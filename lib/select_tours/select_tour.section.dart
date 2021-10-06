@@ -10,10 +10,10 @@ import 'package:hot_tours/utils/connection.dart';
 
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/depart_city.model.dart';
-import 'package:hot_tours/select_tour/models/data.model.dart';
+import 'package:hot_tours/select_tours/models/data.model.dart';
 
-import 'package:hot_tours/select_tour/routes/select_depart_city.route.dart';
-import 'package:hot_tours/select_tour/routes/select_target_country.route.dart';
+import 'package:hot_tours/select_tours/routes/select_depart_city.route.dart';
+import 'package:hot_tours/select_tours/routes/select_target_country.route.dart';
 
 import 'package:hot_tours/widgets/header.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
@@ -74,13 +74,13 @@ class SelectTourSection extends HookWidget {
     useEffect(() {
       setState<bool>(isLoading)(true);
 
-      if (connection.value.isNotNone)
+      if (connection.value.isNotNone) {
         Api.getDepartCities().then((value) {
           departCities.value = value.sorted((a, b) => a.name.compareTo(b.name));
           setState(selectedCity)(value[0]);
-
           setState<bool>(isLoading)(false);
         });
+      }
     }, [connection.value]);
 
     return Scaffold(
@@ -90,7 +90,7 @@ class SelectTourSection extends HookWidget {
             Align(
               alignment: Alignment.topCenter,
               child: HeaderWidget(
-                sectionsCount: U<int>(6),
+                sectionsCount: const U(6),
                 sectionIndex: data.sectionIndex,
                 hasSectionIndicator: true,
                 title: 'Подбор тура',
@@ -117,12 +117,12 @@ class SelectTourSection extends HookWidget {
                       const Text(
                         'Выберите город вылета',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Roboto',
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.normal,
                           fontSize: 22.0,
-                          color: const Color(0xff4d4948),
+                          color: Color(0xff4d4948),
                         ),
                       ),
                       const SizedBox(height: 70.0),

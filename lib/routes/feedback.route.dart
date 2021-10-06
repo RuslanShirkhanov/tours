@@ -16,7 +16,7 @@ void showFeedbackRoute(BuildContext context) => showRoute<Object>(
       removeUntil: true,
       context: context,
       builder: (_) => PageRouteBuilder(
-        pageBuilder: (context, fst, snd) => FeedbackRoute(),
+        pageBuilder: (context, fst, snd) => const FeedbackRoute(),
         transitionsBuilder: (context, fst, snd, child) {
           const begin = Offset(0.0, 1.0);
           const end = Offset.zero;
@@ -41,8 +41,7 @@ class FeedbackRoute extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedStars =
-        useState(StarModel.getStars().getRange(0, 4).toList());
+    final selectedStars = useState(StarModel.getStars.getRange(0, 4).toList());
 
     return Scaffold(
       body: SafeArea(
@@ -60,53 +59,53 @@ class FeedbackRoute extends HookWidget {
             const Text(
               'Спасибо,\nВаша заявка отправлена',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
                 fontSize: 20.0,
-                color: const Color(0xff4d4948),
+                color: Color(0xff4d4948),
               ),
             ),
             const SizedBox(height: 20.0),
             const Text(
               'В ближайшее время с Вами\nсвяжется наш менеджер',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.normal,
                 fontStyle: FontStyle.normal,
                 fontSize: 18.0,
-                color: const Color(0xff0093dd),
+                color: Color(0xff0093dd),
               ),
             ),
             const SizedBox(height: 85.0),
             const Text(
               'Понравилось приложение?',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.normal,
                 fontStyle: FontStyle.normal,
                 fontSize: 20.0,
-                color: const Color(0xffdb6221),
+                color: Color(0xffdb6221),
               ),
             ),
             const SizedBox(height: 10.0),
             const Text(
               'Оцените нас:',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.normal,
                 fontStyle: FontStyle.normal,
                 fontSize: 18.0,
-                color: const Color(0xff7d7d7d),
+                color: Color(0xff7d7d7d),
               ),
             ),
             const SizedBox(height: 35.0),
             SelectStarsWidget(
-              stars: StarModel.getStars(),
+              stars: StarModel.getStars,
               onSelect: setState(selectedStars),
             ),
             const SizedBox(height: 45.0),

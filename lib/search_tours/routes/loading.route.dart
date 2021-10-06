@@ -109,7 +109,7 @@ class LoadingRoute extends HookWidget {
                 hasBackButton: true,
                 title: 'Загрузка',
                 hasSectionIndicator: true,
-                sectionsCount: U<int>(120),
+                sectionsCount: const U<int>(120),
                 sectionIndex: U<int>(ticks.data!),
                 hasSubtitle: false,
                 hasLoadingIndicator: true,
@@ -126,9 +126,7 @@ class LoadingRoute extends HookWidget {
                     top: 60.0,
                     bottom: 20.0,
                   ),
-                  child: Column(
-                    children: <Widget>[],
-                  ),
+                  child: Column(), // !!!
                 ),
               ),
             ),

@@ -67,19 +67,21 @@ class SelectManyRoute<T> extends HookWidget {
     }
 
     void onSelectPrimary(int index) {
-      if (selectedPrimary.value.contains(index))
+      if (selectedPrimary.value.contains(index)) {
         selectedPrimary.value =
             selectedPrimary.value.where((i) => i != index).toList();
-      else
+      } else {
         selectedPrimary.value = [index, ...selectedPrimary.value];
+      }
     }
 
     void onSelectSecondary(int index) {
-      if (selectedSecondary.value.contains(index))
+      if (selectedSecondary.value.contains(index)) {
         selectedSecondary.value =
             selectedSecondary.value.where((i) => i != index).toList();
-      else
+      } else {
         selectedSecondary.value = [index, ...selectedSecondary.value];
+      }
     }
 
     return Scaffold(

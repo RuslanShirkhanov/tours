@@ -70,12 +70,12 @@ class SelectDepartCityRoute extends HookWidget {
     useEffect(() {
       setState<bool>(isLoading)(true);
 
-      if (connection.value.isNotNone)
+      if (connection.value.isNotNone) {
         Api.getDepartCities().then((value) {
           departCities.value = value.sorted((a, b) => a.name.compareTo(b.name));
-
           setState<bool>(isLoading)(false);
         });
+      }
     }, [connection.value]);
 
     return Scaffold(
@@ -98,7 +98,7 @@ class SelectDepartCityRoute extends HookWidget {
                 children: <Widget>[
                   for (int i = 0; i < departCities.value.length; i++)
                     Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         top: 10.0,
                         left: 18.0,
                         right: 60.0,
@@ -123,7 +123,7 @@ class SelectDepartCityRoute extends HookWidget {
                                     fontWeight: FontWeight.w400,
                                     fontStyle: FontStyle.normal,
                                     fontSize: 24.0,
-                                    color: const Color(0xffa0a0a0),
+                                    color: Color(0xffa0a0a0),
                                   ),
                                 ),
                               ),

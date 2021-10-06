@@ -18,8 +18,8 @@ class SelectStarsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final all = StarModel.getStars().toList();
-    return Container(
+    final all = StarModel.getStars.toList();
+    return SizedBox(
       width: 200.0,
       height: 45.0,
       child: Row(

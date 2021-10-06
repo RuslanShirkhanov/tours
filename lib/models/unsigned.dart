@@ -9,76 +9,41 @@ class U<T extends num> {
   int get hashCode => value.hashCode;
 
   @override
-  bool operator ==(covariant U<T> that) {
-    return value == that.value;
-  }
+  // ignore: avoid_renaming_method_parameters
+  bool operator ==(covariant U<T> that) => value == that.value;
 
-  bool eq(T value) {
-    return this.value == value;
-  }
+  bool eq(T value) => this.value == value;
 
-  bool operator <(U<T> that) {
-    return value < that.value;
-  }
+  bool operator <(U<T> that) => value < that.value;
 
-  bool lt(T value) {
-    return this.value < value;
-  }
+  bool lt(T value) => this.value < value;
 
-  bool operator <=(U<T> that) {
-    return value <= that.value;
-  }
+  bool operator <=(U<T> that) => value <= that.value;
 
-  bool lte(T value) {
-    return this.value <= value;
-  }
+  bool lte(T value) => this.value <= value;
 
-  bool operator >(U<T> that) {
-    return value > that.value;
-  }
+  bool operator >(U<T> that) => value > that.value;
 
-  bool gt(T value) {
-    return this.value > value;
-  }
+  bool gt(T value) => this.value > value;
 
-  bool operator >=(U<T> that) {
-    return value >= that.value;
-  }
+  bool operator >=(U<T> that) => value >= that.value;
 
-  bool gte(T value) {
-    return this.value >= value;
-  }
+  bool gte(T value) => this.value >= value;
 
-  U<T> operator +(U<T> that) {
-    return U<T>((value + that.value).abs() as T);
-  }
+  U<T> operator +(U<T> that) => U<T>((value + that.value).abs() as T);
 
-  U<T> operator -(U<T> that) {
-    return U<T>((value - that.value).abs() as T);
-  }
+  U<T> operator -(U<T> that) => U<T>((value - that.value).abs() as T);
 
-  U<T> operator *(U<T> that) {
-    return U<T>((value * that.value).abs() as T);
-  }
+  U<T> operator *(U<T> that) => U<T>((value * that.value).abs() as T);
 
-  U<num> operator /(U<T> that) {
-    return U<num>((value / that.value).abs());
-  }
+  U<num> operator /(U<T> that) => U<num>((value / that.value).abs());
 
-  U<num> operator %(U<T> that) {
-    return U<num>((value % that.value).abs());
-  }
+  U<num> operator %(U<T> that) => U<num>((value % that.value).abs());
 
-  int toInt() {
-    return value.toInt();
-  }
+  int toInt() => value.toInt();
 
-  double toDouble() {
-    return value.toDouble();
-  }
+  double toDouble() => value.toDouble();
 
   @override
-  String toString() {
-    return value.toString();
-  }
+  String toString() => value.toString();
 }

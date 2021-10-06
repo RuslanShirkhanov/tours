@@ -21,7 +21,7 @@ void showCallbackRoute({
       context: context,
       model: null,
       builder: (data) => PageRouteBuilder(
-        pageBuilder: (context, fst, snd) => CallbackRoute(),
+        pageBuilder: (context, fst, snd) => const CallbackRoute(),
         transitionsBuilder: (context, fst, snd, child) {
           const begin = Offset(1.0, 0.0);
           const end = Offset.zero;
@@ -84,15 +84,15 @@ class CallbackRoute extends HookWidget {
                           text: 'Отправить',
                           onTap: () {
                             focusNode.unfocus();
-                            if (formKey.value.currentState!.validate())
+                            if (formKey.value.currentState!.validate()) {
                               Api.makeCreateLeadRequest(
                                 context: context,
                                 kind: ReqKind.callback,
                                 note:
                                     'Обратный звонок\nДата: ${DateTime.now()}\nНомер: ${formData.value}',
                               );
+                            }
                           },
-                          textColor: Colors.white,
                           backgroundColor: const Color(0xff2eaeee),
                         ),
                       ],
@@ -114,22 +114,22 @@ class CallbackRoute extends HookWidget {
                   child: RichText(
                     text: TextSpan(
                       children: <InlineSpan>[
-                        TextSpan(
+                        const TextSpan(
                           text: 'Отправляя запрос, Вы подтверждаете ',
                         ),
                         TextSpan(
                           text: 'согласие',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xff0093dd),
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => showRulesRoute(context),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: ' на обработку персональных данных.',
                         ),
                       ],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Roboto',
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.normal,

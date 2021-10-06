@@ -3,15 +3,13 @@ import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/abstract_data.model.dart';
 import 'package:hot_tours/models/depart_city.model.dart';
 
-class DataModel implements AbstractDataModel {
+class DataModel extends AbstractDataModel {
   final U<int> sectionIndex;
   final DepartCityModel? departCity;
   final List<String>? targetCountry;
   final List<String>? what;
   final List<String>? when;
   final List<String>? howLong;
-  final String? name;
-  final String? number;
 
   const DataModel({
     required this.sectionIndex,
@@ -20,12 +18,12 @@ class DataModel implements AbstractDataModel {
     required this.what,
     required this.when,
     required this.howLong,
-    required this.name,
-    required this.number,
-  });
+    required String? name,
+    required String? number,
+  }) : super(name: name, number: number);
 
   factory DataModel.empty() => const DataModel(
-        sectionIndex: const U(0),
+        sectionIndex: U(0),
         departCity: null,
         targetCountry: null,
         what: null,
@@ -36,8 +34,7 @@ class DataModel implements AbstractDataModel {
       );
 
   @override
-  String toString() {
-    return '''
+  String toString() => '''
       Подбор тура
       Дата: ${DateTime.now()}
       Откуда: ${departCity!.name}
@@ -48,12 +45,11 @@ class DataModel implements AbstractDataModel {
       Имя: ${name!}
       Номер: ${number!}
     '''
-        .trim()
-        .replaceAll(RegExp(r'[\s]{2,}'), '\n');
-  }
+      .trim()
+      .replaceAll(RegExp(r'[\s]{2,}'), '\n');
 
   DataModel setDepartCity(DepartCityModel? value) => DataModel(
-        sectionIndex: sectionIndex + U(1),
+        sectionIndex: sectionIndex + const U(1),
         departCity: value,
         targetCountry: targetCountry,
         what: what,
@@ -64,7 +60,7 @@ class DataModel implements AbstractDataModel {
       );
 
   DataModel setTargetCountries(List<String>? value) => DataModel(
-        sectionIndex: sectionIndex + U(1),
+        sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: value,
         what: what,
@@ -75,7 +71,7 @@ class DataModel implements AbstractDataModel {
       );
 
   DataModel setWhat(List<String>? value) => DataModel(
-        sectionIndex: sectionIndex + U(1),
+        sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: targetCountry,
         what: value,
@@ -86,7 +82,7 @@ class DataModel implements AbstractDataModel {
       );
 
   DataModel setWhen(List<String>? value) => DataModel(
-        sectionIndex: sectionIndex + U(1),
+        sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: targetCountry,
         what: what,
@@ -97,7 +93,7 @@ class DataModel implements AbstractDataModel {
       );
 
   DataModel setHowLong(List<String>? value) => DataModel(
-        sectionIndex: sectionIndex + U(1),
+        sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: targetCountry,
         what: what,
@@ -107,8 +103,9 @@ class DataModel implements AbstractDataModel {
         number: number,
       );
 
+  @override
   DataModel setName(String? value) => DataModel(
-        sectionIndex: sectionIndex + U(1),
+        sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: targetCountry,
         what: what,
@@ -118,8 +115,9 @@ class DataModel implements AbstractDataModel {
         number: number,
       );
 
+  @override
   DataModel setNumber(String? value) => DataModel(
-        sectionIndex: sectionIndex + U(1),
+        sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: targetCountry,
         what: what,

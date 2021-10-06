@@ -57,7 +57,6 @@ class SelectMealsRoute extends StatelessWidget {
       title: 'Поиск туров',
       subtitle: 'Выберите питание',
       primaryData: meals,
-      isPrimarySingle: false,
       secondaryData: const [],
       isSecondarySingle: true,
       transform: mealToString,

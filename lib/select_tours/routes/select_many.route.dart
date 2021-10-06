@@ -56,19 +56,21 @@ class SelectManyRoute extends HookWidget {
     );
 
     void onSelectPrimary(int index) {
-      if (selectedPrimary.value.contains(index))
+      if (selectedPrimary.value.contains(index)) {
         selectedPrimary.value =
             selectedPrimary.value.where((i) => i != index).toList();
-      else
+      } else {
         selectedPrimary.value = [index, ...selectedPrimary.value];
+      }
     }
 
     void onSelectSecondary(int index) {
-      if (selectedSecondary.value.contains(index))
+      if (selectedSecondary.value.contains(index)) {
         selectedSecondary.value =
             selectedSecondary.value.where((i) => i != index).toList();
-      else
+      } else {
         selectedSecondary.value = [index, ...selectedSecondary.value];
+      }
     }
 
     return Scaffold(
@@ -78,7 +80,7 @@ class SelectManyRoute extends HookWidget {
             Align(
               alignment: Alignment.topCenter,
               child: HeaderWidget(
-                sectionsCount: U<int>(6),
+                sectionsCount: const U(6),
                 sectionIndex: sectionIndex,
                 hasSectionIndicator: true,
                 title: 'Подбор тура',
@@ -90,7 +92,6 @@ class SelectManyRoute extends HookWidget {
               ),
             ),
             Align(
-              alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.only(top: 55.0, bottom: 70.0),
                 child: ListView(
@@ -104,21 +105,21 @@ class SelectManyRoute extends HookWidget {
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 18.0,
-                        color: const Color(0xff4d4948),
+                        color: Color(0xff4d4948),
                       ),
                     ),
                     if (!isPrimarySingle)
                       const Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: const Text(
+                        padding: EdgeInsets.only(top: 10.0),
+                        child: Text(
                           'можно выбрать несколько вариантов',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.normal,
                             fontStyle: FontStyle.normal,
                             fontSize: 14.0,
-                            color: const Color(0xff7d7d7d),
+                            color: Color(0xff7d7d7d),
                           ),
                         ),
                       ),
@@ -175,7 +176,7 @@ class SelectManyRoute extends HookWidget {
                                   fontWeight: FontWeight.w400,
                                   fontStyle: FontStyle.normal,
                                   fontSize: 18.0,
-                                  color: const Color(0xff4d4948),
+                                  color: Color(0xff4d4948),
                                 ),
                               ),
                               const SizedBox(height: 10.0),
@@ -183,12 +184,12 @@ class SelectManyRoute extends HookWidget {
                                 const Text(
                                   'можно выбрать несколько вариантов',
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w400,
                                     fontStyle: FontStyle.normal,
                                     fontSize: 14.0,
-                                    color: const Color(0xff7d7d7d),
+                                    color: Color(0xff7d7d7d),
                                   ),
                                 ),
                             ],

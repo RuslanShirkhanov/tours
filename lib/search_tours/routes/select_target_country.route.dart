@@ -73,12 +73,12 @@ class SelectTargetCountryRoute extends HookWidget {
     useEffect(() {
       setState<bool>(isLoading)(true);
 
-      if (connection.value.isNotNone)
+      if (connection.value.isNotNone) {
         Api.getCountries(townFromId: data.departCity!.id).then((value) {
           initialData.value = value.sorted((a, b) => a.name.compareTo(b.name));
-
           setState<bool>(isLoading)(false);
         });
+      }
     }, [connection.value]);
 
     final targetCountries = useMemoized(

@@ -9,7 +9,7 @@ import 'package:hot_tours/search_tours/models/storage.model.dart';
 
 import 'package:hot_tours/widgets/header.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
-import 'package:hot_tours/select_tour/widgets/button.widget.dart';
+import 'package:hot_tours/select_tours/widgets/button.widget.dart';
 
 import 'package:hot_tours/search_tours/routes/other_params.route.dart';
 import 'package:hot_tours/search_tours/routes/select_nights_count.route.dart';
@@ -111,7 +111,6 @@ class SearchToursSection extends HookWidget {
                   child: Column(
                     children: <Widget>[
                       ListButtonWidget(
-                        isActive: true,
                         text: currentData.value.departCity?.name ??
                             'Город отправления',
                         onTap: () => showSelectDepartCityRoute(

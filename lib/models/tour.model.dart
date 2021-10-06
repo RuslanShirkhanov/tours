@@ -85,7 +85,7 @@ class TourModel {
         costCurrency: data[43] as String,
       );
 
-  static Map<String, dynamic> deserialize(TourModel data) => {
+  static Map<String, dynamic> deserialize(TourModel data) => <String, dynamic>{
         'hotelId': data.hotelId,
         'hotelName': data.hotelName,
         'hotelStar': data.hotelStar,

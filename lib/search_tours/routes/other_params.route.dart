@@ -72,7 +72,7 @@ class OtherParamsRoute extends HookWidget {
     final currentData = useState(
       data.hotelStars != null
           ? data
-          : data.setHotelStars([StarModel.getStars()[0]]),
+          : data.setHotelStars([StarModel.getStars[0]]),
     );
     final rememberStatus = useState(true);
 
@@ -85,6 +85,7 @@ class OtherParamsRoute extends HookWidget {
           .setRate(null);
     }
 
+    // ignore: avoid_positional_boolean_parameters
     void setRememberStatus(bool value) => rememberStatus.value = value;
 
     void setCurrentData(DataModel value) => currentData.value = value;
@@ -139,25 +140,24 @@ class OtherParamsRoute extends HookWidget {
                           children: <Widget>[
                             const Text(
                               'Отель от',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
                                 fontSize: 16.0,
-                                color: const Color(0xff7d7d7d),
+                                color: Color(0xff7d7d7d),
                               ),
                             ),
                             const SizedBox(width: 6.0),
                             SelectStarsWidget(
                               stars: currentData.value.hotelStars ??
-                                  StarModel.getStars(),
+                                  StarModel.getStars,
                               onSelect: setHotelStars,
                             ),
                           ],
                         ),
                         const SizedBox(height: 35.0),
                         ListButtonWidget(
-                          isActive: true,
                           text: currentData.value.targetCities == null
                               ? 'Курорт'
                               : currentData.value.targetCities!.length == 1
@@ -217,7 +217,7 @@ class OtherParamsRoute extends HookWidget {
               ),
               Positioned(
                 bottom: 100.0,
-                child: Container(
+                child: SizedBox(
                   width: constraints.maxWidth,
                   child: Center(
                     child: CheckboxWidget(
@@ -235,10 +235,11 @@ class OtherParamsRoute extends HookWidget {
                     kind: FooterButtonKind.ok,
                     isActive: currentData.value.isValid,
                     onTap: () {
-                      if (rememberStatus.value)
+                      if (rememberStatus.value) {
                         StorageController.write(
                           StorageModel.fromData(currentData.value),
                         );
+                      }
                       onContinue(currentData.value);
                     },
                   ),

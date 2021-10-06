@@ -20,12 +20,12 @@ class HotelModel {
   });
 
   factory HotelModel.any() => HotelModel(
-        id: U<int>(0),
-        townId: U<int>(0),
+        id: const U<int>(0),
+        townId: const U<int>(0),
         name: 'Любой',
-        star: StarModel.getStars()[0],
-        rate: U<double>(0.0),
-        photosCount: U<int>(0),
+        star: StarModel.getStars[0],
+        rate: const U<double>(0.0),
+        photosCount: const U<int>(0),
       );
 
   static HotelModel serialize(Map<String, dynamic> data) => HotelModel(
@@ -40,7 +40,7 @@ class HotelModel {
         photosCount: U<int>(data['PhotosCount'] as int),
       );
 
-  static Map<String, dynamic> deserialize(HotelModel data) => {
+  static Map<String, dynamic> deserialize(HotelModel data) => <String, dynamic>{
         'Id': data.id.value,
         'TownId': data.townId.value,
         'Name': data.name,

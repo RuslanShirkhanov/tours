@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/select_tour/models/data.model.dart';
+import 'package:hot_tours/select_tours/models/data.model.dart';
 
-import 'package:hot_tours/select_tour/routes/select_when.route.dart';
-import 'package:hot_tours/select_tour/routes/select_many.route.dart';
+import 'package:hot_tours/select_tours/routes/select_when.route.dart';
+import 'package:hot_tours/select_tours/routes/select_many.route.dart';
 
 void showSelectWhatRoute({
   required BuildContext context,
@@ -49,29 +49,27 @@ class SelectWhatRoute extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SelectManyRoute(
-      sectionIndex: data.sectionIndex,
-      primaryText: 'Что для вас важно в отдыхе?',
-      primaryData: const <String>[
-        'Минимальная цена',
-        'Всё включено',
-        'Хороший отель',
-        'С хорошим питанием',
-        'Активный отдых',
-        '1 береговая линия',
-        'Песчаный пляж',
-        'Без визы',
-        'Раннее бронирование',
-        'Горящий тур',
-        'Отдых с детьми',
-      ],
-      isPrimarySingle: false,
-      secondaryData: const <String>[],
-      isSecondarySingle: true,
-      onContinue: (value) => onContinue(
-        data.setWhat(value),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SelectManyRoute(
+        sectionIndex: data.sectionIndex,
+        primaryText: 'Что для вас важно в отдыхе?',
+        primaryData: const <String>[
+          'Минимальная цена',
+          'Всё включено',
+          'Хороший отель',
+          'С хорошим питанием',
+          'Активный отдых',
+          '1 береговая линия',
+          'Песчаный пляж',
+          'Без визы',
+          'Раннее бронирование',
+          'Горящий тур',
+          'Отдых с детьми',
+        ],
+        isPrimarySingle: false,
+        secondaryData: const <String>[],
+        isSecondarySingle: true,
+        onContinue: (value) => onContinue(
+          data.setWhat(value),
+        ),
+      );
 }

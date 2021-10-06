@@ -45,9 +45,13 @@ class StorageModel {
 
   static StorageModel serialize(Map<String, dynamic> data) => StorageModel(
         DataModel(
-          departCity: DepartCityModel.serialize(data['departCity']!),
+          departCity: DepartCityModel.serialize(
+            data['departCity']! as Map<String, dynamic>,
+          ),
           tourDates: null,
-          targetCountry: CountryModel.serialize(data['targetCountry']!),
+          targetCountry: CountryModel.serialize(
+            data['targetCountry']! as Map<String, dynamic>,
+          ),
           nightsCount: Pair(
             U<int>(data['nightsMin'] as int),
             U<int>(data['nightsMax'] as int),
@@ -115,20 +119,23 @@ abstract class StorageController {
       File('${await _localPath}/storage.json');
 
   static Future<StorageModel> read() async {
-    if (kIsWeb) return StorageModel.empty();
+    if (kIsWeb) {
+      return StorageModel.empty();
+    }
     try {
       final file = await _localFile;
       final contents = await file.readAsString();
-      final data = jsonDecode(contents);
+      final data = jsonDecode(contents) as Map<String, dynamic>;
       return StorageModel.serialize(data);
     } catch (e) {
-      print(e);
       return StorageModel.empty();
     }
   }
 
   static Future write(StorageModel data) async {
-    if (kIsWeb) return;
+    if (kIsWeb) {
+      return;
+    }
     final file = await _localFile;
     final contents = jsonEncode(StorageModel.deserialize(data));
     return file.writeAsString(contents);

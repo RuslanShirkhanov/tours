@@ -9,11 +9,15 @@ class MealModel {
     required this.name,
   });
 
-  static MealModel serialize(Map<String, dynamic> data) =>
-      MealModel(id: U<int>(data['id'] as int), name: data['name']);
+  static MealModel serialize(Map<String, dynamic> data) => MealModel(
+        id: U<int>(data['id'] as int),
+        name: data['name'] as String,
+      );
 
-  static Map<String, dynamic> deserialize(MealModel data) =>
-      <String, dynamic>{'id': data.id.value, 'name': data.name};
+  static Map<String, dynamic> deserialize(MealModel data) => <String, dynamic>{
+        'id': data.id.value,
+        'name': data.name,
+      };
 
   static List<MealModel> getMeals() => const [
         MealModel(id: U<int>(112), name: 'FB'),

@@ -89,90 +89,86 @@ class _SelectTourDatesRouteState extends State<SelectTourDatesRoute> {
 
   void onSelect(DateTime value) {
     setState(() {
-      if (!selectedDates.contains(value))
+      if (!selectedDates.contains(value)) {
         selectedDates = [...selectedDates, value];
-      else
+      } else {
         selectedDates = selectedDates.where((date) => date != value).toList();
+      }
     });
   }
 
-  bool isSelected(DateTime value) {
-    return selectedDates
-        .where((date) =>
-            date.year == value.year &&
-            date.month == value.month &&
-            date.day == value.day)
-        .isNotEmpty;
-  }
+  bool isSelected(DateTime value) => selectedDates
+      .where((date) =>
+          date.year == value.year &&
+          date.month == value.month &&
+          date.day == value.day)
+      .isNotEmpty;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
-              child: HeaderWidget(
-                backgroundColor: const Color(0xff2Eaeee),
-                hasSectionIndicator: false,
-                title: 'Поиск туров',
-                hasSubtitle: true,
-                subtitle: 'Выберите даты вылета',
-                hasBackButton: true,
-                isLoading: isLoading,
-                hasLoadingIndicator: true,
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: HeaderWidget(
+                  backgroundColor: const Color(0xff2Eaeee),
+                  hasSectionIndicator: false,
+                  title: 'Поиск туров',
+                  hasSubtitle: true,
+                  subtitle: 'Выберите даты вылета',
+                  hasBackButton: true,
+                  isLoading: isLoading,
+                  hasLoadingIndicator: true,
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 78.0, bottom: 70.0),
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  itemCount: Utils.lastMonths(currentDate).length,
-                  itemBuilder: (context, index) => TableWidget(
-                    availableDates: availableDates,
-                    isSelected: isSelected,
-                    onSelect: onSelect,
-                    date: Utils.lastMonths(currentDate)[index],
-                  ),
-                  separatorBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.only(top: 15.0, bottom: 10.0),
-                    child: Divider(
-                      thickness: 3.0,
-                      color: const Color(0xffe5e5e5),
+              Align(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 78.0, bottom: 70.0),
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    itemCount: Utils.lastMonths(currentDate).length,
+                    itemBuilder: (context, index) => TableWidget(
+                      availableDates: availableDates,
+                      isSelected: isSelected,
+                      onSelect: onSelect,
+                      date: Utils.lastMonths(currentDate)[index],
+                    ),
+                    separatorBuilder: (context, index) => const Padding(
+                      padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
+                      child: Divider(
+                        thickness: 3.0,
+                        color: Color(0xffe5e5e5),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: FooterWidget(
-                ok: FooterButtonModel(
-                  kind: FooterButtonKind.ok,
-                  isActive: selectedDates.isNotEmpty,
-                  onTap: () => widget
-                      .onContinue(widget.data.setTourDates(selectedDates)),
-                ),
-                cancel: FooterButtonModel(
-                  kind: FooterButtonKind.cancel,
-                  isActive: true,
-                  onTap: () => Navigator.of(context).pop(),
-                ),
-                reset: FooterButtonModel(
-                  kind: FooterButtonKind.reset,
-                  isActive: selectedDates.isNotEmpty,
-                  onTap: () => setState(() => selectedDates = []),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: FooterWidget(
+                  ok: FooterButtonModel(
+                    kind: FooterButtonKind.ok,
+                    isActive: selectedDates.isNotEmpty,
+                    onTap: () => widget
+                        .onContinue(widget.data.setTourDates(selectedDates)),
+                  ),
+                  cancel: FooterButtonModel(
+                    kind: FooterButtonKind.cancel,
+                    isActive: true,
+                    onTap: () => Navigator.of(context).pop(),
+                  ),
+                  reset: FooterButtonModel(
+                    kind: FooterButtonKind.reset,
+                    isActive: selectedDates.isNotEmpty,
+                    onTap: () => setState(() => selectedDates = []),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 enum Status { past, selected, available, unavailable }
@@ -243,102 +239,100 @@ class _TableWidgetState extends State<TableWidget> {
       .isNotEmpty;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 30.0,
-        right: 30.0,
-      ),
-      child: Column(
-        children: <Widget>[
-          Text(
-            '${Utils.monthToString(model.date.month).capitalized} ${model.date.year}',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-              fontSize: 16.0,
-              color: const Color(0xffa0a0a0),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(
+          left: 30.0,
+          right: 30.0,
+        ),
+        child: Column(
+          children: <Widget>[
+            Text(
+              '${Utils.monthToString(model.date.month).capitalized} ${model.date.year}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.normal,
+                fontSize: 16.0,
+                color: Color(0xffa0a0a0),
+              ),
             ),
-          ),
-          const SizedBox(height: 15.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: model.weekdays.mapToList(
-              (weekday, _) => Container(
-                width: 40.0,
-                height: 25.0,
-                alignment: Alignment.center,
-                child: Text(
-                  Utils.weekdayToString(weekday).toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 18.0,
-                    color: const Color(0xff4d4948),
+            const SizedBox(height: 15.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: model.weekdays.mapToList(
+                (weekday, _) => Container(
+                  width: 40.0,
+                  height: 25.0,
+                  alignment: Alignment.center,
+                  child: Text(
+                    Utils.weekdayToString(weekday).toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 18.0,
+                      color: Color(0xff4d4948),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: model.weekdays.mapToList(
-              (weekday, _) => Column(
-                children: model.value[weekday]!.mapToList(
-                  (date, index) {
-                    final isNull = date == null;
-                    final status = isNull
-                        ? Status.past
-                        : isPast(date!)
-                            ? Status.past
-                            : isSelected(date)
-                                ? Status.selected
-                                : isAvailable(date)
-                                    ? Status.available
-                                    : Status.unavailable;
-                    final colors = allColors(status);
+            const SizedBox(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: model.weekdays.mapToList(
+                (weekday, _) => Column(
+                  children: model.value[weekday]!.mapToList(
+                    (date, index) {
+                      final isNull = date == null;
+                      final status = isNull
+                          ? Status.past
+                          : isPast(date!)
+                              ? Status.past
+                              : isSelected(date)
+                                  ? Status.selected
+                                  : isAvailable(date)
+                                      ? Status.available
+                                      : Status.unavailable;
+                      final colors = allColors(status);
 
-                    return Container(
-                      padding: EdgeInsets.only(top: index == 0 ? 0.0 : 8.0),
-                      child: GestureDetector(
-                        onTap:
-                            [Status.past, Status.unavailable].contains(status)
-                                ? () {}
-                                : () => widget.onSelect(date!),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 350),
-                          width: 40.0,
-                          height: 25.0,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(color: colors.fst),
-                          child: Text(
-                            isNull ? "" : date!.day.toString(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 18.0,
-                              color: colors.snd,
+                      return Container(
+                        padding: EdgeInsets.only(top: index == 0 ? 0.0 : 8.0),
+                        child: GestureDetector(
+                          onTap:
+                              [Status.past, Status.unavailable].contains(status)
+                                  ? () {}
+                                  : () => widget.onSelect(date!),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 350),
+                            width: 40.0,
+                            height: 25.0,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(color: colors.fst),
+                            child: Text(
+                              isNull ? '' : date!.day.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 18.0,
+                                color: colors.snd,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 abstract class Utils {

@@ -4,24 +4,24 @@ extension Singleton on String {
 
 extension Capitalized on String {
   String get capitalized {
-    if (this.isEmpty) {
+    if (isEmpty) {
       return this;
-    } else if (this.isSingleton) {
-      return this.toUpperCase();
+    } else if (isSingleton) {
+      return toUpperCase();
     } else {
-      return '${this[0].toUpperCase()}${this.substring(1)}';
+      return '${this[0].toUpperCase()}${substring(1)}';
     }
   }
 }
 
 extension Uncapitalized on String {
   String get uncapitalized {
-    if (this.isEmpty) {
+    if (isEmpty) {
       return this;
-    } else if (this.isSingleton) {
-      return this.toLowerCase();
+    } else if (isSingleton) {
+      return toLowerCase();
     } else {
-      return '${this[0].toLowerCase()}${this.substring(1)}';
+      return '${this[0].toLowerCase()}${substring(1)}';
     }
   }
 }

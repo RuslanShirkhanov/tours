@@ -35,82 +35,80 @@ class ListButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Tooltip(
-      showDuration: const Duration(milliseconds: 350),
-      message: text,
-      child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 350),
-        opacity: isActive ? 1.0 : 0.5,
-        child: SizedBox(
-          width: width,
-          height: height,
-          child: GestureDetector(
-            onTap: isActive ? onTap : () {},
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(10.0),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    offset: const Offset(1.0, 1.0),
-                    blurRadius: 10.0,
-                    color: Colors.black.withAlpha(50),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: <Widget>[
-                  if (hasCheckbox)
-                    AnimatedContainer(
-                      width: 16.0,
-                      height: 16.0,
-                      alignment: Alignment.center,
-                      duration: const Duration(milliseconds: 300),
-                      decoration: BoxDecoration(
-                        color: checkboxStatus
-                            ? const Color(0xff2eaeee)
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(3.0),
-                        border: Border.all(
-                          color: const Color(0xffd6d6d6),
-                          width: checkboxStatus ? 0.0 : 1.0,
+  Widget build(BuildContext context) => Tooltip(
+        showDuration: const Duration(milliseconds: 350),
+        message: text,
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 350),
+          opacity: isActive ? 1.0 : 0.5,
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: GestureDetector(
+              onTap: isActive ? onTap : () {},
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      offset: const Offset(1.0, 1.0),
+                      blurRadius: 10.0,
+                      color: Colors.black.withAlpha(50),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: <Widget>[
+                    if (hasCheckbox)
+                      AnimatedContainer(
+                        width: 16.0,
+                        height: 16.0,
+                        alignment: Alignment.center,
+                        duration: const Duration(milliseconds: 300),
+                        decoration: BoxDecoration(
+                          color: checkboxStatus
+                              ? const Color(0xff2eaeee)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(
+                            color: const Color(0xffd6d6d6),
+                            width: checkboxStatus ? 0.0 : 1.0,
+                          ),
+                        ),
+                        child: checkboxStatus
+                            ? SvgPicture.asset('assets/mark.svg')
+                            : const SizedBox(),
+                      ),
+                    if (hasCheckbox) const SizedBox(width: 12.0),
+                    if (path.isNotEmpty)
+                      SizedBox(
+                        width: 26.0,
+                        height: 26.0,
+                        child: SvgPicture.asset(path),
+                      ),
+                    if (path.isNotEmpty) const SizedBox(width: 15.0),
+                    if (text.isNotEmpty)
+                      Flexible(
+                        child: Text(
+                          text,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 18.0,
+                            color: textColor,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      child: checkboxStatus
-                          ? SvgPicture.asset('assets/mark.svg')
-                          : const SizedBox(),
-                    ),
-                  if (hasCheckbox) const SizedBox(width: 12.0),
-                  if (path.isNotEmpty)
-                    SizedBox(
-                      width: 26.0,
-                      height: 26.0,
-                      child: SvgPicture.asset(path),
-                    ),
-                  if (path.isNotEmpty) const SizedBox(width: 15.0),
-                  if (text.isNotEmpty)
-                    Flexible(
-                      child: Text(
-                        text,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 18.0,
-                          color: textColor,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

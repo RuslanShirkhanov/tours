@@ -1,26 +1,24 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 import 'package:hot_tours/api.dart';
 
-import 'package:hot_tours/utils/show_route.dart';
-import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/reqs.dart';
+import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/search_tours/models/data.model.dart';
+import 'package:hot_tours/models/unsigned.dart';
+import 'package:hot_tours/models/abstract_data.model.dart';
 
 import 'package:hot_tours/widgets/header.widget.dart';
-import 'package:hot_tours/search_tours/widgets/form.widget.dart';
+import 'package:hot_tours/select_tours/widgets/form.widget.dart';
 
 import 'package:hot_tours/routes/rules.route.dart';
 
 void showFormRoute({
   required BuildContext context,
-  required DataModel data,
+  required AbstractDataModel data,
 }) =>
-    showRoute<DataModel>(
+    showRoute<AbstractDataModel>(
       context: context,
       model: data,
       builder: (currentData) => PageRouteBuilder(
@@ -28,12 +26,12 @@ void showFormRoute({
           data: currentData!,
           onContinue: (newData) => Api.makeCreateLeadRequest(
             context: context,
-            kind: ReqKind.search,
+            kind: ReqKind.select,
             note: newData.toString(),
           ),
         ),
         transitionsBuilder: (context, fst, snd, child) {
-          const begin = Offset(0.0, 1.0);
+          const begin = Offset(1.0, 0.0);
           const end = Offset.zero;
           const curve = Curves.ease;
 
@@ -49,8 +47,8 @@ void showFormRoute({
     );
 
 class FormRoute extends StatelessWidget {
-  final DataModel data;
-  final void Function(DataModel) onContinue;
+  final AbstractDataModel data;
+  final void Function(AbstractDataModel) onContinue;
 
   const FormRoute({
     Key? key,
@@ -64,8 +62,10 @@ class FormRoute extends StatelessWidget {
           child: Column(
             children: <Widget>[
               HeaderWidget(
-                hasSectionIndicator: false,
-                title: 'Покупка тура',
+                sectionsCount: const U(6),
+                sectionIndex: const U(5),
+                hasSectionIndicator: true,
+                title: 'Заявка на тур',
                 hasSubtitle: false,
                 backgroundColor: const Color(0xff2eaeee),
                 hasBackButton: true,
@@ -73,9 +73,12 @@ class FormRoute extends StatelessWidget {
               ),
               Expanded(
                 child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    top: 30.0,
+                    bottom: 20.0,
+                  ),
                   child: Column(
                     children: <Widget>[
-                      const SizedBox(height: 30.0),
                       const Text(
                         'Введите Ваше имя и телефон:',
                         textAlign: TextAlign.center,
@@ -96,25 +99,10 @@ class FormRoute extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 55.0),
-                      SizedBox(
-                        width: 320.0,
-                        child: Text(
-                          'Отель: ${data.tour!.hotelName.capitalized}, дата вылета: ${data.tour!.dateIn}, ночей: ${data.tour!.nightsCount}, взрослых: ${data.tour!.adultsCount}, детей: ${data.tour!.childrenCount}, номер: ${data.tour!.roomTypeDesc.uncapitalized} (${data.tour!.roomType.capitalized}), питание: ${data.tour!.mealTypeDesc.uncapitalized} (${data.tour!.mealType.capitalized}), стоимость: ${data.tour!.cost} ${data.tour!.costCurrency}',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontFamily: 'Roboto',
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 10.0,
-                            color: Color(0xff4d4948),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 55.0),
                       const SizedBox(
                         width: 320.0,
                         child: Text(
-                          'Запрос не является бронированием тура. Наш специалист свяжется с Вами и предоставит подробную информацию о туре.',
+                          'Запрос не является бронированием тура. Наш специалист\nсвяжется с Вами и предоставит подробную информацию о туре.',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontFamily: 'Roboto',
@@ -136,9 +124,8 @@ class FormRoute extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: 'согласие',
-                                style: const TextStyle(
-                                  color: Color(0xff0093dd),
-                                ),
+                                style:
+                                    const TextStyle(color: Color(0xff0093dd)),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () => showRulesRoute(context),
                               ),

@@ -25,40 +25,39 @@ abstract class Api {
     try {
       final result = await InternetAddress.lookup('example.com');
       return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (error) {
-      print(error);
+    } on SocketException catch (_) {
       return false;
     }
   }
 
   static String _makeUri(
     String unencodedPath,
-    Map<String, dynamic> queryParams,
-  ) {
-    return Uri.decodeFull(
-      Uri.http(
-        'ovz1.j7105307.m719m.vps.myjino.ru:49234',
-        '/$unencodedPath',
-        queryParams.map(
-          (key, value) => MapEntry(key, value.toString()),
-        ),
-      ).toString(),
-    );
-  }
+    Map<String, Object> queryParams,
+  ) =>
+      Uri.decodeFull(
+        Uri.http(
+          'ovz1.j7105307.m719m.vps.myjino.ru:49234',
+          '/$unencodedPath',
+          queryParams.map<String, String>(
+            (key, value) => MapEntry(key, value.toString()),
+          ),
+        ).toString(),
+      );
 
   static String makeImageUri({
     required U<int> hotelId,
     required U<int> imageNumber,
-  }) {
-    return 'https://hotels.sletat.ru/i/f/${hotelId}_$imageNumber.jpg';
-  }
+  }) =>
+      'https://hotels.sletat.ru/i/f/${hotelId}_$imageNumber.jpg';
 
   static Future<List<DepartCityModel>> getDepartCities() async {
-    if (!await Api.hasConnection()) return const [];
+    if (!await Api.hasConnection()) {
+      return const [];
+    }
 
     final uri = _makeUri('depart_cities', {});
-    final res = await _dio.get(uri);
-    final data = jsonDecode(res.data);
+    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
       return (data['value'] as List<dynamic>)
@@ -73,13 +72,15 @@ abstract class Api {
   static Future<List<CountryModel>> getCountries({
     required U<int> townFromId,
   }) async {
-    if (!await Api.hasConnection()) return const [];
+    if (!await Api.hasConnection()) {
+      return const [];
+    }
 
     final uri = _makeUri('countries', {
       'town_from_id': townFromId,
     });
-    final res = await _dio.get(uri);
-    final data = jsonDecode(res.data);
+    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
       return (data['value'] as List<dynamic>)
@@ -94,13 +95,15 @@ abstract class Api {
   static Future<List<CityModel>> getCities({
     required U<int> countryId,
   }) async {
-    if (!await Api.hasConnection()) return const [];
+    if (!await Api.hasConnection()) {
+      return const [];
+    }
 
     final uri = _makeUri('cities', {
       'country_id': countryId,
     });
-    final res = await _dio.get(uri);
-    final data = jsonDecode(res.data);
+    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
       return (data['value'] as List<dynamic>)
@@ -120,15 +123,17 @@ abstract class Api {
     assert(towns.isNotEmpty);
     assert(stars.isNotEmpty);
 
-    if (!await Api.hasConnection()) return const [];
+    if (!await Api.hasConnection()) {
+      return const [];
+    }
 
     final uri = _makeUri('hotels', {
       'country_id': countryId,
       'towns': towns.join(','),
       'stars': stars.join(','),
     });
-    final res = await _dio.get(uri);
-    final data = jsonDecode(res.data);
+    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
       return (data['value'] as List<dynamic>)
@@ -144,14 +149,16 @@ abstract class Api {
     required U<int> departCityId,
     required U<int> countryId,
   }) async {
-    if (!await Api.hasConnection()) return const [];
+    if (!await Api.hasConnection()) {
+      return const [];
+    }
 
     final uri = _makeUri('tour_dates', {
       'depart_city_id': departCityId,
       'country_id': countryId,
     });
-    final res = await _dio.get(uri);
-    final data = jsonDecode(res.data);
+    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
       return (data['value'] as List<dynamic>)
@@ -173,15 +180,17 @@ abstract class Api {
   }) async {
     assert(stars.isNotEmpty);
 
-    if (!await Api.hasConnection()) return const [];
+    if (!await Api.hasConnection()) {
+      return const [];
+    }
 
     final uri = _makeUri('hot_tours', {
       'city_from_id': cityFromId,
       'country_id': countryId,
       'stars': stars.join(','),
     });
-    final res = await _dio.get(uri);
-    final data = jsonDecode(res.data);
+    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
       return (data['value'] as List<dynamic>)
@@ -211,7 +220,9 @@ abstract class Api {
     assert(hotels.isNotEmpty);
     assert(cities.isNotEmpty);
 
-    if (!await Api.hasConnection()) return const [];
+    if (!await Api.hasConnection()) {
+      return const [];
+    }
 
     final uri = _makeUri('season_tours', {
       'city_from_id': cityFromId,
@@ -226,8 +237,8 @@ abstract class Api {
       'hotels': hotels.join(','),
       'cities': cities.join(','),
     });
-    final res = await _dio.get(uri);
-    final data = jsonDecode(res.data);
+    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
       return (data['value'] as List<dynamic>)
@@ -242,11 +253,13 @@ abstract class Api {
   static Future<bool> createLead({
     required String note,
   }) async {
-    if (!await Api.hasConnection()) return false;
+    if (!await Api.hasConnection()) {
+      return false;
+    }
 
     final uri = _makeUri('create_lead', {'note': note});
-    final res = await _dio.get(uri);
-    final data = jsonDecode(res.data);
+    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
       return data['value'] as bool;
@@ -260,30 +273,34 @@ abstract class Api {
     required String note,
     bool isRepeated = false,
   }) {
-    final snackBarTextStyle = const TextStyle(
+    const snackBarTextStyle = TextStyle(
       fontFamily: 'Roboto',
       fontStyle: FontStyle.normal,
       fontWeight: FontWeight.normal,
       fontSize: 18.0,
       color: Colors.white,
     );
-    if (ReqsController.canSetReq(kind))
+    if (ReqsController.canSetReq(kind)) {
       Api.createLead(note: note).then((value) {
         if (value) {
           ReqsController.setReq(kind);
           showFeedbackRoute(context);
         } else {
-          if (isRepeated)
+          if (isRepeated) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Снова неудача :(', style: snackBarTextStyle),
+              const SnackBar(
+                content: Text(
+                  'Снова неудача :(',
+                  style: snackBarTextStyle,
+                ),
               ),
             );
-          else
+          } else {
             showRequestErrorRoute(context: context, kind: kind, data: note);
+          }
         }
       });
-    else
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -292,5 +309,6 @@ abstract class Api {
           ),
         ),
       );
+    }
   }
 }

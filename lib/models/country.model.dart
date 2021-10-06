@@ -23,19 +23,17 @@ class CountryModel {
     required this.isHotelNotInStop,
   });
 
-  factory CountryModel.empty() {
-    return CountryModel(
-      id: U<int>(0),
-      rank: U<int>(0),
-      name: '',
-      alias: '',
-      flag: U<int>(0),
-      isVisa: false,
-      hasTickets: false,
-      areTicketsIncluded: false,
-      isHotelNotInStop: false,
-    );
-  }
+  factory CountryModel.empty() => const CountryModel(
+        id: U<int>(0),
+        rank: U<int>(0),
+        name: '',
+        alias: '',
+        flag: U<int>(0),
+        isVisa: false,
+        hasTickets: false,
+        areTicketsIncluded: false,
+        isHotelNotInStop: false,
+      );
 
   static CountryModel serialize(Map<String, dynamic> data) => CountryModel(
         id: U<int>(data['Id'] as int),
@@ -49,7 +47,8 @@ class CountryModel {
         isHotelNotInStop: data['HotelIsNotInStop'] as bool,
       );
 
-  static Map<String, dynamic> deserialize(CountryModel data) => {
+  static Map<String, dynamic> deserialize(CountryModel data) =>
+      <String, dynamic>{
         'Id': data.id.value,
         'Rank': data.rank.value,
         'Name': data.name,
