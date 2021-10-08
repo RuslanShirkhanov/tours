@@ -56,7 +56,7 @@ abstract class Api {
     }
 
     final uri = _makeUri('depart_cities', {});
-    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
@@ -79,7 +79,7 @@ abstract class Api {
     final uri = _makeUri('countries', {
       'town_from_id': townFromId,
     });
-    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
@@ -102,7 +102,7 @@ abstract class Api {
     final uri = _makeUri('cities', {
       'country_id': countryId,
     });
-    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
@@ -132,7 +132,7 @@ abstract class Api {
       'towns': towns.join(','),
       'stars': stars.join(','),
     });
-    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
@@ -157,7 +157,7 @@ abstract class Api {
       'depart_city_id': departCityId,
       'country_id': countryId,
     });
-    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
@@ -189,7 +189,7 @@ abstract class Api {
       'country_id': countryId,
       'stars': stars.join(','),
     });
-    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
@@ -237,7 +237,7 @@ abstract class Api {
       'hotels': hotels.join(','),
       'cities': cities.join(','),
     });
-    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
@@ -258,7 +258,7 @@ abstract class Api {
     }
 
     final uri = _makeUri('create_lead', {'note': note});
-    final res = await _dio.get<Map<String, dynamic>>(uri);
+    final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'ok') {
