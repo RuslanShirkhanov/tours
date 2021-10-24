@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:hot_tours/utils/color.dart';
 import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/show_route.dart';
+import 'package:hot_tours/utils/thousands.dart';
 
 import 'package:hot_tours/hot_tours/models/data.model.dart';
 
@@ -93,13 +94,14 @@ class CardRoute extends StatelessWidget {
                                       children: <Widget>[
                                         Text(
                                           data.tour!.hotelName.capitalized,
+                                          maxLines: 2,
                                           textAlign: TextAlign.start,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             fontFamily: 'Roboto',
                                             fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.normal,
-                                            fontSize: 14.0,
+                                            fontSize: 18.0,
                                             color: Color(0xff4d4948),
                                           ),
                                         ),
@@ -139,7 +141,7 @@ class CardRoute extends StatelessWidget {
                                         fontFamily: 'Roboto',
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.normal,
-                                        fontSize: 10.0,
+                                        fontSize: 12.0,
                                         color: Color(0xff7d7d7d),
                                       ),
                                     ),
@@ -159,7 +161,7 @@ class CardRoute extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 14.0),
                             width: double.infinity,
                             child: Text(
-                              data.tour!.hotelDesc,
+                              data.tour!.hotelDesc.trim(),
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                 fontFamily: 'Roboto',
@@ -259,7 +261,7 @@ class CardRoute extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 6.0),
                                 Text(
-                                  'Апартаменты: ${data.tour!.mealTypeDesc.uncapitalized} (${data.tour!.mealType.capitalized})',
+                                  'Апартаменты: ${data.tour!.roomTypeDesc.uncapitalized} (${data.tour!.roomType.capitalized})',
                                   textAlign: TextAlign.start,
                                   style: const TextStyle(
                                     fontFamily: 'Roboto',
@@ -271,7 +273,7 @@ class CardRoute extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 6.0),
                                 Text(
-                                  'Питание: ${data.tour!.roomTypeDesc.uncapitalized} (${data.tour!.roomType.capitalized})',
+                                  'Питание: ${data.tour!.mealTypeDesc.uncapitalized} (${data.tour!.mealType.capitalized})',
                                   textAlign: TextAlign.start,
                                   style: const TextStyle(
                                     fontFamily: 'Roboto',
@@ -279,6 +281,18 @@ class CardRoute extends StatelessWidget {
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12.0,
                                     color: Color(0xff4d4948),
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                const Text(
+                                  'В стоимость входит: авиаперелёт, проживание в отеле,\nмедицинская страховка, трансфер.',
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.w400,
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 10.0,
+                                    color: Color(0xff7d7d7d),
                                   ),
                                 ),
                               ],
@@ -289,11 +303,33 @@ class CardRoute extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
+                              const Text(
+                                'Купить',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.0,
+                                  color: Color(0xff7d7d7d),
+                                ),
+                              ),
+                              const SizedBox(width: 13.0),
                               ButtonWidget(
                                 text:
-                                    '${data.tour!.cost} ${data.tour!.costCurrency}',
+                                    '${thousands(data.tour!.cost)} ${data.tour!.costCurrency.toUpperCase() == 'RUB' ? 'р.' : data.tour!.costCurrency}',
                                 onTap: () =>
                                     showFormRoute(context: context, data: data),
+                              ),
+                              const SizedBox(width: 13.0),
+                              const Text(
+                                'Купить',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.0,
+                                  color: Colors.transparent,
+                                ),
                               ),
                             ],
                           ),

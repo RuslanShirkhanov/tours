@@ -29,7 +29,7 @@ class TourModel {
 
   final bool areTicketsIncluded; // 22
 
-  final U<num> cost; // 42
+  final U<int> cost; // 42
   final String costCurrency; // 43
 
   const TourModel({
@@ -77,11 +77,11 @@ class TourModel {
         adultsCount: U<int>(data[16] as int),
         childrenCount: U<int>(data[17] as int),
         roomType: data[9] as String,
-        roomTypeDesc: data[36] as String,
+        roomTypeDesc: data[37] as String,
         mealType: data[10] as String,
-        mealTypeDesc: data[37] as String,
+        mealTypeDesc: data[36] as String,
         areTicketsIncluded: int.parse(data[22] as String) == 1,
-        cost: U<num>(data[42] as num),
+        cost: U<int>(data[42] as int),
         costCurrency: data[43] as String,
       );
 

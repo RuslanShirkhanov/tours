@@ -26,7 +26,7 @@ class ButtonWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               SvgPicture.asset('assets/flame.svg'),
-              const SizedBox(width: 6.0),
+              const SizedBox(width: 10.0),
               Text(
                 text,
                 textAlign: TextAlign.end,

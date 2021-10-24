@@ -96,7 +96,7 @@ class HotToursSection extends HookWidget {
       }
     }, [selectedCity.value]);
 
-    final selectedStars = useState(StarModel.getStars);
+    final selectedStars = useState(StarModel.getStars.take(3).toList());
 
     final tours = useState(<TourModel>[]);
 

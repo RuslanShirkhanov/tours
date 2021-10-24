@@ -11,6 +11,8 @@ import 'package:hot_tours/widgets/list_button.widget.dart';
 import 'package:hot_tours/widgets/footer.widget.dart';
 
 class SelectManyRoute extends HookWidget {
+  final bool isRequired;
+
   final U<int> sectionIndex;
   final bool isLoading;
 
@@ -26,6 +28,7 @@ class SelectManyRoute extends HookWidget {
 
   const SelectManyRoute({
     Key? key,
+    this.isRequired = true,
     required this.sectionIndex,
     this.isLoading = false,
     required this.primaryText,
@@ -109,12 +112,13 @@ class SelectManyRoute extends HookWidget {
                       ),
                     ),
                     if (!isPrimarySingle)
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
                         child: Text(
-                          'можно выбрать несколько вариантов',
+                          'можно выбрать несколько вариантов${isRequired ? "\nили пропустить" : ""}',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          maxLines: 2,
+                          style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.normal,
                             fontStyle: FontStyle.normal,
@@ -236,7 +240,8 @@ class SelectManyRoute extends HookWidget {
               child: FooterWidget(
                 ok: FooterButtonModel(
                   kind: FooterButtonKind.ok,
-                  isActive: !canSelectPrimary || !canSelectSecondary,
+                  isActive:
+                      (!canSelectPrimary || !canSelectSecondary) && isRequired,
                   onTap: () => onContinue(
                     selectedPrimary.value.isNotEmpty
                         ? selectedPrimary.value

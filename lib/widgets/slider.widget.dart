@@ -38,12 +38,13 @@ class SliderWidget extends HookWidget {
     }
 
     return SizedBox(
-      height: 200.0,
+      height: 220.0,
       child: Stack(
         children: <Widget>[
           Align(
             child: SizedBox(
               width: double.infinity,
+              height: 220.0,
               child: data.photosCount.value == 0
                   ? blackPlug()
                   : NetworkImageWidget(

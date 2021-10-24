@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:hot_tours/api.dart';
 
+import 'package:hot_tours/utils/thousands.dart';
+
 import 'package:hot_tours/hot_tours/models/data.model.dart';
 import 'package:hot_tours/models/unsigned.dart';
 
-import 'package:hot_tours/hot_tours/routes/card.route.dart';
 import 'package:hot_tours/widgets/image_widget.dart';
-
 import 'package:hot_tours/widgets/shown_stars.widget.dart';
 import 'package:hot_tours/hot_tours/widgets/button.widget.dart';
+
+import 'package:hot_tours/hot_tours/routes/card.route.dart';
 
 class CardWidget extends StatelessWidget {
   final DataModel data;
@@ -104,7 +106,7 @@ class CardWidget extends StatelessWidget {
                         children: <Widget>[
                           ButtonWidget(
                             text:
-                                '${data.tour!.cost} ${data.tour!.costCurrency}',
+                                '${thousands(data.tour!.cost)} ${data.tour!.costCurrency.toUpperCase() == 'RUB' ? 'р.' : data.tour!.costCurrency}',
                             onTap: () =>
                                 showCardRoute(context: context, data: data),
                           ),

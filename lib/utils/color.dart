@@ -9,7 +9,7 @@ int _fadeHelp(int x) {
     tmp.add(a % 2);
     a ~/= 2;
   }
-  return int.tryParse(tmp.reversed.join()) ?? 0;
+  return int.tryParse(tmp.reversed.map((e) => e.round()).join()) ?? 0;
 }
 
 Color fade(U<num> rating) {

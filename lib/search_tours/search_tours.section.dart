@@ -4,6 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
 
+import 'package:hot_tours/models/unsigned.dart';
+
 import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/search_tours/models/storage.model.dart';
 
@@ -137,7 +139,7 @@ class SearchToursSection extends HookWidget {
                             child: ListButtonWidget(
                               isActive: currentData.value.targetCountry != null,
                               text: 'Даты вылета',
-                              onTap: () => showSelectTourDatesRoute(
+                              onTap: () => showSelectDatesRoute(
                                 context: context,
                                 data: currentData.value,
                                 onContinue: setCurrentData,
@@ -168,7 +170,10 @@ class SearchToursSection extends HookWidget {
                               isActive: currentData.value.tourDates != null &&
                                   currentData.value.nightsCount != null,
                               text: currentData.value.peopleCount != null
-                                  ? '${currentData.value.peopleCount!.fst} - ${currentData.value.peopleCount!.snd}'
+                                  ? currentData.value.peopleCount!.snd ==
+                                          const U<int>(0)
+                                      ? '${currentData.value.peopleCount!.fst} взр'
+                                      : '${currentData.value.peopleCount!.fst} взр - ${currentData.value.peopleCount!.snd} реб'
                                   : 'Количество людей',
                               onTap: () => showSelectPeopleCountRoute(
                                 context: context,

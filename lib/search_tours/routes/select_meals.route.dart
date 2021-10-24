@@ -66,28 +66,3 @@ class SelectMealsRoute extends StatelessWidget {
     );
   }
 }
-
-String mealToString(MealModel data) {
-  late String result;
-  switch (data.name) {
-    case 'BB':
-      result = 'Только завтрак';
-      break;
-    case 'HB':
-      result = 'Завтрак и ужин';
-      break;
-    case 'FB':
-      result = 'Полный пансион';
-      break;
-    case 'AI':
-      result = 'Всё включено';
-      break;
-    case 'UAI':
-      result = 'Ультра всё включено';
-      break;
-    default:
-      result = '';
-      break;
-  }
-  return result + ' (${data.name})';
-}

@@ -31,3 +31,40 @@ class MealModel {
         MealModel(id: U<int>(129), name: 'SC'),
       ];
 }
+
+String mealToString(MealModel data) {
+  late String result;
+  switch (data.name.toUpperCase()) {
+    case 'FB':
+      result = 'Полный пансион';
+      break;
+    case 'HB':
+      result = 'Полупансион';
+      break;
+    case 'BB':
+      result = 'Только завтрак';
+      break;
+    case 'AI':
+      result = 'Всё включено';
+      break;
+    case 'UAI':
+      result = 'Ультра всё включено';
+      break;
+    case 'RO':
+      result = 'Без питания';
+      break;
+    case 'FB+':
+      result = 'Полный пансион+';
+      break;
+    case 'HB+':
+      result = 'Полупансион+';
+      break;
+    case 'SC':
+      result = 'Самообслуживание';
+      break;
+    default:
+      result = '';
+      break;
+  }
+  return result + ' (${data.name})';
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hot_tours/api.dart';
 
+import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/pair.dart';
 import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/show_route.dart';
@@ -12,7 +13,7 @@ import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/widgets/header.widget.dart';
 import 'package:hot_tours/widgets/footer.widget.dart';
 
-void showSelectTourDatesRoute({
+void showSelectDatesRoute({
   required BuildContext context,
   required DataModel data,
   required void Function(DataModel) onContinue,
@@ -21,7 +22,7 @@ void showSelectTourDatesRoute({
       context: context,
       model: data,
       builder: (currentData) => PageRouteBuilder(
-        pageBuilder: (context, fst, snd) => SelectTourDatesRoute(
+        pageBuilder: (context, fst, snd) => SelectDatesRoute(
           data: currentData!,
           onContinue: (newData) {
             Navigator.of(context).pop();
@@ -44,27 +45,27 @@ void showSelectTourDatesRoute({
       ),
     );
 
-class SelectTourDatesRoute extends StatefulWidget {
+class SelectDatesRoute extends StatefulWidget {
   final DataModel data;
   final void Function(DataModel) onContinue;
 
-  const SelectTourDatesRoute({
+  const SelectDatesRoute({
     Key? key,
     required this.data,
     required this.onContinue,
   }) : super(key: key);
 
   @override
-  _SelectTourDatesRouteState createState() => _SelectTourDatesRouteState();
+  _SelectDatesRouteState createState() => _SelectDatesRouteState();
 }
 
-class _SelectTourDatesRouteState extends State<SelectTourDatesRoute> {
+class _SelectDatesRouteState extends State<SelectDatesRoute> {
   late bool isLoading;
 
   late final DateTime currentDate;
 
   late List<DateTime> availableDates;
-  late List<DateTime> selectedDates;
+  late Pair<DateTime?, DateTime?> range;
 
   @override
   void initState() {
@@ -74,7 +75,7 @@ class _SelectTourDatesRouteState extends State<SelectTourDatesRoute> {
 
     currentDate = DateTime.now();
     availableDates = [];
-    selectedDates = [];
+    range = const Pair(null, null);
 
     Api.getTourDates(
       departCityId: widget.data.departCity!.id,
@@ -87,22 +88,51 @@ class _SelectTourDatesRouteState extends State<SelectTourDatesRoute> {
     });
   }
 
+  void showSelectedSnackBar(BuildContext context) =>
+      WidgetsBinding.instance!.scheduleFrameCallback(
+        (_) => Future.delayed(
+          const Duration(milliseconds: 175),
+          () => ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              duration: Duration(milliseconds: 450),
+              behavior: SnackBarBehavior.floating,
+              content: SizedBox(
+                child: Text('Временной промежуток выбран'),
+              ),
+            ),
+          ),
+        ),
+      );
+
   void onSelect(DateTime value) {
     setState(() {
-      if (!selectedDates.contains(value)) {
-        selectedDates = [...selectedDates, value];
-      } else {
-        selectedDates = selectedDates.where((date) => date != value).toList();
+      if (range.fst == null && range.snd == null) {
+        range = Pair(value, value);
+        return;
+      }
+
+      if (range.fst != null && range.snd != null && range.fst == range.snd) {
+        if (value.compareTo(range.fst!) >= 0) {
+          range = Pair(range.fst, value);
+        } else {
+          range = Pair(value, range.fst);
+        }
+        showSelectedSnackBar(context);
       }
     });
   }
 
-  bool isSelected(DateTime value) => selectedDates
-      .where((date) =>
-          date.year == value.year &&
-          date.month == value.month &&
-          date.day == value.day)
-      .isNotEmpty;
+  bool isSelected(DateTime value) => range.contains(value);
+
+  bool get okIsActive => range.fst != null && range.snd != null;
+  void onOk() =>
+      widget.onContinue(widget.data.setTourDates(range.days.toList()));
+
+  bool get cancelIsActive => true;
+  void onCancel() => Navigator.of(context).pop();
+
+  bool get resetIsActive => range.fst != null || range.snd != null;
+  void onReset() => setState(() => range = const Pair(null, null));
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -127,12 +157,13 @@ class _SelectTourDatesRouteState extends State<SelectTourDatesRoute> {
                   padding: const EdgeInsets.only(top: 78.0, bottom: 70.0),
                   child: ListView.separated(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    itemCount: Utils.lastMonths(currentDate).length,
+                    itemCount: currentDate.lastMonths.length,
                     itemBuilder: (context, index) => TableWidget(
+                      currentDate: currentDate,
                       availableDates: availableDates,
                       isSelected: isSelected,
                       onSelect: onSelect,
-                      date: Utils.lastMonths(currentDate)[index],
+                      date: currentDate.lastMonths[index],
                     ),
                     separatorBuilder: (context, index) => const Padding(
                       padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
@@ -149,19 +180,18 @@ class _SelectTourDatesRouteState extends State<SelectTourDatesRoute> {
                 child: FooterWidget(
                   ok: FooterButtonModel(
                     kind: FooterButtonKind.ok,
-                    isActive: selectedDates.isNotEmpty,
-                    onTap: () => widget
-                        .onContinue(widget.data.setTourDates(selectedDates)),
+                    isActive: okIsActive,
+                    onTap: onOk,
                   ),
                   cancel: FooterButtonModel(
                     kind: FooterButtonKind.cancel,
-                    isActive: true,
-                    onTap: () => Navigator.of(context).pop(),
+                    isActive: cancelIsActive,
+                    onTap: onCancel,
                   ),
                   reset: FooterButtonModel(
                     kind: FooterButtonKind.reset,
-                    isActive: selectedDates.isNotEmpty,
-                    onTap: () => setState(() => selectedDates = []),
+                    isActive: resetIsActive,
+                    onTap: onReset,
                   ),
                 ),
               ),
@@ -203,6 +233,7 @@ Pair<Color, Color> allColors(Status status) =>
     Pair(backgroundColor(status), textColor(status));
 
 class TableWidget extends StatefulWidget {
+  final DateTime currentDate;
   final DateTime date;
   final List<DateTime> availableDates;
   final bool Function(DateTime) isSelected;
@@ -210,6 +241,7 @@ class TableWidget extends StatefulWidget {
 
   const TableWidget({
     Key? key,
+    required this.currentDate,
     required this.date,
     required this.availableDates,
     required this.isSelected,
@@ -247,7 +279,7 @@ class _TableWidgetState extends State<TableWidget> {
         child: Column(
           children: <Widget>[
             Text(
-              '${Utils.monthToString(model.date.month).capitalized} ${model.date.year}',
+              '${Date.monthToString(model.date.month).capitalized} ${model.date.year}',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontFamily: 'Roboto',
@@ -266,7 +298,7 @@ class _TableWidgetState extends State<TableWidget> {
                   height: 25.0,
                   alignment: Alignment.center,
                   child: Text(
-                    Utils.weekdayToString(weekday).toUpperCase(),
+                    Date.weekdayToString(weekday).toUpperCase(),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontFamily: 'Roboto',
@@ -319,7 +351,12 @@ class _TableWidgetState extends State<TableWidget> {
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
                                 fontSize: 18.0,
-                                color: colors.snd,
+                                color: isNull ||
+                                        (date!.month ==
+                                                widget.currentDate.month) &&
+                                            (date.day == widget.currentDate.day)
+                                    ? const Color(0xff0093dd)
+                                    : colors.snd,
                               ),
                             ),
                           ),
@@ -335,77 +372,12 @@ class _TableWidgetState extends State<TableWidget> {
       );
 }
 
-abstract class Utils {
-  static int monthsCount(DateTime date) => 12 - date.month;
-
-  static List<DateTime> lastMonths(DateTime date) => List.generate(
-        12 - date.month + 1,
-        (index) => DateTime(date.year, date.month + index),
-      );
-
-  static int daysCount(DateTime date) => [
-        DateTime.september,
-        DateTime.april,
-        DateTime.june,
-        DateTime.november,
-      ].contains(date.month)
-          ? 30
-          : [
-              DateTime.january,
-              DateTime.march,
-              DateTime.may,
-              DateTime.july,
-              DateTime.august,
-              DateTime.october,
-              DateTime.december,
-            ].contains(date.month)
-              ? 31
-              : date.year % 4 == 0
-                  ? 29
-                  : 28;
-
-  static int _decRanged(int min, int max, int value) =>
-      value == min ? max : value - 1;
-
-  static int _incRanged(int min, int max, int value) =>
-      value == max ? min : value + 1;
-
-  static int decWeekday(int value) => Utils._decRanged(1, 7, value);
-
-  static int incWeekday(int value) => Utils._incRanged(1, 7, value);
-
-  static String monthToString(int value) {
-    assert(value >= 1 && value <= 12);
-    return [
-      'январь',
-      'февраль',
-      'март',
-      'апрель',
-      'май',
-      'июнь',
-      'июль',
-      'август',
-      'сентябрь',
-      'октябрь',
-      'ноябрь',
-      'декабрь',
-    ][value - 1];
-  }
-
-  static String weekdayToString(int value) {
-    assert(value >= 1 && value <= 7);
-    return ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'][value - 1];
-  }
-}
-
 class TableModel {
   final DateTime date;
 
   const TableModel(this.date);
 
-  int get daysCount => Utils.daysCount(date);
-
-  List<int> get days => List.generate(daysCount, (x) => x + 1);
+  List<int> get days => List.generate(date.daysCount, (x) => x + 1);
 
   List<int> get weekdays => List.generate(7, (x) => x + 1);
 
@@ -415,7 +387,7 @@ class TableModel {
 
     var weekdayCounter = date.weekday;
 
-    weekdayCounter = Utils.decWeekday(weekdayCounter);
+    weekdayCounter = Date.decWeekday(weekdayCounter);
 
     final daysBefore = days.where((x) => x < date.day).toList();
 
@@ -425,7 +397,7 @@ class TableModel {
           result[weekday]!.add(DateTime(date.year, date.month, day));
         }
       }
-      weekdayCounter = Utils.decWeekday(weekdayCounter);
+      weekdayCounter = Date.decWeekday(weekdayCounter);
     }
 
     weekdayCounter = date.weekday;
@@ -438,7 +410,7 @@ class TableModel {
           result[weekday]!.add(DateTime(date.year, date.month, day));
         }
       }
-      weekdayCounter = Utils.incWeekday(weekdayCounter);
+      weekdayCounter = Date.incWeekday(weekdayCounter);
     }
 
     for (final key in result.keys) {
@@ -448,8 +420,10 @@ class TableModel {
     final firstKey = result.keys.firstWhere(
         (key) => result[key]!.map((date) => date?.day).toList().contains(1));
 
-    final lastKey = result.keys.firstWhere((key) =>
-        result[key]!.map((date) => date?.day).toList().contains(daysCount));
+    final lastKey = result.keys.firstWhere((key) => result[key]!
+        .map((date) => date?.day)
+        .toList()
+        .contains(date.daysCount));
 
     for (final key in result.keys) {
       if (key < firstKey) {

@@ -17,6 +17,7 @@ import 'package:hot_tours/models/star.model.dart';
 import 'package:hot_tours/models/hotel.model.dart';
 import 'package:hot_tours/models/meal.model.dart';
 
+@immutable
 class StorageModel {
   final DataModel data;
 
@@ -111,6 +112,7 @@ class StorageModel {
       };
 }
 
+@immutable
 abstract class StorageController {
   static Future<String> get _localPath async =>
       (await getApplicationDocumentsDirectory()).path;
@@ -119,9 +121,6 @@ abstract class StorageController {
       File('${await _localPath}/storage.json');
 
   static Future<StorageModel> read() async {
-    if (kIsWeb) {
-      return StorageModel.empty();
-    }
     try {
       final file = await _localFile;
       final contents = await file.readAsString();
@@ -133,9 +132,6 @@ abstract class StorageController {
   }
 
   static Future write(StorageModel data) async {
-    if (kIsWeb) {
-      return;
-    }
     final file = await _localFile;
     final contents = jsonEncode(StorageModel.deserialize(data));
     return file.writeAsString(contents);
