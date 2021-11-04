@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:hot_tours/api.dart';
 
 import 'package:hot_tours/utils/date.dart';
@@ -97,7 +99,7 @@ class _SelectDatesRouteState extends State<SelectDatesRoute> {
               duration: Duration(milliseconds: 450),
               behavior: SnackBarBehavior.floating,
               content: SizedBox(
-                child: Text('Временной промежуток выбран'),
+                child: Text('Диапазон выбран'),
               ),
             ),
           ),
@@ -121,6 +123,11 @@ class _SelectDatesRouteState extends State<SelectDatesRoute> {
       }
     });
   }
+
+  bool isAvailable(DateTime value) => availableDates
+      .where((x) =>
+          x.year == value.year && x.month == value.month && x.day == value.day)
+      .isNotEmpty;
 
   bool isSelected(DateTime value) => range.contains(value);
 
@@ -155,23 +162,11 @@ class _SelectDatesRouteState extends State<SelectDatesRoute> {
               Align(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 78.0, bottom: 70.0),
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    itemCount: currentDate.lastMonths.length,
-                    itemBuilder: (context, index) => TableWidget(
-                      currentDate: currentDate,
-                      availableDates: availableDates,
-                      isSelected: isSelected,
-                      onSelect: onSelect,
-                      date: currentDate.lastMonths[index],
-                    ),
-                    separatorBuilder: (context, index) => const Padding(
-                      padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
-                      child: Divider(
-                        thickness: 3.0,
-                        color: Color(0xffe5e5e5),
-                      ),
-                    ),
+                  child: DateTableListWidget(
+                    currentDate: currentDate,
+                    isAvailable: isAvailable,
+                    isSelected: isSelected,
+                    onSelect: onSelect,
                   ),
                 ),
               ),
@@ -203,72 +198,112 @@ class _SelectDatesRouteState extends State<SelectDatesRoute> {
 
 enum Status { past, selected, available, unavailable }
 
-Color backgroundColor(Status status) {
-  switch (status) {
-    case Status.past:
-      return Colors.white.withAlpha(0);
-    case Status.selected:
-      return const Color(0xff93d0f4);
-    case Status.available:
-      return Colors.white.withAlpha(0);
-    case Status.unavailable:
-      return Colors.white.withAlpha(0);
+extension on Status {
+  Color get backgroundColor {
+    switch (this) {
+      case Status.past:
+        return Colors.white.withAlpha(0);
+      case Status.selected:
+        return const Color(0xff93d0f4);
+      case Status.available:
+        return Colors.white.withAlpha(0);
+      case Status.unavailable:
+        return Colors.white.withAlpha(0);
+    }
+  }
+
+  Color get textColor {
+    switch (this) {
+      case Status.past:
+        return const Color(0xffd6d6d6);
+      case Status.selected:
+        return const Color(0xff4d4948);
+      case Status.available:
+        return const Color(0xff4d4948);
+      case Status.unavailable:
+        return const Color(0xffd6d6d6);
+    }
   }
 }
 
-Color textColor(Status status) {
-  switch (status) {
-    case Status.past:
-      return const Color(0xffd6d6d6);
-    case Status.selected:
-      return const Color(0xff4d4948);
-    case Status.available:
-      return const Color(0xff4d4948);
-    case Status.unavailable:
-      return const Color(0xffd6d6d6);
-  }
-}
-
-Pair<Color, Color> allColors(Status status) =>
-    Pair(backgroundColor(status), textColor(status));
-
-class TableWidget extends StatefulWidget {
+@immutable
+class DateTableListWidget extends HookWidget {
   final DateTime currentDate;
-  final DateTime date;
-  final List<DateTime> availableDates;
+  final bool Function(DateTime) isAvailable;
   final bool Function(DateTime) isSelected;
   final void Function(DateTime) onSelect;
 
-  const TableWidget({
+  const DateTableListWidget({
     Key? key,
     required this.currentDate,
-    required this.date,
-    required this.availableDates,
+    required this.isAvailable,
     required this.isSelected,
     required this.onSelect,
   }) : super(key: key);
 
   @override
-  _TableWidgetState createState() => _TableWidgetState();
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
+    return Scrollbar(
+      controller: scrollController,
+      child: ListView.separated(
+        controller: scrollController,
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        itemCount: currentDate.lastMonths.length,
+        itemBuilder: (context, index) => DateTableWidget(
+          currentDate: currentDate,
+          isAvailable: isAvailable,
+          isSelected: isSelected,
+          onSelect: onSelect,
+          date: currentDate.lastMonths[index],
+        ),
+        separatorBuilder: (context, index) => const Padding(
+          padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
+          child: Divider(
+            thickness: 3.0,
+            color: Color(0xffe5e5e5),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _TableWidgetState extends State<TableWidget> {
-  late final TableModel model;
+class DateTableWidget extends StatefulWidget {
+  final DateTime currentDate;
+  final DateTime date;
+  final bool Function(DateTime) isAvailable;
+  final bool Function(DateTime) isSelected;
+  final void Function(DateTime) onSelect;
+
+  const DateTableWidget({
+    Key? key,
+    required this.currentDate,
+    required this.date,
+    required this.isAvailable,
+    required this.isSelected,
+    required this.onSelect,
+  }) : super(key: key);
+
+  @override
+  _DateTableWidgetState createState() => _DateTableWidgetState();
+}
+
+class _DateTableWidgetState extends State<DateTableWidget> {
+  late final DateTableModel model;
 
   @override
   void initState() {
     super.initState();
-    model = TableModel(widget.date);
+    model = DateTableModel(widget.date);
   }
 
   bool isPast(DateTime value) => value.day < model.date.day;
 
   bool isSelected(DateTime value) => widget.isSelected(value);
 
-  bool isAvailable(DateTime value) => widget.availableDates
-      .where((x) =>
-          x.year == value.year && x.month == value.month && x.day == value.day)
-      .isNotEmpty;
+  bool isAvailable(DateTime value) => widget.isAvailable(value);
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -328,7 +363,9 @@ class _TableWidgetState extends State<TableWidget> {
                                   : isAvailable(date)
                                       ? Status.available
                                       : Status.unavailable;
-                      final colors = allColors(status);
+                      final isToday = isNull ||
+                          (date!.month == widget.currentDate.month) &&
+                              (date.day == widget.currentDate.day);
 
                       return Container(
                         padding: EdgeInsets.only(top: index == 0 ? 0.0 : 8.0),
@@ -342,7 +379,9 @@ class _TableWidgetState extends State<TableWidget> {
                             width: 40.0,
                             height: 25.0,
                             alignment: Alignment.center,
-                            decoration: BoxDecoration(color: colors.fst),
+                            decoration: BoxDecoration(
+                              color: status.backgroundColor,
+                            ),
                             child: Text(
                               isNull ? '' : date!.day.toString(),
                               textAlign: TextAlign.center,
@@ -351,12 +390,9 @@ class _TableWidgetState extends State<TableWidget> {
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
                                 fontSize: 18.0,
-                                color: isNull ||
-                                        (date!.month ==
-                                                widget.currentDate.month) &&
-                                            (date.day == widget.currentDate.day)
+                                color: isToday
                                     ? const Color(0xff0093dd)
-                                    : colors.snd,
+                                    : status.textColor,
                               ),
                             ),
                           ),
@@ -372,10 +408,10 @@ class _TableWidgetState extends State<TableWidget> {
       );
 }
 
-class TableModel {
+class DateTableModel {
   final DateTime date;
 
-  const TableModel(this.date);
+  const DateTableModel(this.date);
 
   List<int> get days => List.generate(date.daysCount, (x) => x + 1);
 

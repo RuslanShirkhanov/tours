@@ -63,6 +63,8 @@ class SelectDepartCityRoute extends HookWidget {
   Widget build(BuildContext context) {
     final connection = ConnectionUtil.useConnection();
 
+    final scrollController = useScrollController();
+
     final isLoading = useState(false);
 
     final departCities = useState(<DepartCityModel>[]);
@@ -93,55 +95,59 @@ class SelectDepartCityRoute extends HookWidget {
               isLoading: isLoading.value,
             ),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                children: <Widget>[
-                  for (int i = 0; i < departCities.value.length; i++)
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        left: 18.0,
-                        right: 60.0,
-                        bottom: 10.0,
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Opacity(
-                            opacity: i == 0 ||
-                                    departCities.value[i - 1].name[0] !=
-                                        departCities.value[i].name[0]
-                                ? 1.0
-                                : 0.0,
-                            child: SizedBox(
-                              width: 24.0,
-                              child: Center(
-                                child: Text(
-                                  departCities.value[i].name[0],
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w400,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 24.0,
-                                    color: Color(0xffa0a0a0),
+              child: Scrollbar(
+                controller: scrollController,
+                child: ListView(
+                  controller: scrollController,
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  children: <Widget>[
+                    for (int i = 0; i < departCities.value.length; i++)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10.0,
+                          left: 18.0,
+                          right: 60.0,
+                          bottom: 10.0,
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Opacity(
+                              opacity: i == 0 ||
+                                      departCities.value[i - 1].name[0] !=
+                                          departCities.value[i].name[0]
+                                  ? 1.0
+                                  : 0.0,
+                              child: SizedBox(
+                                width: 24.0,
+                                child: Center(
+                                  child: Text(
+                                    departCities.value[i].name[0],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 24.0,
+                                      color: Color(0xffa0a0a0),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 18.0),
-                          Expanded(
-                            child: ListButtonWidget(
-                              text: departCities.value[i].name,
-                              onTap: () => onContinue(
-                                data.setDepartCity(departCities.value[i]),
+                            const SizedBox(width: 18.0),
+                            Expanded(
+                              child: ListButtonWidget(
+                                text: departCities.value[i].name,
+                                onTap: () => onContinue(
+                                  data.setDepartCity(departCities.value[i]),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                ],
+                          ],
+                        ),
+                      )
+                  ],
+                ),
               ),
             ),
           ],

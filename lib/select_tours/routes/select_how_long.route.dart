@@ -50,20 +50,27 @@ class SelectHowLongRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SelectManyRoute(
+        isRequired: false,
         sectionIndex: data.sectionIndex,
         primaryText: 'Сколько примерно\nпланируете отдыхать?',
         primaryData: const <String>[
+          '3 дня',
           '5 дней',
-          '1 неделю',
-          '10 дней',
-          '2 недели',
-          '3 недели',
-          '1 месяц',
-          'Предложите варианты',
+          '7 дней',
+          '9 дней',
+          '11 дней',
+          '13 дней',
+          '15 дней',
+          '17 дней',
+          '19 дней',
+          '21 день',
+          '25 дней',
+          '30 дней',
         ],
         isPrimarySingle: true,
         secondaryData: const <String>[],
         isSecondarySingle: true,
+        hasAlternative: false,
         onContinue: (value) => onContinue(
           data.setHowLong(value),
         ),

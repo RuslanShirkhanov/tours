@@ -69,20 +69,18 @@ class OtherParamsRoute extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
     final currentData = useState(
-      data.hotelStars != null
-          ? data
-          : data.setHotelStars([StarModel.getStars[0]]),
+      data.hotelStars.isEmpty
+          ? data.setHotelStars(StarModel.getStars.take(3).toList())
+          : data,
     );
     final rememberStatus = useState(true);
 
     void reset() {
-      currentData.value = currentData.value
-          .setHotelStars(null)
-          .setTargetCities(null)
-          .setHotels(null)
-          .setMeals(null)
-          .setRate(null);
+      currentData.value = currentData.value.setHotelStars([]).setTargetCities(
+          []).setHotels([]).setMeals([]).setRate(null);
     }
 
     // ignore: avoid_positional_boolean_parameters
@@ -126,91 +124,95 @@ class OtherParamsRoute extends HookWidget {
                 alignment: Alignment.topCenter,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 78.0, bottom: 70.0),
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(
-                      top: 40.0,
-                      left: 50.0,
-                      right: 50.0,
-                      bottom: 20.0,
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Text(
-                              'Отель от',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16.0,
-                                color: Color(0xff7d7d7d),
+                  child: Scrollbar(
+                    controller: scrollController,
+                    child: SingleChildScrollView(
+                      controller: scrollController,
+                      padding: const EdgeInsets.only(
+                        top: 40.0,
+                        left: 50.0,
+                        right: 50.0,
+                        bottom: 20.0,
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Text(
+                                'Отель от',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w400,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 16.0,
+                                  color: Color(0xff7d7d7d),
+                                ),
                               ),
+                              const SizedBox(width: 6.0),
+                              SelectStarsWidget(
+                                stars: currentData.value.hotelStars,
+                                onSelect: setHotelStars,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 35.0),
+                          ListButtonWidget(
+                            text: currentData.value.targetCities.isEmpty
+                                ? 'Курорт'
+                                : currentData.value.targetCities.length == 1
+                                    ? 'Курорт: ${currentData.value.targetCities[0].name}'
+                                    : 'Курорт: выбрано (${currentData.value.targetCities.length})',
+                            onTap: () => showSelectTargetCitiesRoute(
+                              context: context,
+                              data: currentData.value,
+                              onContinue: (newData) =>
+                                  setTargetCities(newData.targetCities),
                             ),
-                            const SizedBox(width: 6.0),
-                            SelectStarsWidget(
-                              stars: currentData.value.hotelStars ??
-                                  StarModel.getStars,
-                              onSelect: setHotelStars,
+                          ),
+                          const SizedBox(height: 20.0),
+                          ListButtonWidget(
+                            isActive: currentData.value.targetCities.isEmpty,
+                            text: currentData.value.hotels.isEmpty
+                                ? 'Отель'
+                                : currentData.value.hotels.length == 1
+                                    ? 'Отель: ${currentData.value.hotels[0].name}'
+                                    : 'Отель: выбрано (${currentData.value.hotels.length})',
+                            onTap: () => showSelectHotelsRoute(
+                              context: context,
+                              data: currentData.value,
+                              onContinue: (newData) =>
+                                  setHotels(newData.hotels),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 35.0),
-                        ListButtonWidget(
-                          text: currentData.value.targetCities == null
-                              ? 'Курорт'
-                              : currentData.value.targetCities!.length == 1
-                                  ? 'Курорт: ${currentData.value.targetCities![0].name}'
-                                  : 'Курорт: выбрано (${currentData.value.targetCities!.length})',
-                          onTap: () => showSelectTargetCitiesRoute(
-                            context: context,
-                            data: currentData.value,
-                            onContinue: (newData) =>
-                                setTargetCities(newData.targetCities!),
                           ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        ListButtonWidget(
-                          isActive: currentData.value.targetCities != null,
-                          text: currentData.value.hotels == null
-                              ? 'Отель'
-                              : currentData.value.hotels!.length == 1
-                                  ? 'Отель: ${currentData.value.hotels![0].name}'
-                                  : 'Отель: выбрано (${currentData.value.hotels!.length})',
-                          onTap: () => showSelectHotelsRoute(
-                            context: context,
-                            data: currentData.value,
-                            onContinue: (newData) => setHotels(newData.hotels!),
+                          const SizedBox(height: 20.0),
+                          ListButtonWidget(
+                            isActive: currentData.value.hotels.isEmpty,
+                            text: currentData.value.meals.isEmpty
+                                ? 'Питание'
+                                : currentData.value.meals.length == 1
+                                    ? 'Питание: ${mealToString(currentData.value.meals[0])}'
+                                    : 'Питание: выбрано (${currentData.value.meals.length})',
+                            onTap: () => showSelectMealsRoute(
+                              context: context,
+                              data: currentData.value,
+                              onContinue: (newData) => setMeals(newData.meals),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        ListButtonWidget(
-                          isActive: currentData.value.hotels != null,
-                          text: currentData.value.meals == null
-                              ? 'Питание'
-                              : currentData.value.meals!.length == 1
-                                  ? 'Питание: ${mealToString(currentData.value.meals![0])}'
-                                  : 'Питание: выбрано (${currentData.value.meals!.length})',
-                          onTap: () => showSelectMealsRoute(
-                            context: context,
-                            data: currentData.value,
-                            onContinue: (newData) => setMeals(newData.meals!),
+                          const SizedBox(height: 20.0),
+                          ListButtonWidget(
+                            isActive: currentData.value.meals.isEmpty,
+                            text: currentData.value.rate == null
+                                ? 'Рейтинг'
+                                : 'Рейтинг: ${rateToString(currentData.value.rate!)}',
+                            onTap: () => showSelectRateRoute(
+                              context: context,
+                              data: currentData.value,
+                              onContinue: (newData) => setRate(newData.rate!),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        ListButtonWidget(
-                          isActive: currentData.value.meals != null,
-                          text: currentData.value.rate == null
-                              ? 'Рейтинг'
-                              : 'Рейтинг: ${rateToString(currentData.value.rate!)}',
-                          onTap: () => showSelectRateRoute(
-                            context: context,
-                            data: currentData.value,
-                            onContinue: (newData) => setRate(newData.rate!),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -250,7 +252,7 @@ class OtherParamsRoute extends HookWidget {
                   ),
                   reset: FooterButtonModel(
                     kind: FooterButtonKind.reset,
-                    isActive: currentData.value.targetCities != null,
+                    isActive: currentData.value.targetCities.isEmpty,
                     onTap: reset,
                   ),
                 ),

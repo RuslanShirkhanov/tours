@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:hot_tours/utils/show_route.dart';
 
 import 'package:hot_tours/widgets/header.widget.dart';
@@ -25,29 +27,35 @@ void showRulesRoute(BuildContext context) => showRoute<Object?>(
       ),
     );
 
-class RulesRoute extends StatelessWidget {
+class RulesRoute extends HookWidget {
   const RulesRoute({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: HeaderWidget(
-                  hasBackButton: true,
-                  hasSubtitle: false,
-                  hasSectionIndicator: false,
-                  title: 'Согласие',
-                  hasLoadingIndicator: false,
-                ),
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topCenter,
+              child: HeaderWidget(
+                hasBackButton: true,
+                hasSubtitle: false,
+                hasSectionIndicator: false,
+                title: 'Согласие',
+                hasLoadingIndicator: false,
               ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 48.0),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 48.0),
+                child: Scrollbar(
+                  controller: scrollController,
                   child: SingleChildScrollView(
+                    controller: scrollController,
                     padding: const EdgeInsets.symmetric(
                       vertical: 20.0,
                       horizontal: 20.0,
@@ -63,7 +71,7 @@ class RulesRoute extends StatelessWidget {
 Персональные данные не являются общедоступными. Согласие может быть отозвано пользователем в письменной форме.
                 
 Также пользователь подтверждает, что ознакомлен(а) с правами субъектов персональных данных, закрепленными в главе 3 ФЗ «О персональных данных».
-                        '''
+                          '''
                           .trim(),
                       textAlign: TextAlign.start,
                       style: const TextStyle(
@@ -77,8 +85,10 @@ class RulesRoute extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }

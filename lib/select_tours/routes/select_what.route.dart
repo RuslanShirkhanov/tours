@@ -50,6 +50,7 @@ class SelectWhatRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SelectManyRoute(
+        isRequired: false,
         sectionIndex: data.sectionIndex,
         primaryText: 'Что для вас важно в отдыхе?',
         primaryData: const <String>[
@@ -68,6 +69,7 @@ class SelectWhatRoute extends StatelessWidget {
         isPrimarySingle: false,
         secondaryData: const <String>[],
         isSecondarySingle: true,
+        hasAlternative: false,
         onContinue: (value) => onContinue(
           data.setWhat(value),
         ),

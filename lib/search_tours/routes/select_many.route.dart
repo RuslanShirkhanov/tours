@@ -45,6 +45,8 @@ class SelectManyRoute<T> extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
     final selectedPrimary = useState(<int>[]);
     final selectedSecondary = useState(<int>[]);
 
@@ -105,54 +107,60 @@ class SelectManyRoute<T> extends HookWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 78.0, bottom: 70.0),
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20.0,
-                    horizontal: 50.0,
+                child: Scrollbar(
+                  controller: scrollController,
+                  child: ListView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20.0,
+                      horizontal: 50.0,
+                    ),
+                    children: <Widget>[
+                      Column(
+                        children: primaryData.mapToList((e, i) {
+                          final isSelected = selectedPrimary.value.contains(i);
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 350),
+                              opacity:
+                                  canSelectPrimary || isSelected ? 1.0 : 0.5,
+                              child: ListButtonWidget(
+                                hasCheckbox: true,
+                                checkboxStatus: isSelected,
+                                text: transform(e),
+                                onTap: canSelectPrimary || isSelected
+                                    ? () => onSelectPrimary(i)
+                                    : () {},
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                      Column(
+                        children: secondaryData.mapToList((e, i) {
+                          final isSelected =
+                              selectedSecondary.value.contains(i);
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 350),
+                              opacity:
+                                  canSelectSecondary || isSelected ? 1.0 : 0.5,
+                              child: ListButtonWidget(
+                                hasCheckbox: true,
+                                checkboxStatus: isSelected,
+                                text: transform(e),
+                                onTap: canSelectSecondary || isSelected
+                                    ? () => onSelectSecondary(i)
+                                    : () {},
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    ],
                   ),
-                  children: <Widget>[
-                    Column(
-                      children: primaryData.mapToList((e, i) {
-                        final isSelected = selectedPrimary.value.contains(i);
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: AnimatedOpacity(
-                            duration: const Duration(milliseconds: 350),
-                            opacity: canSelectPrimary || isSelected ? 1.0 : 0.5,
-                            child: ListButtonWidget(
-                              hasCheckbox: true,
-                              checkboxStatus: isSelected,
-                              text: transform(e),
-                              onTap: canSelectPrimary || isSelected
-                                  ? () => onSelectPrimary(i)
-                                  : () {},
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                    Column(
-                      children: secondaryData.mapToList((e, i) {
-                        final isSelected = selectedSecondary.value.contains(i);
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: AnimatedOpacity(
-                            duration: const Duration(milliseconds: 350),
-                            opacity:
-                                canSelectSecondary || isSelected ? 1.0 : 0.5,
-                            child: ListButtonWidget(
-                              hasCheckbox: true,
-                              checkboxStatus: isSelected,
-                              text: transform(e),
-                              onTap: canSelectSecondary || isSelected
-                                  ? () => onSelectSecondary(i)
-                                  : () {},
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                  ],
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:hot_tours/utils/color.dart';
@@ -7,6 +8,7 @@ import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/utils/thousands.dart';
 
+import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/hot_tours/models/data.model.dart';
 
 import 'package:hot_tours/widgets/header.widget.dart';
@@ -41,7 +43,7 @@ void showCardRoute({
       ),
     );
 
-class CardRoute extends StatelessWidget {
+class CardRoute extends HookWidget {
   final DataModel data;
 
   const CardRoute({
@@ -50,22 +52,28 @@ class CardRoute extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              HeaderWidget(
-                hasSectionIndicator: false,
-                title: 'Горящие туры',
-                hasSubtitle: false,
-                backgroundColor: const Color(0xffdc2323),
-                hasBackButton: true,
-                hasLoadingIndicator: false,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            HeaderWidget(
+              hasSectionIndicator: false,
+              title: 'Информация о туре',
+              hasSubtitle: false,
+              backgroundColor: const Color(0xffdc2323),
+              hasBackButton: true,
+              hasLoadingIndicator: false,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: Scrollbar(
+                  controller: scrollController,
                   child: SingleChildScrollView(
+                    controller: scrollController,
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Container(
                       padding: const EdgeInsets.only(bottom: 30.0),
@@ -161,7 +169,9 @@ class CardRoute extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 14.0),
                             width: double.infinity,
                             child: Text(
-                              data.tour!.hotelDesc.trim(),
+                              data.tour!.hotelDesc.trim().isNotEmpty
+                                  ? data.tour!.hotelDesc.trim()
+                                  : 'Описание отеля временно отсутствует.',
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                 fontFamily: 'Roboto',
@@ -225,7 +235,19 @@ class CardRoute extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'Откуда: ${data.tour!.departCityName}, куда: ${data.tour!.targetCountryName}, ${data.tour!.targetCityName}',
+                                  '${data.tour!.departCityName} → ${data.tour!.targetCountryName}',
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15.0,
+                                    color: Color(0xffdc2323),
+                                  ),
+                                ),
+                                const SizedBox(height: 12.0),
+                                Text(
+                                  'Вылет - ${data.tour!.dateIn}, ночей - ${data.tour!.nightsCount}',
                                   textAlign: TextAlign.start,
                                   style: const TextStyle(
                                     fontFamily: 'Roboto',
@@ -237,7 +259,7 @@ class CardRoute extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 6.0),
                                 Text(
-                                  'Вылет: ${data.tour!.dateIn}, ночей: ${data.tour!.nightsCount}',
+                                  'Взрослых - ${data.tour!.adultsCount}${data.tour!.childrenCount > const U(0) ? ', детей - ${data.tour!.childrenCount}' : ''}',
                                   textAlign: TextAlign.start,
                                   style: const TextStyle(
                                     fontFamily: 'Roboto',
@@ -249,7 +271,7 @@ class CardRoute extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 6.0),
                                 Text(
-                                  'Взрослых: ${data.tour!.adultsCount}, детей: ${data.tour!.childrenCount}',
+                                  '${data.tour!.roomTypeDesc.capitalized} (${data.tour!.roomType.capitalized})',
                                   textAlign: TextAlign.start,
                                   style: const TextStyle(
                                     fontFamily: 'Roboto',
@@ -261,7 +283,7 @@ class CardRoute extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 6.0),
                                 Text(
-                                  'Апартаменты: ${data.tour!.roomTypeDesc.uncapitalized} (${data.tour!.roomType.capitalized})',
+                                  '${data.tour!.mealTypeDesc.capitalized} (${data.tour!.mealType.capitalized})',
                                   textAlign: TextAlign.start,
                                   style: const TextStyle(
                                     fontFamily: 'Roboto',
@@ -271,19 +293,7 @@ class CardRoute extends StatelessWidget {
                                     color: Color(0xff4d4948),
                                   ),
                                 ),
-                                const SizedBox(height: 6.0),
-                                Text(
-                                  'Питание: ${data.tour!.mealTypeDesc.uncapitalized} (${data.tour!.mealType.capitalized})',
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12.0,
-                                    color: Color(0xff4d4948),
-                                  ),
-                                ),
-                                const SizedBox(height: 8.0),
+                                const SizedBox(height: 12.0),
                                 const Text(
                                   'В стоимость входит: авиаперелёт, проживание в отеле,\nмедицинская страховка, трансфер.',
                                   maxLines: 2,
@@ -291,7 +301,7 @@ class CardRoute extends StatelessWidget {
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w400,
                                     fontStyle: FontStyle.normal,
-                                    fontSize: 10.0,
+                                    fontSize: 11.0,
                                     color: Color(0xff7d7d7d),
                                   ),
                                 ),
@@ -339,8 +349,10 @@ class CardRoute extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }

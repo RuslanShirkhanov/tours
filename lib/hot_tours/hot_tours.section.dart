@@ -200,14 +200,17 @@ class HotToursSection extends HookWidget {
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 350),
                 opacity: isLoading.value ? 0.0 : 1.0,
-                child: ListView(
+                child: Scrollbar(
                   controller: scrollController,
-                  children: tours.value
-                      .map((tour) => Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: CardWidget(data: data.setTour(tour)),
-                          ))
-                      .toList(),
+                  child: ListView(
+                    controller: scrollController,
+                    children: tours.value
+                        .map((tour) => Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: CardWidget(data: data.setTour(tour)),
+                            ))
+                        .toList(),
+                  ),
                 ),
               ),
             ),

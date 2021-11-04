@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
@@ -35,7 +36,7 @@ void showHubRoute(
       ),
     );
 
-class HubRoute extends StatelessWidget {
+class HubRoute extends HookWidget {
   const HubRoute({Key? key}) : super(key: key);
 
   Widget _buildButton({
@@ -85,12 +86,18 @@ class HubRoute extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 45.0),
-            child: Center(
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 45.0),
+          child: Center(
+            child: Scrollbar(
+              controller: scrollController,
               child: SingleChildScrollView(
+                controller: scrollController,
                 padding: const EdgeInsets.symmetric(
                   vertical: 20.0,
                   horizontal: 10.0,
@@ -126,5 +133,7 @@ class HubRoute extends StatelessWidget {
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }

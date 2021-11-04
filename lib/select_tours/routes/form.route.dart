@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:hot_tours/api.dart';
 
 import 'package:hot_tours/utils/reqs.dart';
@@ -46,7 +48,7 @@ void showFormRoute({
       ),
     );
 
-class FormRoute extends StatelessWidget {
+class FormRoute extends HookWidget {
   final AbstractDataModel data;
   final void Function(AbstractDataModel) onContinue;
 
@@ -57,22 +59,28 @@ class FormRoute extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              HeaderWidget(
-                sectionsCount: const U(6),
-                sectionIndex: const U(5),
-                hasSectionIndicator: true,
-                title: 'Заявка на тур',
-                hasSubtitle: false,
-                backgroundColor: const Color(0xff2eaeee),
-                hasBackButton: true,
-                hasLoadingIndicator: false,
-              ),
-              Expanded(
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            HeaderWidget(
+              sectionsCount: const U(6),
+              sectionIndex: const U(5),
+              hasSectionIndicator: true,
+              title: 'Заявка на тур',
+              hasSubtitle: false,
+              backgroundColor: const Color(0xff2eaeee),
+              hasBackButton: true,
+              hasLoadingIndicator: false,
+            ),
+            Expanded(
+              child: Scrollbar(
+                controller: scrollController,
                 child: SingleChildScrollView(
+                  controller: scrollController,
                   padding: const EdgeInsets.only(
                     top: 30.0,
                     bottom: 20.0,
@@ -147,8 +155,10 @@ class FormRoute extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }

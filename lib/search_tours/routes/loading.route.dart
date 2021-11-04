@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:hot_tours/api.dart';
-import 'package:hot_tours/models/tour.model.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
 
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/star.model.dart';
+import 'package:hot_tours/models/tour.model.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
+
 import 'package:hot_tours/search_tours/routes/no_search_results.route.dart';
 import 'package:hot_tours/search_tours/routes/search_results.route.dart';
 
@@ -52,6 +53,8 @@ class LoadingRoute extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
     final stream = useState(Stream.periodic(
       const Duration(seconds: 1),
       (index) => index,
@@ -65,17 +68,17 @@ class LoadingRoute extends HookWidget {
       Api.getSeasonTours(
         cityFromId: data.departCity!.id,
         countryId: data.targetCountry!.id,
-        cities: data.targetCities!.map((city) => city.id).toList(),
-        stars: StarModel.difference(selected: data.hotelStars!)
-            .map((star) => star.id)
-            .toList(),
-        hotels: data.hotels!.map((hotel) => hotel.id).toList(),
-        meals: data.meals!.map((meal) => meal.id).toList(),
-        adults: data.peopleCount!.fst,
-        kids: data.peopleCount!.snd,
-        kidsAges: data.childrenAges!,
-        nightsMin: data.nightsCount!.fst,
-        nightsMax: data.nightsCount!.snd,
+        peopleCount: data.peopleCount!,
+        kidsAges: data.childrenAges,
+        nightsCount: data.nightsCount!,
+        cities: data.targetCities.map((city) => city.id).toList(),
+        stars: data.hotelStars.isEmpty
+            ? const []
+            : StarModel.difference(selected: data.hotelStars)
+                .map((star) => star.id)
+                .toList(),
+        hotels: data.hotels.map((hotel) => hotel.id).toList(),
+        meals: data.meals.map((meal) => meal.id).toList(),
       ).then((value) {
         tours.value = value;
       });
@@ -121,12 +124,16 @@ class LoadingRoute extends HookWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 48),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(
-                    top: 60.0,
-                    bottom: 20.0,
+                child: Scrollbar(
+                  controller: scrollController,
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.only(
+                      top: 60.0,
+                      bottom: 20.0,
+                    ),
+                    child: Column(), // !!!
                   ),
-                  child: Column(), // !!!
                 ),
               ),
             ),

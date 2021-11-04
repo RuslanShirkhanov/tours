@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:hot_tours/utils/show_route.dart';
 
 import 'package:hot_tours/models/depart_city.model.dart';
@@ -39,7 +41,7 @@ void showSelectDepartCityRoute({
       ),
     );
 
-class SelectDepartCityRoute extends StatelessWidget {
+class SelectDepartCityRoute extends HookWidget {
   final List<DepartCityModel> data;
   final void Function(DepartCityModel) onSelect;
 
@@ -50,22 +52,28 @@ class SelectDepartCityRoute extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              HeaderWidget(
-                hasSectionIndicator: false,
-                title: 'Горящие туры',
-                subtitle: 'Выберите город вылета',
-                hasSubtitle: true,
-                backgroundColor: const Color(0xffdc2323),
-                hasBackButton: true,
-                hasLoadingIndicator: false,
-              ),
-              Expanded(
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            HeaderWidget(
+              hasSectionIndicator: false,
+              title: 'Горящие туры',
+              subtitle: 'Выберите город вылета',
+              hasSubtitle: true,
+              backgroundColor: const Color(0xffdc2323),
+              hasBackButton: true,
+              hasLoadingIndicator: false,
+            ),
+            Expanded(
+              child: Scrollbar(
+                controller: scrollController,
                 child: ListView(
                   shrinkWrap: true,
+                  controller: scrollController,
                   children: <Widget>[
                     for (int i = 0; i < data.length; i++)
                       Padding(
@@ -112,8 +120,10 @@ class SelectDepartCityRoute extends StatelessWidget {
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }

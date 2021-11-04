@@ -100,6 +100,8 @@ class ContactsRoute extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
     final isLoading = useState(false);
 
     return Scaffold(
@@ -120,93 +122,97 @@ class ContactsRoute extends HookWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 48.0),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(
-                  top: 40.0,
-                  left: 40.0,
-                  right: 40.0,
-                  bottom: 20.0,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        _buildButton(
-                          path: 'assets/phone.svg',
-                          text: '8 (800) 700 24 19',
-                          onTap: () => _makeLaunchRequest(
-                            context: context,
-                            state: isLoading,
-                            url: 'tel:88007002419',
+              child: Scrollbar(
+                controller: scrollController,
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  padding: const EdgeInsets.only(
+                    top: 40.0,
+                    left: 40.0,
+                    right: 40.0,
+                    bottom: 20.0,
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          _buildButton(
+                            path: 'assets/phone.svg',
+                            text: '8 (800) 700 24 19',
+                            onTap: () => _makeLaunchRequest(
+                              context: context,
+                              state: isLoading,
+                              url: 'tel:88007002419',
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 25.0),
-                        _buildButton(
-                          path: 'assets/phone.svg',
-                          text: 'Обратный звонок',
-                          onTap: () => showCallbackRoute(context: context),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 54.0),
-                    Column(
-                      children: <Widget>[
-                        _buildButton(
-                          path: 'assets/email.svg',
-                          text: 'all-turs@yandex.ru',
-                          onTap: () => _makeLaunchRequest(
-                            context: context,
-                            state: isLoading,
-                            url: 'mailto:all-turs@yandex.ru',
+                          const SizedBox(height: 25.0),
+                          _buildButton(
+                            path: 'assets/phone.svg',
+                            text: 'Обратный звонок',
+                            onTap: () => showCallbackRoute(context: context),
                           ),
-                        ),
-                        const SizedBox(height: 25.0),
-                        _buildButton(
-                          path: 'assets/cursor.svg',
-                          text: 'все-туры.рф',
-                          onTap: () => _makeLaunchRequest(
-                            context: context,
-                            state: isLoading,
-                            url: 'https://все-туры.рф/',
+                        ],
+                      ),
+                      const SizedBox(height: 54.0),
+                      Column(
+                        children: <Widget>[
+                          _buildButton(
+                            path: 'assets/email.svg',
+                            text: 'all-turs@yandex.ru',
+                            onTap: () => _makeLaunchRequest(
+                              context: context,
+                              state: isLoading,
+                              url: 'mailto:all-turs@yandex.ru',
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 54.0),
-                    Column(
-                      children: <Widget>[
-                        _buildButton(
-                          path: 'assets/whatsapp.svg',
-                          text: 'WhatsApp',
-                          onTap: () => _makeLaunchRequest(
-                            context: context,
-                            state: isLoading,
-                            url: 'whatsapp://send?phone=79628212311',
+                          const SizedBox(height: 25.0),
+                          _buildButton(
+                            path: 'assets/cursor.svg',
+                            text: 'все-туры.рф',
+                            onTap: () => _makeLaunchRequest(
+                              context: context,
+                              state: isLoading,
+                              url: 'https://все-туры.рф/',
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 25.0),
-                        _buildButton(
-                          path: 'assets/viber.svg',
-                          text: 'Viber',
-                          onTap: () => _makeLaunchRequest(
-                            context: context,
-                            state: isLoading,
-                            url: 'viber://chat?number=%2B7(962)8212311',
+                        ],
+                      ),
+                      const SizedBox(height: 54.0),
+                      Column(
+                        children: <Widget>[
+                          _buildButton(
+                            path: 'assets/whatsapp.svg',
+                            text: 'WhatsApp',
+                            onTap: () => _makeLaunchRequest(
+                              context: context,
+                              state: isLoading,
+                              url: 'whatsapp://send?phone=79628212311',
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 25.0),
-                        _buildButton(
-                          path: 'assets/telegram.svg',
-                          text: 'Telegram',
-                          onTap: () => _makeLaunchRequest(
-                            context: context,
-                            state: isLoading,
-                            url: 'tg://resolve?domain=vseturi',
+                          const SizedBox(height: 25.0),
+                          _buildButton(
+                            path: 'assets/viber.svg',
+                            text: 'Viber',
+                            onTap: () => _makeLaunchRequest(
+                              context: context,
+                              state: isLoading,
+                              url: 'viber://chat?number=%2B7(962)8212311',
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(height: 25.0),
+                          _buildButton(
+                            path: 'assets/telegram.svg',
+                            text: 'Telegram',
+                            onTap: () => _makeLaunchRequest(
+                              context: context,
+                              state: isLoading,
+                              url: 'tg://resolve?domain=vseturi',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

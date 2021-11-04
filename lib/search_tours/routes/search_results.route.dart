@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:hot_tours/api.dart';
 
 import 'package:hot_tours/utils/narrow.dart';
@@ -46,7 +48,7 @@ void showSearchResultsRoute({
     );
 
 @immutable
-class SearchResultsRoute extends StatelessWidget {
+class SearchResultsRoute extends HookWidget {
   final DataModel data;
   final List<TourModel> tours;
 
@@ -58,6 +60,8 @@ class SearchResultsRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
     final _tours = tours
         .sorted((a, b) => a.hotelName.compareTo(b.hotelName))
         .narrow((a, b) => a.hotelName == b.hotelName);
@@ -75,18 +79,22 @@ class SearchResultsRoute extends StatelessWidget {
               hasLoadingIndicator: false,
             ),
             Expanded(
-              child: ListView(
-                children: _tours
-                    .map(
-                      (collection) => Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: _HotelCardWidget(
-                          tours: collection,
-                          onTap: () {}, // !!!
+              child: Scrollbar(
+                controller: scrollController,
+                child: ListView(
+                  controller: scrollController,
+                  children: _tours
+                      .map(
+                        (collection) => Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: _HotelCardWidget(
+                            tours: collection,
+                            onTap: () {}, // !!!
+                          ),
                         ),
-                      ),
-                    )
-                    .toList(),
+                      )
+                      .toList(),
+                ),
               ),
             ),
           ],

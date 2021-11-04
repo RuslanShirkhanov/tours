@@ -49,7 +49,7 @@ class StorageModel {
           departCity: DepartCityModel.serialize(
             data['departCity']! as Map<String, dynamic>,
           ),
-          tourDates: null,
+          tourDates: [],
           targetCountry: CountryModel.serialize(
             data['targetCountry']! as Map<String, dynamic>,
           ),
@@ -101,14 +101,13 @@ class StorageModel {
         'nightsMax': data.data.nightsCount!.snd.value,
         'adults': data.data.peopleCount!.fst.value,
         'children': data.data.peopleCount!.snd.value,
-        'childrenAges':
-            data.data.childrenAges!.map((age) => age.value).toList(),
+        'childrenAges': data.data.childrenAges.map((age) => age.value).toList(),
         'targetCities':
-            data.data.targetCities!.map(CityModel.deserialize).toList(),
-        'hotelStars': data.data.hotelStars!.map(StarModel.deserialize).toList(),
-        'hotels': data.data.hotels!.map(HotelModel.deserialize).toList(),
-        'meals': data.data.meals!.map(MealModel.deserialize).toList(),
-        'rate': data.data.rate!.value,
+            data.data.targetCities.map(CityModel.deserialize).toList(),
+        'hotelStars': data.data.hotelStars.map(StarModel.deserialize).toList(),
+        'hotels': data.data.hotels.map(HotelModel.deserialize).toList(),
+        'meals': data.data.meals.map(MealModel.deserialize).toList(),
+        'rate': data.data.rate?.value,
       };
 }
 

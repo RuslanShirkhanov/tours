@@ -68,8 +68,8 @@ class SelectHotelsRoute extends HookWidget {
 
       Api.getHotels(
         countryId: data.targetCountry!.id,
-        towns: data.targetCities!.map((city) => city.id).toList(),
-        stars: StarModel.difference(selected: data.hotelStars!)
+        towns: data.targetCities.map((city) => city.id).toList(),
+        stars: StarModel.difference(selected: data.hotelStars)
             .map((star) => star.id)
             .toList(),
       ).then((value) {

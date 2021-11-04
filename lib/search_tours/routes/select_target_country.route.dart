@@ -64,6 +64,8 @@ class SelectTargetCountryRoute extends HookWidget {
   Widget build(BuildContext context) {
     final connection = ConnectionUtil.useConnection();
 
+    final scrollController = useScrollController();
+
     final isLoading = useState(false);
 
     final isVisa = useState(false);
@@ -107,21 +109,25 @@ class SelectTargetCountryRoute extends HookWidget {
               onToggle: (isActive) => isVisa.value = !isActive,
             ),
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20.0,
-                  horizontal: 50.0,
-                ),
-                itemCount: targetCountries.length,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10.0,
-                    bottom: 10.0,
+              child: Scrollbar(
+                controller: scrollController,
+                child: ListView.builder(
+                  controller: scrollController,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20.0,
+                    horizontal: 50.0,
                   ),
-                  child: ListButtonWidget(
-                    text: targetCountries[index].name,
-                    onTap: () => onContinue(
-                      data.setTargetCountry(targetCountries[index]),
+                  itemCount: targetCountries.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                    ),
+                    child: ListButtonWidget(
+                      text: targetCountries[index].name,
+                      onTap: () => onContinue(
+                        data.setTargetCountry(targetCountries[index]),
+                      ),
                     ),
                   ),
                 ),

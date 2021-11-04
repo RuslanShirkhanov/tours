@@ -15,7 +15,7 @@ import 'package:hot_tours/select_tours/models/data.model.dart';
 import 'package:hot_tours/select_tours/routes/select_many.route.dart';
 import 'package:hot_tours/select_tours/routes/select_what.route.dart';
 
-void showSelectTargetCountryRoute({
+void showSelectWhereRoute({
   required BuildContext context,
   required DataModel data,
 }) =>
@@ -23,7 +23,7 @@ void showSelectTargetCountryRoute({
       context: context,
       model: data,
       builder: (currentData) => PageRouteBuilder(
-        pageBuilder: (context, fst, snd) => SelectTargetCountryRoute(
+        pageBuilder: (context, fst, snd) => SelectWhereRoute(
           data: currentData!,
           onContinue: (newData) => showSelectWhatRoute(
             context: context,
@@ -46,11 +46,11 @@ void showSelectTargetCountryRoute({
       ),
     );
 
-class SelectTargetCountryRoute extends HookWidget {
+class SelectWhereRoute extends HookWidget {
   final DataModel data;
   final void Function(DataModel) onContinue;
 
-  const SelectTargetCountryRoute({
+  const SelectWhereRoute({
     Key? key,
     required this.data,
     required this.onContinue,
@@ -80,6 +80,7 @@ class SelectTargetCountryRoute extends HookWidget {
     }, [connection.value]);
 
     return SelectManyRoute(
+      isRequired: false,
       sectionIndex: data.sectionIndex,
       isLoading: isLoading.value,
       primaryText: 'Где хотите отдохнуть?',
@@ -87,6 +88,7 @@ class SelectTargetCountryRoute extends HookWidget {
       isPrimarySingle: false,
       secondaryData: const <String>[],
       isSecondarySingle: true,
+      hasAlternative: false,
       onContinue: (value) => onContinue(
         data.setTargetCountries(value),
       ),

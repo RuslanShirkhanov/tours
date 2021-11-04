@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:hot_tours/utils/show_route.dart';
 
 import 'package:hot_tours/models/depart_city.model.dart';
 
 import 'package:hot_tours/widgets/list_button.widget.dart';
 
-void showSelectDepartCityRoute({
+void showSelectFromRoute({
   required BuildContext context,
   required List<DepartCityModel> data,
   required void Function(DepartCityModel) onSelect,
@@ -15,7 +17,7 @@ void showSelectDepartCityRoute({
       context: context,
       model: data,
       builder: (currentData) => PageRouteBuilder(
-        pageBuilder: (context, fst, snd) => SelectDepartCityRoute(
+        pageBuilder: (context, fst, snd) => SelectFromRoute(
           data: currentData!,
           onSelect: (newData) {
             onSelect(newData);
@@ -38,20 +40,26 @@ void showSelectDepartCityRoute({
       ),
     );
 
-class SelectDepartCityRoute extends StatelessWidget {
+class SelectFromRoute extends HookWidget {
   final List<DepartCityModel> data;
   final void Function(DepartCityModel) onSelect;
 
-  const SelectDepartCityRoute({
+  const SelectFromRoute({
     Key? key,
     required this.data,
     required this.onSelect,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
+  Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
+    return Scaffold(
+      body: SafeArea(
+        child: Scrollbar(
+          controller: scrollController,
           child: ListView(
+            controller: scrollController,
             children: <Widget>[
               for (int i = 0; i < data.length; i++)
                 Padding(
@@ -98,5 +106,7 @@ class SelectDepartCityRoute extends StatelessWidget {
             ],
           ),
         ),
-      );
+      ),
+    );
+  }
 }

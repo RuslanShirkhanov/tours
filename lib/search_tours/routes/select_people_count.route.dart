@@ -334,6 +334,9 @@ class SelectPeopleCount extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController0 = useScrollController();
+    final scrollController1 = useScrollController();
+
     final adultsCount = useState(1);
     final childrenAges = useState(<int>[]);
 
@@ -376,81 +379,90 @@ class SelectPeopleCount extends HookWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 78.0, bottom: 70.0),
-                child: ListView(
-                  children: <Widget>[
-                    const SizedBox(height: 80.0),
-                    const Text(
-                      'Взрослые',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 18.0,
-                        color: Color(0xff7d7d7d),
+                child: Scrollbar(
+                  controller: scrollController0,
+                  child: ListView(
+                    controller: scrollController0,
+                    children: <Widget>[
+                      const SizedBox(height: 80.0),
+                      const Text(
+                        'Взрослые',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18.0,
+                          color: Color(0xff7d7d7d),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    _buildAdultsSelector(
-                      value: adultsCount.value,
-                      isDecrementActive: adultsCount.value > adultsMinCount,
-                      decrement: decrement,
-                      isIncrementActive: adultsCount.value < adultsMaxCount,
-                      increment: increment,
-                    ),
-                    const SizedBox(height: 20.0),
-                    const Text(
-                      'Дети',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 18.0,
-                        color: Color(0xff7d7d7d),
+                      const SizedBox(height: 10.0),
+                      _buildAdultsSelector(
+                        value: adultsCount.value,
+                        isDecrementActive: adultsCount.value > adultsMinCount,
+                        decrement: decrement,
+                        isIncrementActive: adultsCount.value < adultsMaxCount,
+                        increment: increment,
                       ),
-                    ),
-                    const SizedBox(height: 5.0),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: childrenAges.value.mapToList(
-                          (age, index) => _buildChildSelector(
-                            index: index,
-                            value: age,
-                            remove: remove,
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Дети',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18.0,
+                          color: Color(0xff7d7d7d),
+                        ),
+                      ),
+                      const SizedBox(height: 5.0),
+                      Scrollbar(
+                        controller: scrollController1,
+                        child: SingleChildScrollView(
+                          controller: scrollController1,
+                          child: Column(
+                            children: childrenAges.value.mapToList(
+                              (age, index) => _buildChildSelector(
+                                index: index,
+                                value: age,
+                                remove: remove,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 55.0),
-                      child: AnimatedOpacity(
-                        duration: const Duration(milliseconds: 350),
-                        opacity: childrenAges.value.length == childrenMaxCount
-                            ? 0.5
-                            : 1.0,
-                        child: ListButtonWidget(
-                          text: 'Добавить ребёнка',
-                          onTap: childrenAges.value.length == childrenMaxCount
-                              ? () {}
-                              : () => showGeneralDialog(
-                                    context: context,
-                                    transitionDuration:
-                                        const Duration(milliseconds: 350),
-                                    pageBuilder: (context, a, b) =>
-                                        _buildAddChildDialog(
+                      const SizedBox(height: 20.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 55.0),
+                        child: AnimatedOpacity(
+                          duration: const Duration(milliseconds: 350),
+                          opacity: childrenAges.value.length == childrenMaxCount
+                              ? 0.5
+                              : 1.0,
+                          child: ListButtonWidget(
+                            text: 'Добавить ребёнка',
+                            onTap: childrenAges.value.length == childrenMaxCount
+                                ? () {}
+                                : () => showGeneralDialog(
                                       context: context,
-                                      append: append,
-                                      isSelectable: childrenAges.value.length <
-                                          childrenMaxCount,
+                                      transitionDuration:
+                                          const Duration(milliseconds: 350),
+                                      pageBuilder: (context, a, b) =>
+                                          _buildAddChildDialog(
+                                        context: context,
+                                        append: append,
+                                        isSelectable:
+                                            childrenAges.value.length <
+                                                childrenMaxCount,
+                                      ),
                                     ),
-                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20.0),
-                  ],
+                      const SizedBox(height: 20.0),
+                    ],
+                  ),
                 ),
               ),
             ),

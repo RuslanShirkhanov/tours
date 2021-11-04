@@ -12,8 +12,8 @@ import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/depart_city.model.dart';
 import 'package:hot_tours/select_tours/models/data.model.dart';
 
-import 'package:hot_tours/select_tours/routes/select_depart_city.route.dart';
-import 'package:hot_tours/select_tours/routes/select_target_country.route.dart';
+import 'package:hot_tours/select_tours/routes/select_from.route.dart';
+import 'package:hot_tours/select_tours/routes/select_where.route.dart';
 
 import 'package:hot_tours/widgets/header.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
@@ -28,7 +28,7 @@ void showSelectTourSection({
       builder: (data) => PageRouteBuilder(
         pageBuilder: (context, fst, snd) => SelectTourSection(
           data: data!,
-          onContinue: (data) => showSelectTargetCountryRoute(
+          onContinue: (data) => showSelectWhereRoute(
             context: context,
             data: data,
           ),
@@ -65,6 +65,8 @@ class SelectTourSection extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final connection = ConnectionUtil.useConnection();
+
+    final scrollController = useScrollController();
 
     final isLoading = useState(false);
 
@@ -105,36 +107,40 @@ class SelectTourSection extends HookWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 53.0, bottom: 70.0),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(
-                    top: 80.0,
-                    bottom: 20.0,
-                    left: 50.0,
-                    right: 50.0,
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      const Text(
-                        'Выберите город вылета',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 22.0,
-                          color: Color(0xff4d4948),
+                child: Scrollbar(
+                  controller: scrollController,
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.only(
+                      top: 80.0,
+                      bottom: 20.0,
+                      left: 50.0,
+                      right: 50.0,
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        const Text(
+                          'Выберите город вылета',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 22.0,
+                            color: Color(0xff4d4948),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 70.0),
-                      ListButtonWidget(
-                        text: selectedCity.value?.name ?? '',
-                        onTap: () => showSelectDepartCityRoute(
-                          context: context,
-                          data: departCities.value,
-                          onSelect: setState<DepartCityModel?>(selectedCity),
+                        const SizedBox(height: 70.0),
+                        ListButtonWidget(
+                          text: selectedCity.value?.name ?? '',
+                          onTap: () => showSelectFromRoute(
+                            context: context,
+                            data: departCities.value,
+                            onSelect: setState<DepartCityModel?>(selectedCity),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

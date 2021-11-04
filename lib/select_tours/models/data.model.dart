@@ -1,15 +1,18 @@
 import 'package:hot_tours/models/unsigned.dart';
 
+import 'package:hot_tours/utils/pair.dart';
+
 import 'package:hot_tours/models/abstract_data.model.dart';
 import 'package:hot_tours/models/depart_city.model.dart';
 
 class DataModel extends AbstractDataModel {
   final U<int> sectionIndex;
   final DepartCityModel? departCity;
-  final List<String>? targetCountry;
-  final List<String>? what;
-  final List<String>? when;
-  final List<String>? howLong;
+  final List<String> targetCountry;
+  final List<String> what;
+  final List<String> when;
+  final Pair<DateTime, DateTime>? range;
+  final List<String> howLong;
 
   const DataModel({
     required this.sectionIndex,
@@ -17,6 +20,7 @@ class DataModel extends AbstractDataModel {
     required this.targetCountry,
     required this.what,
     required this.when,
+    required this.range,
     required this.howLong,
     required String? name,
     required String? number,
@@ -25,10 +29,11 @@ class DataModel extends AbstractDataModel {
   factory DataModel.empty() => const DataModel(
         sectionIndex: U(0),
         departCity: null,
-        targetCountry: null,
-        what: null,
-        when: null,
-        howLong: null,
+        targetCountry: [],
+        what: [],
+        when: [],
+        range: null,
+        howLong: [],
         name: null,
         number: null,
       );
@@ -38,10 +43,10 @@ class DataModel extends AbstractDataModel {
       Подбор тура
       Дата: ${DateTime.now()}
       Откуда: ${departCity!.name}
-      Куда: ${targetCountry!.join(', ')}
-      Вид отдыха: ${what!.map((x) => x.toLowerCase()).join(', ')}
-      Время вылета: ${when!.map((x) => x.toLowerCase()).join(', ')}
-      Протяжённость отдыха: ${howLong!.map((x) => x.toLowerCase()).join(', ')}
+      Куда: ${targetCountry.join(', ')}
+      Вид отдыха: ${what.isNotEmpty ? what.map((x) => x.toLowerCase()).join(', ') : 'не выбрано'}
+      Время вылета: ${when.map((x) => x.toLowerCase()).join(', ')}
+      Протяжённость отдыха: ${howLong.map((x) => x.toLowerCase()).join(', ')}
       Имя: ${name!}
       Номер: ${number!}
     '''
@@ -54,50 +59,67 @@ class DataModel extends AbstractDataModel {
         targetCountry: targetCountry,
         what: what,
         when: when,
+        range: range,
         howLong: howLong,
         name: name,
         number: number,
       );
 
-  DataModel setTargetCountries(List<String>? value) => DataModel(
+  DataModel setTargetCountries(List<String> value) => DataModel(
         sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: value,
         what: what,
         when: when,
+        range: range,
         howLong: howLong,
         name: name,
         number: number,
       );
 
-  DataModel setWhat(List<String>? value) => DataModel(
+  DataModel setWhat(List<String> value) => DataModel(
         sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: targetCountry,
         what: value,
         when: when,
+        range: range,
         howLong: howLong,
         name: name,
         number: number,
       );
 
-  DataModel setWhen(List<String>? value) => DataModel(
+  DataModel setWhen(List<String> value) => DataModel(
         sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: targetCountry,
         what: what,
         when: value,
+        range: range,
         howLong: howLong,
         name: name,
         number: number,
       );
 
-  DataModel setHowLong(List<String>? value) => DataModel(
+  DataModel setRange(Pair<DateTime, DateTime> value) => DataModel(
         sectionIndex: sectionIndex + const U(1),
         departCity: departCity,
         targetCountry: targetCountry,
         what: what,
         when: when,
+        range: value,
+        howLong: howLong,
+        name: name,
+        number: number,
+      );
+
+  DataModel setHowLong(List<String> value) => DataModel(
+        sectionIndex: sectionIndex + const U(1),
+        departCity: departCity,
+        targetCountry: targetCountry,
+        what: what,
+        when: when,
+        range: range,
         howLong: value,
         name: name,
         number: number,
@@ -110,6 +132,7 @@ class DataModel extends AbstractDataModel {
         targetCountry: targetCountry,
         what: what,
         when: when,
+        range: range,
         howLong: howLong,
         name: value,
         number: number,
@@ -122,6 +145,7 @@ class DataModel extends AbstractDataModel {
         targetCountry: targetCountry,
         what: what,
         when: when,
+        range: range,
         howLong: howLong,
         name: name,
         number: value,

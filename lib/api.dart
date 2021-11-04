@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:dio/dio.dart';
+import 'package:hot_tours/utils/pair.dart';
 
 import 'package:hot_tours/utils/reqs.dart';
 
@@ -59,7 +60,7 @@ abstract class Api {
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-    if (data['kind'] == 'ok') {
+    if (data['kind'] == 'success') {
       return (data['value'] as List<dynamic>)
           .cast<Map<String, dynamic>>()
           .map(DepartCityModel.serialize)
@@ -82,7 +83,7 @@ abstract class Api {
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-    if (data['kind'] == 'ok') {
+    if (data['kind'] == 'success') {
       return (data['value'] as List<dynamic>)
           .cast<Map<String, dynamic>>()
           .map(CountryModel.serialize)
@@ -105,7 +106,7 @@ abstract class Api {
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-    if (data['kind'] == 'ok') {
+    if (data['kind'] == 'success') {
       return (data['value'] as List<dynamic>)
           .cast<Map<String, dynamic>>()
           .map(CityModel.serialize)
@@ -135,7 +136,7 @@ abstract class Api {
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-    if (data['kind'] == 'ok') {
+    if (data['kind'] == 'success') {
       return (data['value'] as List<dynamic>)
           .cast<Map<String, dynamic>>()
           .map(HotelModel.serialize)
@@ -160,7 +161,7 @@ abstract class Api {
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-    if (data['kind'] == 'ok') {
+    if (data['kind'] == 'success') {
       return (data['value'] as List<dynamic>)
           .cast<String>()
           .map((date) {
@@ -192,7 +193,7 @@ abstract class Api {
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-    if (data['kind'] == 'ok') {
+    if (data['kind'] == 'success') {
       return (data['value'] as List<dynamic>)
           .cast<List<dynamic>>()
           .map(TourModel.serialize)
@@ -205,21 +206,14 @@ abstract class Api {
   static Future<List<TourModel>> getSeasonTours({
     required U<int> cityFromId,
     required U<int> countryId,
-    required U<int> adults,
-    required U<int> kids,
+    required Pair<U<int>, U<int>> peopleCount,
     required List<U<int>> kidsAges,
-    required U<int> nightsMin,
-    required U<int> nightsMax,
+    required Pair<U<int>, U<int>> nightsCount,
     required List<U<int>> meals,
     required List<U<int>> stars,
     required List<U<int>> hotels,
     required List<U<int>> cities,
   }) async {
-    assert(meals.isNotEmpty);
-    assert(stars.isNotEmpty);
-    assert(hotels.isNotEmpty);
-    assert(cities.isNotEmpty);
-
     if (!await Api.hasConnection()) {
       return const [];
     }
@@ -227,26 +221,28 @@ abstract class Api {
     final uri = _makeUri('season_tours', {
       'city_from_id': cityFromId,
       'country_id': countryId,
-      'adults': adults,
-      'kids': kids,
+      'adults': peopleCount.fst,
+      'kids': peopleCount.snd,
       if (kidsAges.isNotEmpty) 'kids_ages': kidsAges.join(','),
-      'nights_min': nightsMin,
-      'nights_max': nightsMax,
-      'meals': meals.join(','),
-      'stars': stars.join(','),
-      'hotels': hotels.join(','),
-      'cities': cities.join(','),
+      'nights_min': nightsCount.fst,
+      'nights_max': nightsCount.snd,
+      if (meals.isNotEmpty) 'meals': meals.join(','),
+      if (stars.isNotEmpty) 'stars': stars.join(','),
+      if (hotels.isNotEmpty) 'hotels': hotels.join(','),
+      if (cities.isNotEmpty) 'cities': cities.join(','),
     });
     final res = await _dio.get<Object>(uri);
+
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-    if (data['kind'] == 'ok') {
+    if (data['kind'] == 'success') {
       return (data['value'] as List<dynamic>)
           .cast<List<dynamic>>()
           .map(TourModel.serialize)
           .toList()
           .cast<TourModel>();
     }
+
     return const [];
   }
 
@@ -261,7 +257,7 @@ abstract class Api {
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-    if (data['kind'] == 'ok') {
+    if (data['kind'] == 'success') {
       return data['value'] as bool;
     }
     return false;

@@ -46,6 +46,8 @@ class CallbackRoute extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = useScrollController();
+
     final formKey = useState(GlobalKey<FormState>());
     final formData = useState('');
     final focusNode = useFocusNode();
@@ -69,33 +71,37 @@ class CallbackRoute extends HookWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 48.0),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: formKey.value,
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(height: 130.0),
-                        numberFormField(
-                          focusNode: focusNode,
-                          onChange: setState(formData),
-                        ),
-                        const SizedBox(height: 45.0),
-                        FormSubmitWidget(
-                          text: 'Отправить',
-                          onTap: () {
-                            focusNode.unfocus();
-                            if (formKey.value.currentState!.validate()) {
-                              Api.makeCreateLeadRequest(
-                                context: context,
-                                kind: ReqKind.callback,
-                                note:
-                                    'Обратный звонок\nДата: ${DateTime.now()}\nНомер: ${formData.value}',
-                              );
-                            }
-                          },
-                          backgroundColor: const Color(0xff2eaeee),
-                        ),
-                      ],
+                child: Scrollbar(
+                  controller: scrollController,
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Form(
+                      key: formKey.value,
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 130.0),
+                          numberFormField(
+                            focusNode: focusNode,
+                            onChange: setState(formData),
+                          ),
+                          const SizedBox(height: 45.0),
+                          FormSubmitWidget(
+                            text: 'Отправить',
+                            onTap: () {
+                              focusNode.unfocus();
+                              if (formKey.value.currentState!.validate()) {
+                                Api.makeCreateLeadRequest(
+                                  context: context,
+                                  kind: ReqKind.callback,
+                                  note:
+                                      'Обратный звонок\nДата: ${DateTime.now()}\nНомер: ${formData.value}',
+                                );
+                              }
+                            },
+                            backgroundColor: const Color(0xff2eaeee),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -13,14 +13,14 @@ import 'package:hot_tours/models/tour.model.dart';
 class DataModel extends AbstractDataModel {
   final DepartCityModel? departCity;
   final CountryModel? targetCountry;
-  final List<DateTime>? tourDates;
+  final List<DateTime> tourDates;
   final Pair<U<int>, U<int>>? nightsCount;
   final Pair<U<int>, U<int>>? peopleCount;
-  final List<U<int>>? childrenAges;
-  final List<CityModel>? targetCities;
-  final List<StarModel>? hotelStars;
-  final List<HotelModel>? hotels;
-  final List<MealModel>? meals;
+  final List<U<int>> childrenAges;
+  final List<CityModel> targetCities;
+  final List<StarModel> hotelStars;
+  final List<HotelModel> hotels;
+  final List<MealModel> meals;
   final U<double>? rate;
   final TourModel? tour;
 
@@ -44,14 +44,14 @@ class DataModel extends AbstractDataModel {
   factory DataModel.empty() => const DataModel(
         departCity: null,
         targetCountry: null,
-        tourDates: null,
+        tourDates: [],
         nightsCount: null,
         peopleCount: null,
-        childrenAges: null,
-        targetCities: null,
-        hotelStars: null,
-        hotels: null,
-        meals: null,
+        childrenAges: [],
+        targetCities: [],
+        hotelStars: [],
+        hotels: [],
+        meals: [],
         rate: null,
         tour: null,
         name: null,
@@ -83,23 +83,18 @@ class DataModel extends AbstractDataModel {
         nightsCount,
         peopleCount,
         childrenAges,
-        targetCities,
-        hotelStars,
-        hotels,
-        meals,
-        rate,
       ].map((x) => x != null).reduce((x, y) => x && y);
 
   DataModel setDepartCity(DepartCityModel value) => DataModel(
         departCity: value,
         targetCountry: null,
-        tourDates: null,
+        tourDates: [],
         nightsCount: nightsCount,
         peopleCount: peopleCount,
         childrenAges: childrenAges,
-        targetCities: null,
+        targetCities: [],
         hotelStars: hotelStars,
-        hotels: null,
+        hotels: [],
         meals: meals,
         rate: rate,
         tour: null,
@@ -110,13 +105,13 @@ class DataModel extends AbstractDataModel {
   DataModel setTargetCountry(CountryModel value) => DataModel(
         departCity: departCity,
         targetCountry: value,
-        tourDates: null,
+        tourDates: [],
         nightsCount: nightsCount,
         peopleCount: peopleCount,
         childrenAges: childrenAges,
-        targetCities: null,
+        targetCities: [],
         hotelStars: hotelStars,
-        hotels: null,
+        hotels: [],
         meals: meals,
         rate: rate,
         tour: null,
@@ -192,7 +187,7 @@ class DataModel extends AbstractDataModel {
         number: number,
       );
 
-  DataModel setTargetCities(List<CityModel>? value) => DataModel(
+  DataModel setTargetCities(List<CityModel> value) => DataModel(
         departCity: departCity,
         targetCountry: targetCountry,
         tourDates: tourDates,
@@ -201,7 +196,7 @@ class DataModel extends AbstractDataModel {
         childrenAges: childrenAges,
         targetCities: value,
         hotelStars: hotelStars,
-        hotels: null,
+        hotels: [],
         meals: meals,
         rate: rate,
         tour: null,
@@ -209,7 +204,7 @@ class DataModel extends AbstractDataModel {
         number: number,
       );
 
-  DataModel setHotelStars(List<StarModel>? value) => DataModel(
+  DataModel setHotelStars(List<StarModel> value) => DataModel(
         departCity: departCity,
         targetCountry: targetCountry,
         tourDates: tourDates,
@@ -218,7 +213,7 @@ class DataModel extends AbstractDataModel {
         childrenAges: childrenAges,
         targetCities: targetCities,
         hotelStars: value,
-        hotels: null,
+        hotels: [],
         meals: meals,
         rate: rate,
         tour: null,
@@ -226,7 +221,7 @@ class DataModel extends AbstractDataModel {
         number: number,
       );
 
-  DataModel setHotels(List<HotelModel>? value) => DataModel(
+  DataModel setHotels(List<HotelModel> value) => DataModel(
         departCity: departCity,
         targetCountry: targetCountry,
         tourDates: tourDates,
@@ -243,7 +238,7 @@ class DataModel extends AbstractDataModel {
         number: number,
       );
 
-  DataModel setMeals(List<MealModel>? value) => DataModel(
+  DataModel setMeals(List<MealModel> value) => DataModel(
         departCity: departCity,
         targetCountry: targetCountry,
         tourDates: tourDates,

@@ -61,6 +61,8 @@ class SelectTargetCountryRoute extends HookWidget {
       [isVisa.value],
     );
 
+    final scrollController = useScrollController();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -81,18 +83,22 @@ class SelectTargetCountryRoute extends HookWidget {
               onToggle: (isActive) => isVisa.value = !isActive,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: countries.length,
-                itemBuilder: (_, index) => Padding(
-                  padding: EdgeInsets.only(
-                    top: 20.0,
-                    left: 54.0,
-                    right: 54.0,
-                    bottom: index == data.length - 1 ? 20.0 : 0.0,
-                  ),
-                  child: ListButtonWidget(
-                    text: countries[index].name,
-                    onTap: () => onSelect(countries[index]),
+              child: Scrollbar(
+                controller: scrollController,
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: countries.length,
+                  itemBuilder: (_, index) => Padding(
+                    padding: EdgeInsets.only(
+                      top: 20.0,
+                      left: 54.0,
+                      right: 54.0,
+                      bottom: index == data.length - 1 ? 20.0 : 0.0,
+                    ),
+                    child: ListButtonWidget(
+                      text: countries[index].name,
+                      onTap: () => onSelect(countries[index]),
+                    ),
                   ),
                 ),
               ),
