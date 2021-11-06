@@ -20,7 +20,7 @@ class DepartCityModel {
   static DepartCityModel serialize(Map<String, dynamic> data) =>
       DepartCityModel(
         id: U<int>(data['Id'] as int),
-        name: data['Name'] as String,
+        name: (data['Name'] as String).trim(),
         isPopular: data['IsPopular'] as bool,
       );
 

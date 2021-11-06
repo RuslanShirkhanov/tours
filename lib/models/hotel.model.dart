@@ -31,7 +31,7 @@ class HotelModel {
   static HotelModel serialize(Map<String, dynamic> data) => HotelModel(
         id: U<int>(data['Id'] as int),
         townId: U<int>(data['TownId'] as int),
-        name: data['Name'] as String,
+        name: (data['Name'] as String).trim(),
         star: StarModel(
           id: U<int>(data['StarId'] as int),
           name: data['StarName'] as String,

@@ -13,17 +13,10 @@ class CityModel {
     required this.isPopular,
   });
 
-  factory CityModel.any() => const CityModel(
-        id: U<int>(0),
-        countryId: U<int>(0),
-        name: 'Любой',
-        isPopular: false,
-      );
-
   static CityModel serialize(Map<String, dynamic> data) => CityModel(
         id: U<int>(data['Id'] as int),
         countryId: U<int>(data['CountryId'] as int),
-        name: data['Name'] as String,
+        name: (data['Name'] as String).trim(),
         isPopular: data['IsPopular'] as bool,
       );
 

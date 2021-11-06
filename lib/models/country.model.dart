@@ -38,8 +38,8 @@ class CountryModel {
   static CountryModel serialize(Map<String, dynamic> data) => CountryModel(
         id: U<int>(data['Id'] as int),
         rank: U<int>(data['Rank'] as int),
-        name: data['Name'] as String,
-        alias: data['Alias'] as String,
+        name: (data['Name'] as String).trim(),
+        alias: (data['Alias'] as String).trim(),
         flag: U<int>(data['Flags'] as int),
         isVisa: data['IsVisa'] as bool,
         hasTickets: data['HasTickets'] as bool,

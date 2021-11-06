@@ -145,11 +145,15 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
   bool get okIsActive => true;
   void onOk() {
     if (selectedItems.isEmpty) {
-      widget.onContinue(
-        widget.data.setRange(
-          Pair(range.fst!, range.snd!),
-        ),
-      );
+      if (range.fst == null && range.snd == null) {
+        widget.onContinue(widget.data);
+      } else {
+        widget.onContinue(
+          widget.data.setRange(
+            Pair(range.fst!, range.snd!),
+          ),
+        );
+      }
     } else {
       widget.onContinue(
         widget.data.setWhen(
@@ -248,7 +252,7 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20.0),
+                        const SizedBox(height: 30.0),
                         const Text(
                           'или выберите даты вылета',
                           textAlign: TextAlign.center,
@@ -260,7 +264,7 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
                             color: Color(0xff7d7d7d),
                           ),
                         ),
-                        const SizedBox(height: 20.0),
+                        const SizedBox(height: 10.0),
                         DateTableListWidget(
                           currentDate: currentDate,
                           isAvailable: isDateAvailable,

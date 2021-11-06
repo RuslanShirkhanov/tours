@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ListButtonWidget extends StatelessWidget {
+  final bool isFlag;
   final bool isActive;
   final TextAlign textAlign;
 
@@ -21,6 +22,7 @@ class ListButtonWidget extends StatelessWidget {
 
   const ListButtonWidget({
     Key? key,
+    this.isFlag = false,
     this.isActive = true,
     this.hasCheckbox = false,
     this.checkboxStatus = false,
@@ -86,15 +88,25 @@ class ListButtonWidget extends StatelessWidget {
                       SizedBox(
                         width: 26.0,
                         height: 26.0,
-                        child: Image.asset(
-                          path,
-                          package: 'country_icons',
-                          errorBuilder: (_, __, ___) => Image.asset(
-                            path == 'icons/flags/png/ab.png'
-                                ? 'assets/abkhazia.png'
-                                : 'assets/international.png',
-                          ),
-                        ),
+                        child: isFlag
+                            ? Image.asset(
+                                path,
+                                package: isFlag ? 'country_icons' : null,
+                                errorBuilder: (_, __, ___) {
+                                  if (isFlag) {
+                                    if (path == 'icons/flags/png/ab.png') {
+                                      return Image.asset(
+                                        'assets/abkhazia.png',
+                                      );
+                                    }
+                                    return Image.asset(
+                                      'assets/international.png',
+                                    );
+                                  }
+                                  return Container(color: Colors.grey);
+                                },
+                              )
+                            : SvgPicture.asset(path),
                       ),
                     if (path.isNotEmpty) const SizedBox(width: 15.0),
                     if (text.isNotEmpty)

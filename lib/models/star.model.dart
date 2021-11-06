@@ -18,7 +18,7 @@ class StarModel {
 
   static StarModel serialize(Map<String, dynamic> data) => StarModel(
         id: U<int>(data['id'] as int),
-        name: data['name'] as String,
+        name: (data['name'] as String).trim(),
       );
 
   static Map<String, dynamic> deserialize(StarModel data) => <String, dynamic>{

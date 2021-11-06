@@ -244,6 +244,7 @@ class HotToursSection extends HookWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50.0),
               child: ListButtonWidget(
+                isFlag: true,
                 path:
                     'icons/flags/png/${countryCode(selectedCountry.value?.name ?? '')}.png',
                 text: selectedCountry.value?.name ?? '',

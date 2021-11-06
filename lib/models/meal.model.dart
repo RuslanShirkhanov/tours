@@ -11,7 +11,7 @@ class MealModel {
 
   static MealModel serialize(Map<String, dynamic> data) => MealModel(
         id: U<int>(data['id'] as int),
-        name: data['name'] as String,
+        name: (data['name'] as String).trim(),
       );
 
   static Map<String, dynamic> deserialize(MealModel data) => <String, dynamic>{

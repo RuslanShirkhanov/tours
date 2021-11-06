@@ -2,8 +2,8 @@
     package="com.example.hot_tours">
    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="hot_tours"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Поиск туров"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
