@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,7 +6,6 @@ import 'package:hot_tours/api.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/star.model.dart';
 import 'package:hot_tours/models/tour.model.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
@@ -16,7 +13,7 @@ import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/search_tours/routes/no_search_results.route.dart';
 import 'package:hot_tours/search_tours/routes/search_results.route.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 
 void showLoadingRoute({
   required BuildContext context,
@@ -54,13 +51,6 @@ class LoadingRoute extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
-
-    final stream = useState(Stream.periodic(
-      const Duration(seconds: 1),
-      (index) => index,
-    ).take(110));
-
-    final ticks = useStream(stream.value, initialData: 0);
 
     final tours = useState<List<TourModel>?>(null);
 
@@ -101,22 +91,18 @@ class LoadingRoute extends HookWidget {
       }
     }, [tours.value]);
 
-    // !!!
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: <Widget>[
             Align(
               alignment: Alignment.topCenter,
-              child: HeaderWidget(
+              child: NavBarWidget(
                 hasBackButton: true,
                 title: 'Загрузка',
-                hasSectionIndicator: true,
-                sectionsCount: const U<int>(120),
-                sectionIndex: U<int>(ticks.data!),
+                hasSectionIndicator: false,
                 hasSubtitle: false,
-                hasLoadingIndicator: true,
-                isLoading: true,
+                hasLoadingIndicator: false,
                 backgroundColor: const Color(0xff2eaeee),
               ),
             ),
@@ -132,7 +118,77 @@ class LoadingRoute extends HookWidget {
                       top: 60.0,
                       bottom: 20.0,
                     ),
-                    child: Column(), // !!!
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          '${data.departCity!.name} → ${data.targetCountry!.name}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: 'Roboto',
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                        const SizedBox(height: 6.0),
+                        Text(
+                          '${data.tourDates.first.day}.${data.tourDates.first.month} - ${data.tourDates.last.day}.${data.tourDates.last.month}, ночей: ${data.nightsCount!.fst} - ${data.nightsCount!.snd}, взрослых: ${data.peopleCount!.fst}${data.peopleCount!.snd.gt(0) ? ', детей: ${data.peopleCount!.snd}' : ''}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: 'Roboto',
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14.0,
+                          ),
+                        ),
+                        const SizedBox(height: 100.0),
+                        const Text(
+                          'Идёт поиск туров',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 24.0,
+                            color: Color(0xff0093dd),
+                          ),
+                        ),
+                        const SizedBox(height: 100.0),
+                        const CircularProgressIndicator(),
+                        // SizedBox(
+                        //   width: 16 * 2 + 15 * 2 + 28,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: <Widget>[
+                        //       Container(
+                        //         width: 16.0,
+                        //         height: 16.0,
+                        //         decoration: const BoxDecoration(
+                        //           color: Color(0xff2eaeee),
+                        //           shape: BoxShape.circle,
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         width: 28.0,
+                        //         height: 28.0,
+                        //         decoration: const BoxDecoration(
+                        //           color: Color(0xff2eaeee),
+                        //           shape: BoxShape.circle,
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         width: 16.0,
+                        //         height: 16.0,
+                        //         decoration: const BoxDecoration(
+                        //           color: Color(0xff2eaeee),
+                        //           shape: BoxShape.circle,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
               ),

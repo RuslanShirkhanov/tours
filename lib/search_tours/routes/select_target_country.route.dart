@@ -11,7 +11,7 @@ import 'package:hot_tours/utils/connection.dart';
 import 'package:hot_tours/models/country.model.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/checkbox.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 
@@ -92,7 +92,7 @@ class SelectTargetCountryRoute extends HookWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            HeaderWidget(
+            NavBarWidget(
               hasSectionIndicator: false,
               title: 'Поиск туров',
               subtitle: 'Выберите страну',

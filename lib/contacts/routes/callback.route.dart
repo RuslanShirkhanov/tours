@@ -9,7 +9,7 @@ import 'package:hot_tours/utils/reqs.dart';
 import 'package:hot_tours/utils/show_route.dart';
 
 import 'package:hot_tours/widgets/form_submit.widget.dart';
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/form_field.widget.dart';
 
 import 'package:hot_tours/routes/rules.route.dart';
@@ -58,7 +58,7 @@ class CallbackRoute extends HookWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.topCenter,
-              child: HeaderWidget(
+              child: NavBarWidget(
                 hasBackButton: true,
                 title: 'Обратный звонок',
                 hasSubtitle: false,

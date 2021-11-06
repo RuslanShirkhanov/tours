@@ -14,7 +14,7 @@ import 'package:hot_tours/models/meal.model.dart';
 import 'package:hot_tours/models/star.model.dart';
 import 'package:hot_tours/models/unsigned.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/select_stars.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 import 'package:hot_tours/widgets/checkbox.widget.dart';
@@ -110,7 +110,7 @@ class OtherParamsRoute extends HookWidget {
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
-                child: HeaderWidget(
+                child: NavBarWidget(
                   hasSectionIndicator: false,
                   title: 'Поиск туров',
                   subtitle: 'Другие параметры',

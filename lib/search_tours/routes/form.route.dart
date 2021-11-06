@@ -13,7 +13,7 @@ import 'package:hot_tours/utils/reqs.dart';
 
 import 'package:hot_tours/search_tours/models/data.model.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/search_tours/widgets/form.widget.dart';
 
 import 'package:hot_tours/routes/rules.route.dart';
@@ -68,7 +68,7 @@ class FormRoute extends HookWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            HeaderWidget(
+            NavBarWidget(
               hasSectionIndicator: false,
               title: 'Покупка тура',
               hasSubtitle: false,

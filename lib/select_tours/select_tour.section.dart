@@ -15,7 +15,7 @@ import 'package:hot_tours/select_tours/models/data.model.dart';
 import 'package:hot_tours/select_tours/routes/select_from.route.dart';
 import 'package:hot_tours/select_tours/routes/select_where.route.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 import 'package:hot_tours/widgets/footer.widget.dart';
 
@@ -91,7 +91,7 @@ class SelectTourSection extends HookWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.topCenter,
-              child: HeaderWidget(
+              child: NavBarWidget(
                 sectionsCount: const U(6),
                 sectionIndex: data.sectionIndex,
                 hasSectionIndicator: true,

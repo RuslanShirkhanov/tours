@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 
 void showRulesRoute(BuildContext context) => showRoute<Object?>(
       context: context,
@@ -40,7 +40,7 @@ class RulesRoute extends HookWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.topCenter,
-              child: HeaderWidget(
+              child: NavBarWidget(
                 hasBackButton: true,
                 hasSubtitle: false,
                 hasSectionIndicator: false,

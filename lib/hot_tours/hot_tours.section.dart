@@ -14,13 +14,107 @@ import 'package:hot_tours/models/depart_city.model.dart';
 import 'package:hot_tours/models/star.model.dart';
 import 'package:hot_tours/models/tour.model.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 import 'package:hot_tours/widgets/select_stars.widget.dart';
 import 'package:hot_tours/hot_tours/widgets/card.widget.dart';
 
 import 'package:hot_tours/hot_tours/routes/select_depart_city.route.dart';
 import 'package:hot_tours/hot_tours/routes/select_target_country.route.dart';
+
+String countryCode(String value) =>
+    const <String, String>{
+      'абхазия': 'ab',
+      'австрия': 'at',
+      'азербайджан': 'az',
+      'албания': 'al',
+      'андорра': 'ad',
+      'аргентина': 'ar',
+      'армения': 'am',
+      'багамы': 'bs',
+      'бангладеш': 'bd',
+      'барбадос': 'bb',
+      'бахрейн': 'bh',
+      'беларусь': 'by',
+      'белиз': 'bz',
+      'бельгия': 'be',
+      'боливия': 'bo',
+      'босния и герцеговина': 'ba',
+      'ботсвана': 'bw',
+      'бразилия': 'br',
+      'венгрия': 'hu',
+      'венесуэлла': 've',
+      'вьетнам': 'vn',
+      'гватемала': 'gt',
+      'германия': 'de',
+      'греция': 'gr',
+      'грузия': 'ge',
+      'дания': 'dk',
+      'доминикана': 'dm',
+      'египет': 'eg',
+      'израиль': 'il',
+      'индонезия': 'id',
+      'иордания': 'jo',
+      'исландия': 'is',
+      'испания': 'es',
+      'италия': 'it',
+      'казахстан': 'kz',
+      'катар': 'qa',
+      'кипр': 'cy',
+      'коста-рика': 'cr',
+      'куба': 'cu',
+      'кыргызстан': 'kg',
+      'латвия': 'lv',
+      'литва': 'lt',
+      'маврикий': 'mu',
+      'македония': 'mk',
+      'малайзия': 'my',
+      'мальдивы': 'mv',
+      'мальта': 'mt',
+      'марокко': 'ma',
+      'молдавия': 'md',
+      'намибия': 'na',
+      'нидерланды': 'nl',
+      'норвегия': 'no',
+      'оаэ': 'ae',
+      'оман': 'om',
+      'панама': 'pa',
+      'парагвай': 'py',
+      'перу': 'pe',
+      'польша': 'pl',
+      'португалия': 'pt',
+      'россия': 'ru',
+      'сейшелы': 'sc',
+      'сербия': 'rs',
+      'словакия': 'sk',
+      'словения': 'sl',
+      'таджикистан': 'tj',
+      'таиланд': 'th',
+      'тайвань': 'tw',
+      'теркс и кайкой': 'tc',
+      'тунис': 'tn',
+      'турция': 'tr',
+      'уганда': 'ug',
+      'узбекистан': 'uz',
+      'украина': 'ua',
+      'фиджи': 'fj',
+      'флиппины': 'ph',
+      'финляндия': 'fi',
+      'франция': 'fr',
+      'черногория': 'me',
+      'чехия': 'cz',
+      'чили': 'cl',
+      'швейцария': 'ch',
+      'швеция': 'se',
+      'шри-ланка': 'lk',
+      'эквадор': 'ec',
+      'эстония': 'ee',
+      'эфиопия': 'et',
+      'юар': 'za',
+      'южная корея': 'kr',
+      'ямайка': 'jm',
+    }[value.toLowerCase()] ??
+    '';
 
 void showHotToursSection({
   required BuildContext context,
@@ -125,7 +219,7 @@ class HotToursSection extends HookWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            HeaderWidget(
+            NavBarWidget(
               hasSectionIndicator: false,
               title: 'Горящие туры',
               hasSubtitle: false,
@@ -150,6 +244,8 @@ class HotToursSection extends HookWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50.0),
               child: ListButtonWidget(
+                path:
+                    'icons/flags/png/${countryCode(selectedCountry.value?.name ?? '')}.png',
                 text: selectedCountry.value?.name ?? '',
                 onTap: () => showSelectTargetCountryRoute(
                   context: context,

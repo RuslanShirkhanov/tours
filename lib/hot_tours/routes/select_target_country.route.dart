@@ -6,7 +6,7 @@ import 'package:hot_tours/utils/show_route.dart';
 
 import 'package:hot_tours/models/country.model.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/checkbox.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 
@@ -67,7 +67,7 @@ class SelectTargetCountryRoute extends HookWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            HeaderWidget(
+            NavBarWidget(
               hasSectionIndicator: false,
               title: 'Горящие туры',
               subtitle: 'Выберите страну',
@@ -85,21 +85,22 @@ class SelectTargetCountryRoute extends HookWidget {
             Expanded(
               child: Scrollbar(
                 controller: scrollController,
-                child: ListView.builder(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
                   controller: scrollController,
                   itemCount: countries.length,
                   itemBuilder: (_, index) => Padding(
                     padding: EdgeInsets.only(
-                      top: 20.0,
                       left: 54.0,
                       right: 54.0,
-                      bottom: index == data.length - 1 ? 20.0 : 0.0,
+                      bottom: index == data.length - 2 ? 20.0 : 0.0,
                     ),
                     child: ListButtonWidget(
                       text: countries[index].name,
                       onTap: () => onSelect(countries[index]),
                     ),
                   ),
+                  separatorBuilder: (_, index) => const SizedBox(height: 20.0),
                 ),
               ),
             ),

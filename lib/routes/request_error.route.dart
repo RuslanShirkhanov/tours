@@ -5,7 +5,7 @@ import 'package:hot_tours/api.dart';
 import 'package:hot_tours/utils/reqs.dart';
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/select_tours/widgets/button.widget.dart';
 
 import 'package:hot_tours/routes/hub.route.dart';
@@ -58,7 +58,7 @@ class RequestErrorRoute extends StatelessWidget {
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
-                child: HeaderWidget(
+                child: NavBarWidget(
                   hasBackButton: true,
                   hasSectionIndicator: false,
                   hasSubtitle: false,

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:dio/dio.dart';
+import 'package:hot_tours/models/hotel_comment.model.dart';
 import 'package:hot_tours/utils/pair.dart';
 
 import 'package:hot_tours/utils/reqs.dart';
@@ -18,6 +19,7 @@ import 'package:hot_tours/models/tour.model.dart';
 
 import 'package:hot_tours/routes/feedback.route.dart';
 import 'package:hot_tours/routes/request_error.route.dart';
+import 'package:xml/xml.dart';
 
 abstract class Api {
   static final _dio = Dio();
@@ -144,6 +146,29 @@ abstract class Api {
           .cast<HotelModel>();
     }
     return const [];
+  }
+
+  static Future<List<HotelCommentModel>> getHotelComments({
+    required U<int> hotelId,
+  }) async {
+    if (!await Api.hasConnection()) {
+      return [];
+    }
+
+    final uri = _makeUri('hotel_comments', {
+      'hotel_id': hotelId,
+    });
+    final res = await _dio.get<Object>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
+
+    if (data['kind'] == 'success') {
+      final xml = XmlDocument.parse(data['value'] as String);
+      return xml
+          .findAllElements('a:HotelComment')
+          .map(HotelCommentModel.serialize)
+          .toList();
+    }
+    return [];
   }
 
   static Future<List<DateTime>> getTourDates({

@@ -9,17 +9,17 @@ import 'package:hot_tours/models/tour.model.dart';
 import 'package:hot_tours/widgets/image_widget.dart';
 
 class SliderWidget extends HookWidget {
-  final TourModel data;
+  final TourModel tour;
 
   const SliderWidget({
     Key? key,
-    required this.data,
+    required this.tour,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final currentIndex = useState(0);
-    final photosCount = data.photosCount.value;
+    final photosCount = tour.photosCount.value;
 
     void prev() {
       if (currentIndex.value == 0) {
@@ -45,11 +45,11 @@ class SliderWidget extends HookWidget {
             child: SizedBox(
               width: double.infinity,
               height: 220.0,
-              child: data.photosCount.value == 0
+              child: tour.photosCount.value == 0
                   ? blackPlug()
                   : NetworkImageWidget(
                       url: Api.makeImageUri(
-                        hotelId: data.hotelId,
+                        hotelId: tour.hotelId,
                         imageNumber: U<int>(currentIndex.value),
                       ),
                     ),

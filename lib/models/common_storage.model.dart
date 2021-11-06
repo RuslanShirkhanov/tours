@@ -2,13 +2,10 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:path_provider/path_provider.dart';
 
 import 'package:hot_tours/models/depart_city.model.dart';
 
-@immutable
 class CommonDataModel {
   final DepartCityModel? departCity;
 
@@ -19,7 +16,6 @@ class CommonDataModel {
   factory CommonDataModel.empty() => const CommonDataModel(departCity: null);
 }
 
-@immutable
 class CommonStorageModel {
   final CommonDataModel data;
 
@@ -56,7 +52,6 @@ class CommonStorageModel {
       };
 }
 
-@immutable
 abstract class CommonStorageController {
   static Future<String> get _localPath async =>
       (await getApplicationDocumentsDirectory()).path;

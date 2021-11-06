@@ -5,7 +5,7 @@ import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/search_tours/search_tours.section.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 
 import 'package:hot_tours/select_tours/routes/form.route.dart';
@@ -51,7 +51,7 @@ class NoSearchResultsRoute extends StatelessWidget {
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
-                child: HeaderWidget(
+                child: NavBarWidget(
                   backgroundColor: const Color(0xff2Eaeee),
                   hasSectionIndicator: false,
                   title: 'Результаты поиска',

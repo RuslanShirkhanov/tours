@@ -23,7 +23,6 @@ extension Check on ConnectivityResult? {
   bool get isNotNone => transform != ConnectivityResult.none;
 }
 
-@immutable
 abstract class ConnectionUtil {
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 

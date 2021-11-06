@@ -8,7 +8,7 @@ import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/select_tours/models/data.model.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 import 'package:hot_tours/widgets/footer.widget.dart';
 
@@ -178,7 +178,7 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
-                child: HeaderWidget(
+                child: NavBarWidget(
                   sectionsCount: const U(6),
                   sectionIndex: widget.data.sectionIndex,
                   hasSectionIndicator: true,
@@ -261,15 +261,13 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
                           ),
                         ),
                         const SizedBox(height: 20.0),
-                        ...List.generate(
-                          currentDate.lastMonths.length,
-                          (index) => DateTableWidget(
-                            currentDate: currentDate,
-                            isAvailable: isDateAvailable,
-                            isSelected: isDateSelected,
-                            onSelect: onSelectDate,
-                            date: currentDate.lastMonths[index],
-                          ),
+                        DateTableListWidget(
+                          currentDate: currentDate,
+                          isAvailable: isDateAvailable,
+                          isSelected: isDateSelected,
+                          onSelect: onSelectDate,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
                         ),
                       ],
                     ),

@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:hot_tours/utils/map_to_list.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 import 'package:hot_tours/widgets/footer.widget.dart';
 
@@ -92,7 +92,7 @@ class SelectManyRoute<T> extends HookWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.topCenter,
-              child: HeaderWidget(
+              child: NavBarWidget(
                 backgroundColor: const Color(0xff2Eaeee),
                 hasSectionIndicator: false,
                 title: title,

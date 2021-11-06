@@ -86,7 +86,15 @@ class ListButtonWidget extends StatelessWidget {
                       SizedBox(
                         width: 26.0,
                         height: 26.0,
-                        child: SvgPicture.asset(path),
+                        child: Image.asset(
+                          path,
+                          package: 'country_icons',
+                          errorBuilder: (_, __, ___) => Image.asset(
+                            path == 'icons/flags/png/ab.png'
+                                ? 'assets/abkhazia.png'
+                                : 'assets/international.png',
+                          ),
+                        ),
                       ),
                     if (path.isNotEmpty) const SizedBox(width: 15.0),
                     if (text.isNotEmpty)

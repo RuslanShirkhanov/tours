@@ -37,6 +37,7 @@ class StarModel {
   static final getAllStars = [
     ...StarModel.getStars,
     const StarModel(id: U<int>(405), name: 'Apts'),
+    const StarModel(id: U<int>(405), name: 'Villas'),
   ];
 
   static String idToName(U<int> id) {
@@ -51,7 +52,7 @@ class StarModel {
   static U<int> nameToId(String name) {
     final stars = StarModel.getAllStars;
     assert(stars.map((star) => star.name).contains(name));
-    if (name == 'Apts') {
+    if (name == 'Apts' || name == 'Villas') {
       return const U<int>(404);
     }
     return stars.firstWhere((star) => star.name == name).id;

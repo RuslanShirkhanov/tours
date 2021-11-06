@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:hot_tours/models/unsigned.dart';
 
-class HeaderWidget extends StatelessWidget {
+class NavBarWidget extends StatelessWidget {
   final U<int> sectionsCount;
   final U<int> sectionIndex;
   final bool hasSectionIndicator;
@@ -21,7 +21,7 @@ class HeaderWidget extends StatelessWidget {
   final bool hasLoadingIndicator;
   final Color loadingIndicatorColor;
 
-  const HeaderWidget({
+  const NavBarWidget({
     Key? key,
     this.sectionsCount = const U<int>(1),
     this.sectionIndex = const U<int>(0),

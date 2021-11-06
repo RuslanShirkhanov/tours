@@ -9,7 +9,7 @@ import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/search_tours/models/storage.model.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 import 'package:hot_tours/select_tours/widgets/button.widget.dart';
 
@@ -91,7 +91,7 @@ class SearchToursSection extends HookWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.topCenter,
-              child: HeaderWidget(
+              child: NavBarWidget(
                 hasSectionIndicator: false,
                 title: 'Поиск туров',
                 hasSubtitle: false,

@@ -6,7 +6,7 @@ import 'package:hot_tours/utils/map_to_list.dart';
 
 import 'package:hot_tours/models/unsigned.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
 import 'package:hot_tours/widgets/footer.widget.dart';
 
@@ -91,7 +91,7 @@ class SelectManyRoute extends HookWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.topCenter,
-              child: HeaderWidget(
+              child: NavBarWidget(
                 sectionsCount: const U(6),
                 sectionIndex: sectionIndex,
                 hasSectionIndicator: true,

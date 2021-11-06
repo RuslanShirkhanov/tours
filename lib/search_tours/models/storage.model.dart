@@ -2,8 +2,6 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:path_provider/path_provider.dart';
 
 import 'package:hot_tours/utils/pair.dart';
@@ -17,7 +15,6 @@ import 'package:hot_tours/models/star.model.dart';
 import 'package:hot_tours/models/hotel.model.dart';
 import 'package:hot_tours/models/meal.model.dart';
 
-@immutable
 class StorageModel {
   final DataModel data;
 
@@ -111,7 +108,6 @@ class StorageModel {
       };
 }
 
-@immutable
 abstract class StorageController {
   static Future<String> get _localPath async =>
       (await getApplicationDocumentsDirectory()).path;

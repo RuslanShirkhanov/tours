@@ -11,7 +11,7 @@ import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/abstract_data.model.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/select_tours/widgets/form.widget.dart';
 
 import 'package:hot_tours/routes/rules.route.dart';
@@ -66,7 +66,7 @@ class FormRoute extends HookWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            HeaderWidget(
+            NavBarWidget(
               sectionsCount: const U(6),
               sectionIndex: const U(5),
               hasSectionIndicator: true,

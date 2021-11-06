@@ -12,7 +12,7 @@ import 'package:hot_tours/utils/map_to_list.dart';
 
 import 'package:hot_tours/search_tours/models/data.model.dart';
 
-import 'package:hot_tours/widgets/header.widget.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/footer.widget.dart';
 
 void showSelectDatesRoute({
@@ -148,7 +148,7 @@ class _SelectDatesRouteState extends State<SelectDatesRoute> {
             children: <Widget>[
               Align(
                 alignment: Alignment.topCenter,
-                child: HeaderWidget(
+                child: NavBarWidget(
                   backgroundColor: const Color(0xff2Eaeee),
                   hasSectionIndicator: false,
                   title: 'Поиск туров',
@@ -226,12 +226,14 @@ extension on Status {
   }
 }
 
-@immutable
 class DateTableListWidget extends HookWidget {
   final DateTime currentDate;
   final bool Function(DateTime) isAvailable;
   final bool Function(DateTime) isSelected;
   final void Function(DateTime) onSelect;
+
+  final ScrollPhysics? physics;
+  final bool shrinkWrap;
 
   const DateTableListWidget({
     Key? key,
@@ -239,6 +241,8 @@ class DateTableListWidget extends HookWidget {
     required this.isAvailable,
     required this.isSelected,
     required this.onSelect,
+    this.physics,
+    this.shrinkWrap = false,
   }) : super(key: key);
 
   @override
@@ -248,6 +252,8 @@ class DateTableListWidget extends HookWidget {
     return Scrollbar(
       controller: scrollController,
       child: ListView.separated(
+        physics: physics,
+        shrinkWrap: shrinkWrap,
         controller: scrollController,
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         itemCount: currentDate.lastMonths.length,
