@@ -1,6 +1,11 @@
 import 'package:hot_tours/utils/pair.dart';
 
 abstract class Date {
+  static DateTime parseDate(String value) {
+    final values = value.split('.').map(int.parse).toList();
+    return DateTime(values.last, values[1], values.first);
+  }
+
   static String monthToString(int value) {
     assert(value >= 1 && value <= 12);
     return [

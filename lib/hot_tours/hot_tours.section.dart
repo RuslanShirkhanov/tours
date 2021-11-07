@@ -217,96 +217,118 @@ class HotToursSection extends HookWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: <Widget>[
-            NavBarWidget(
-              hasSectionIndicator: false,
-              title: 'Горящие туры',
-              hasSubtitle: false,
-              backgroundColor: const Color(0xffdc2323),
-              hasBackButton: true,
-              isLoading: isLoading.value,
-              hasLoadingIndicator: true,
-            ),
-            const SizedBox(height: 15.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0),
-              child: ListButtonWidget(
-                text: selectedCity.value?.name ?? '',
-                onTap: () => showSelectDepartCityRoute(
-                  context: context,
-                  data: departCities.value,
-                  onSelect: setState<DepartCityModel?>(selectedCity),
-                ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: NavBarWidget(
+                hasSectionIndicator: false,
+                title: 'Горящие туры',
+                hasSubtitle: false,
+                backgroundColor: const Color(0xffdc2323),
+                hasBackButton: true,
+                isLoading: isLoading.value,
+                hasLoadingIndicator: true,
               ),
             ),
-            const SizedBox(height: 15.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0),
-              child: ListButtonWidget(
-                isFlag: true,
-                path:
-                    'icons/flags/png/${countryCode(selectedCountry.value?.name ?? '')}.png',
-                text: selectedCountry.value?.name ?? '',
-                onTap: () => showSelectTargetCountryRoute(
-                  context: context,
-                  data: targetCountries.value,
-                  onSelect: setState<CountryModel?>(selectedCountry),
-                ),
-              ),
-            ),
-            const SizedBox(height: 18.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'Отель от',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 16.0,
-                    color: Color(0xff7d7d7d),
-                  ),
-                ),
-                const SizedBox(width: 6.0),
-                SelectStarsWidget(
-                  stars: selectedStars.value,
-                  onSelect: setState<List<StarModel>>(selectedStars),
-                ),
-              ],
-            ),
-            if (!isLoading.value && tours.value.isEmpty)
-              const Padding(
-                padding: EdgeInsets.only(top: 18.0),
-                child: Center(
-                  child: Text(
-                    'Туры не найдены :(',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20.0,
-                      color: Color(0xff4d4948),
-                    ),
-                  ),
-                ),
-              ),
-            Expanded(
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 350),
-                opacity: isLoading.value ? 0.0 : 1.0,
-                child: Scrollbar(
-                  controller: scrollController,
-                  child: ListView(
+            Align(
+              child: LayoutBuilder(
+                builder: (_, constraints) => Container(
+                  height: constraints.maxHeight,
+                  padding: const EdgeInsets.only(top: 48.0),
+                  child: Scrollbar(
                     controller: scrollController,
-                    children: tours.value
-                        .map((tour) => Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: CardWidget(data: data.setTour(tour)),
-                            ))
-                        .toList(),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      controller: scrollController,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 50.0),
+                            child: ListButtonWidget(
+                              text: selectedCity.value?.name ?? '',
+                              onTap: () => showSelectDepartCityRoute(
+                                context: context,
+                                data: departCities.value,
+                                onSelect:
+                                    setState<DepartCityModel?>(selectedCity),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 15.0),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 50.0),
+                            child: ListButtonWidget(
+                              isFlag: true,
+                              path:
+                                  'icons/flags/png/${countryCode(selectedCountry.value?.name ?? '')}.png',
+                              text: selectedCountry.value?.name ?? '',
+                              onTap: () => showSelectTargetCountryRoute(
+                                context: context,
+                                data: targetCountries.value,
+                                onSelect:
+                                    setState<CountryModel?>(selectedCountry),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 18.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Text(
+                                'Отель от',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w400,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 16.0,
+                                  color: Color(0xff7d7d7d),
+                                ),
+                              ),
+                              const SizedBox(width: 6.0),
+                              SelectStarsWidget(
+                                stars: selectedStars.value,
+                                onSelect:
+                                    setState<List<StarModel>>(selectedStars),
+                              ),
+                            ],
+                          ),
+                          if (!isLoading.value && tours.value.isEmpty)
+                            const Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: Center(
+                                child: Text(
+                                  'К сожалению, туры не найдены :(',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 18.0,
+                                    color: Color(0xff4d4948),
+                                  ),
+                                ),
+                              ),
+                            )
+                          else
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 350),
+                              opacity: isLoading.value ? 0.0 : 1.0,
+                              child: Column(
+                                children: tours.value
+                                    .map((tour) => Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: CardWidget(
+                                              data: data.setTour(tour)),
+                                        ))
+                                    .toList(),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

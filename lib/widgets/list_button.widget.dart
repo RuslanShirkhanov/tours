@@ -20,6 +20,8 @@ class ListButtonWidget extends StatelessWidget {
   final Color textColor;
   final Color backgroundColor;
 
+  final double? fontSize;
+
   const ListButtonWidget({
     Key? key,
     this.isFlag = false,
@@ -34,6 +36,7 @@ class ListButtonWidget extends StatelessWidget {
     this.height = 45.0,
     this.textColor = const Color(0xff4d4948),
     this.backgroundColor = Colors.white,
+    this.fontSize,
   }) : super(key: key);
 
   @override
@@ -118,7 +121,7 @@ class ListButtonWidget extends StatelessWidget {
                             fontFamily: 'Roboto',
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.normal,
-                            fontSize: 18.0,
+                            fontSize: fontSize ?? 18.0,
                             color: textColor,
                           ),
                           overflow: TextOverflow.ellipsis,

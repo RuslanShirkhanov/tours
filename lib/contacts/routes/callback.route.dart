@@ -54,95 +54,89 @@ class CallbackRoute extends HookWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
-              child: NavBarWidget(
-                hasBackButton: true,
-                title: 'Обратный звонок',
-                hasSubtitle: false,
-                hasSectionIndicator: false,
-                backgroundColor: const Color(0xff2eaeee),
-                hasLoadingIndicator: false,
-              ),
+            NavBarWidget(
+              hasBackButton: true,
+              title: 'Обратный звонок',
+              hasSubtitle: false,
+              hasSectionIndicator: false,
+              backgroundColor: const Color(0xff2eaeee),
+              hasLoadingIndicator: false,
             ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 48.0),
-                child: Scrollbar(
+            Expanded(
+              child: Scrollbar(
+                controller: scrollController,
+                child: SingleChildScrollView(
                   controller: scrollController,
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Form(
-                      key: formKey.value,
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(height: 130.0),
-                          numberFormField(
-                            focusNode: focusNode,
-                            onChange: setState(formData),
-                          ),
-                          const SizedBox(height: 45.0),
-                          FormSubmitWidget(
-                            text: 'Отправить',
-                            onTap: () {
-                              focusNode.unfocus();
-                              if (formKey.value.currentState!.validate()) {
-                                Api.makeCreateLeadRequest(
-                                  context: context,
-                                  kind: ReqKind.callback,
-                                  note:
-                                      'Обратный звонок\nДата: ${DateTime.now()}\nНомер: ${formData.value}',
-                                );
-                              }
-                            },
-                            backgroundColor: const Color(0xff2eaeee),
-                          ),
-                        ],
-                      ),
-                    ),
+                  padding: const EdgeInsets.only(
+                    top: 30.0,
+                    bottom: 20.0,
                   ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 40.0,
-                  right: 40.0,
-                  bottom: 40.0,
-                ),
-                child: SizedBox(
-                  width: 320.0,
-                  child: RichText(
-                    text: TextSpan(
-                      children: <InlineSpan>[
-                        const TextSpan(
-                          text: 'Отправляя запрос, Вы подтверждаете ',
+                  child: Column(
+                    children: <Widget>[
+                      Form(
+                        key: formKey.value,
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(height: 130.0),
+                            numberFormField(
+                              focusNode: focusNode,
+                              onChange: setState(formData),
+                            ),
+                            const SizedBox(height: 45.0),
+                            FormSubmitWidget(
+                              text: 'Отправить',
+                              onTap: () {
+                                focusNode.unfocus();
+                                if (formKey.value.currentState!.validate()) {
+                                  Api.makeCreateLeadRequest(
+                                    context: context,
+                                    kind: ReqKind.callback,
+                                    note:
+                                        'Обратный звонок\nДата: ${DateTime.now()}\nНомер: ${formData.value}',
+                                  );
+                                }
+                              },
+                              backgroundColor: const Color(0xff2eaeee),
+                            ),
+                            const SizedBox(height: 100.0),
+                            SizedBox(
+                              width: 320.0,
+                              child: RichText(
+                                text: TextSpan(
+                                  children: <InlineSpan>[
+                                    const TextSpan(
+                                      text:
+                                          'Отправляя запрос, Вы подтверждаете ',
+                                    ),
+                                    TextSpan(
+                                      text: 'согласие',
+                                      style: const TextStyle(
+                                        color: Color(0xff0093dd),
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () => showRulesRoute(context),
+                                    ),
+                                    const TextSpan(
+                                      text:
+                                          ' на обработку персональных данных.',
+                                    ),
+                                  ],
+                                  style: const TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 10.0,
+                                    color: Color(0xff4d4948),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        TextSpan(
-                          text: 'согласие',
-                          style: const TextStyle(
-                            color: Color(0xff0093dd),
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => showRulesRoute(context),
-                        ),
-                        const TextSpan(
-                          text: ' на обработку персональных данных.',
-                        ),
-                      ],
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 10.0,
-                        color: Color(0xff4d4948),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),

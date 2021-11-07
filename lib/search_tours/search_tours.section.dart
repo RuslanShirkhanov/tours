@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'package:hot_tours/utils/date.dart';
+import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/show_route.dart';
-
-import 'package:hot_tours/models/unsigned.dart';
 
 import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/search_tours/models/storage.model.dart';
+import 'package:hot_tours/models/unsigned.dart';
 
 import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
@@ -142,9 +143,18 @@ class SearchToursSection extends HookWidget {
                           children: <Widget>[
                             Flexible(
                               child: ListButtonWidget(
+                                fontSize: 14.0,
                                 isActive:
                                     currentData.value.targetCountry != null,
-                                text: 'Даты вылета',
+                                text: () {
+                                  final dates = currentData.value.tourDates;
+                                  if (dates.isEmpty) {
+                                    return 'Даты вылета';
+                                  }
+                                  final first = dates.first;
+                                  final last = dates.last;
+                                  return '${first.day} ${declineWord(Date.monthToString(first.month), U(first.day))} - ${last.day} ${declineWord(Date.monthToString(last.month), U(last.day))}';
+                                }(),
                                 onTap: () => showSelectDatesRoute(
                                   context: context,
                                   data: currentData.value,
@@ -155,11 +165,12 @@ class SearchToursSection extends HookWidget {
                             const SizedBox(width: 22.0),
                             Flexible(
                               child: ListButtonWidget(
+                                fontSize: 14.0,
                                 isActive:
                                     currentData.value.tourDates.isNotEmpty,
                                 text: currentData.value.nightsCount != null
                                     ? '${currentData.value.nightsCount!.fst} - ${currentData.value.nightsCount!.snd} ночей'
-                                    : 'Количество ночей',
+                                    : 'Кол-во ночей',
                                 onTap: () => showSelectNightsCountRoute(
                                   context: context,
                                   data: currentData.value,
@@ -174,15 +185,22 @@ class SearchToursSection extends HookWidget {
                           children: <Widget>[
                             Flexible(
                               child: ListButtonWidget(
+                                fontSize: 14.0,
                                 isActive:
                                     currentData.value.tourDates.isNotEmpty &&
                                         currentData.value.nightsCount != null,
-                                text: currentData.value.peopleCount != null
-                                    ? currentData.value.peopleCount!.snd ==
-                                            const U<int>(0)
-                                        ? '${currentData.value.peopleCount!.fst} взр'
-                                        : '${currentData.value.peopleCount!.fst} взр - ${currentData.value.peopleCount!.snd} реб'
-                                    : 'Количество людей',
+                                text: () {
+                                  final people = currentData.value.peopleCount;
+                                  if (people == null) {
+                                    return 'Кол-во людей';
+                                  }
+                                  final adults = people.fst;
+                                  final children = people.snd;
+                                  if (children.eq(0)) {
+                                    return '$adults ${declineWord('взрослый', adults)}';
+                                  }
+                                  return '$adults ${declineWord('взрослый', adults).substring(0, 3)}. + $children ${declineWord('ребёнок', children).substring(0, 3)}.';
+                                }(),
                                 onTap: () => showSelectPeopleCountRoute(
                                   context: context,
                                   data: currentData.value,

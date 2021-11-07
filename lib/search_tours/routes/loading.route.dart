@@ -4,8 +4,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:hot_tours/api.dart';
 
+import 'package:hot_tours/utils/string.dart';
+import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/show_route.dart';
 
+import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/star.model.dart';
 import 'package:hot_tours/models/tour.model.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
@@ -132,8 +135,34 @@ class LoadingRoute extends HookWidget {
                         ),
                         const SizedBox(height: 6.0),
                         Text(
-                          '${data.tourDates.first.day}.${data.tourDates.first.month} - ${data.tourDates.last.day}.${data.tourDates.last.month}, ночей: ${data.nightsCount!.fst} - ${data.nightsCount!.snd}, взрослых: ${data.peopleCount!.fst}${data.peopleCount!.snd.gt(0) ? ', детей: ${data.peopleCount!.snd}' : ''}',
+                          () {
+                                final date = data.tourDates.first;
+                                final day = U(date.day);
+                                final month = U(date.month);
+                                return '$day ${declineWord(Date.monthToString(month.value), day)}';
+                              }() +
+                              ' - ' +
+                              () {
+                                final date = data.tourDates.last;
+                                final day = U(date.day);
+                                final month = U(date.month);
+                                return '$day ${declineWord(Date.monthToString(month.value), day)}';
+                              }() +
+                              ', ' +
+                              () {
+                                final nights = data.nightsCount!;
+                                return '${nights.fst} - ${nights.snd} ночей';
+                              }() +
+                              ', ' +
+                              () {
+                                final people = data.peopleCount!;
+                                if (people.snd.eq(0)) {
+                                  return '${people.fst} ${declineWord('взрослый', people.fst)}';
+                                }
+                                return '${people.fst} ${declineWord('взрослый', people.fst).substring(0, 3)}. + ${people.snd} ${declineWord('ребёнок', people.snd).substring(0, 3)}.';
+                              }(),
                           textAlign: TextAlign.center,
+                          maxLines: 2,
                           style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontStyle: FontStyle.normal,
@@ -155,38 +184,6 @@ class LoadingRoute extends HookWidget {
                         ),
                         const SizedBox(height: 100.0),
                         const CircularProgressIndicator(),
-                        // SizedBox(
-                        //   width: 16 * 2 + 15 * 2 + 28,
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: <Widget>[
-                        //       Container(
-                        //         width: 16.0,
-                        //         height: 16.0,
-                        //         decoration: const BoxDecoration(
-                        //           color: Color(0xff2eaeee),
-                        //           shape: BoxShape.circle,
-                        //         ),
-                        //       ),
-                        //       Container(
-                        //         width: 28.0,
-                        //         height: 28.0,
-                        //         decoration: const BoxDecoration(
-                        //           color: Color(0xff2eaeee),
-                        //           shape: BoxShape.circle,
-                        //         ),
-                        //       ),
-                        //       Container(
-                        //         width: 16.0,
-                        //         height: 16.0,
-                        //         decoration: const BoxDecoration(
-                        //           color: Color(0xff2eaeee),
-                        //           shape: BoxShape.circle,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

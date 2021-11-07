@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:hot_tours/api.dart';
+import 'package:hot_tours/utils/date.dart';
+import 'package:hot_tours/utils/string.dart';
 
 import 'package:hot_tours/utils/thousands.dart';
 
@@ -92,7 +94,13 @@ class CardWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 2.0),
                       Text(
-                        'Вылет: ${data.tour!.dateIn}, количество ночей: ${data.tour!.nightsCount}',
+                        () {
+                          final date = Date.parseDate(data.tour!.dateIn);
+                          final day = U(date.day);
+                          final month = U(date.month);
+                          final nights = data.tour!.nightsCount;
+                          return '$day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
+                        }(),
                         style: const TextStyle(
                           fontFamily: 'Roboto',
                           fontStyle: FontStyle.normal,

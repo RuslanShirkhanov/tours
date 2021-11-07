@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:hot_tours/api.dart';
 
+import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/color.dart';
 import 'package:hot_tours/utils/narrow.dart';
 import 'package:hot_tours/utils/sorted.dart';
@@ -20,8 +21,8 @@ import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/image_widget.dart';
 import 'package:hot_tours/widgets/shown_stars.widget.dart';
-import 'package:hot_tours/select_tours/widgets/button.widget.dart';
 import 'package:hot_tours/widgets/slider.widget.dart';
+import 'package:hot_tours/select_tours/widgets/button.widget.dart';
 
 import 'package:hot_tours/search_tours/routes/form.route.dart';
 
@@ -208,7 +209,13 @@ class CardWidget extends StatelessWidget {
                             child: Text(
                               tours.first.hotelDesc.isEmpty
                                   ? 'Описание отеля временно отсутствует. Ведётся добавление информации.'
-                                  : tours.first.hotelDesc,
+                                  : tours.first.hotelDesc.length > 70
+                                      ? tours.first.hotelDesc
+                                              .substring(0, 70)
+                                              .replaceAll('\n', ' ') +
+                                          '...'
+                                      : tours.first.hotelDesc
+                                          .replaceAll('\n', ' '),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 5,
                               style: const TextStyle(
@@ -266,7 +273,7 @@ void showCardRoute({
       builder: (_) => PageRouteBuilder(
         pageBuilder: (context, fst, snd) => CardRoute(data: data, tours: tours),
         transitionsBuilder: (context, fst, snd, child) {
-          const begin = Offset(0.0, 1.0);
+          const begin = Offset(1.0, 0.0);
           const end = Offset.zero;
           const curve = Curves.ease;
 
@@ -400,7 +407,7 @@ class HeaderWidget extends StatelessWidget {
                         fontFamily: 'Roboto',
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.normal,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         color: Color(0xff4d4948),
                       ),
                     ),
@@ -562,17 +569,40 @@ class ToursListWidget extends StatelessWidget {
         itemBuilder: (_, index) => Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
-            horizontal: 28.0,
+            horizontal: 20.0,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                'Вылет - ${tours[index].dateIn}, ночей - ${tours[index].nightsCount}\n'
-                '${tours[index].roomTypeDesc.capitalized}\n'
-                'Взрослых - ${tours[index].adultsCount}${tours[index].childrenCount > const U(0) ? ', детей - ${tours[index].childrenCount}' : ''}\n'
-                '${tours[index].mealTypeDesc.capitalized} (${tours[index].mealType.capitalized})\n',
+                () {
+                      final date = Date.parseDate(tours[index].dateIn);
+                      final day = U(date.day);
+                      final month = U(date.month);
+                      final nights = tours[index].nightsCount;
+                      return '$day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
+                    }() +
+                    '\n' +
+                    () {
+                      final adults = tours[index].adultsCount;
+                      final children = tours[index].childrenCount;
+                      if (children.eq(0)) {
+                        return '$adults ${declineWord('взрослый', adults)}';
+                      }
+                      return '$adults ${declineWord('взрослый', adults)}, $children ${declineWord('ребёнок', children)}';
+                    }() +
+                    '\n' +
+                    (tours[index].roomTypeDesc.length > 25
+                        ? tours[index]
+                                .roomTypeDesc
+                                .capitalized
+                                .substring(0, 25) +
+                            '...'
+                        : tours[index].roomTypeDesc.capitalized) +
+                    '\n' +
+                    '${tours[index].mealTypeDesc.capitalized} (${tours[index].mealType.capitalized})',
                 textAlign: TextAlign.start,
+                style: const TextStyle(fontSize: 12.0),
               ),
               ButtonWidget(
                 isFlexible: true,
@@ -802,7 +832,7 @@ void showInformationRoute({
         pageBuilder: (context, fst, snd) =>
             InformationRoute(data: currentData!),
         transitionsBuilder: (context, fst, snd, child) {
-          const begin = Offset(0.0, 1.0);
+          const begin = Offset(1.0, 0.0);
           const end = Offset.zero;
           const curve = Curves.ease;
 
@@ -908,7 +938,13 @@ class ParametersWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12.0),
             Text(
-              'Вылет - ${data.tour!.dateIn}, ночей - ${data.tour!.nightsCount}',
+              () {
+                final date = Date.parseDate(data.tour!.dateIn);
+                final day = U(date.day);
+                final month = U(date.month);
+                final nights = data.tour!.nightsCount;
+                return '$day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
+              }(),
               textAlign: TextAlign.start,
               style: const TextStyle(
                 fontFamily: 'Roboto',
@@ -920,7 +956,14 @@ class ParametersWidget extends StatelessWidget {
             ),
             const SizedBox(height: 6.0),
             Text(
-              'Взрослых - ${data.tour!.adultsCount}${data.tour!.childrenCount > const U(0) ? ', детей - ${data.tour!.childrenCount}' : ''}',
+              () {
+                final adults = data.tour!.adultsCount;
+                final children = data.tour!.childrenCount;
+                if (children.eq(0)) {
+                  return '$adults ${declineWord('взрослый', adults)}';
+                }
+                return '$adults ${declineWord('взрослый', adults)}, $children ${declineWord('ребёнок', children)}';
+              }(),
               textAlign: TextAlign.start,
               style: const TextStyle(
                 fontFamily: 'Roboto',

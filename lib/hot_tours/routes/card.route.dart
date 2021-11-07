@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/color.dart';
 import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/show_route.dart';
@@ -144,7 +145,13 @@ class ParametersWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12.0),
             Text(
-              'Вылет - ${data.tour!.dateIn}, ночей - ${data.tour!.nightsCount}',
+              () {
+                final date = Date.parseDate(data.tour!.dateIn);
+                final day = U(date.day);
+                final month = U(date.month);
+                final nights = data.tour!.nightsCount;
+                return '$day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
+              }(),
               textAlign: TextAlign.start,
               style: const TextStyle(
                 fontFamily: 'Roboto',
@@ -156,7 +163,14 @@ class ParametersWidget extends StatelessWidget {
             ),
             const SizedBox(height: 6.0),
             Text(
-              'Взрослых - ${data.tour!.adultsCount}${data.tour!.childrenCount > const U(0) ? ', детей - ${data.tour!.childrenCount}' : ''}',
+              () {
+                final adults = data.tour!.adultsCount;
+                final children = data.tour!.childrenCount;
+                if (children.eq(0)) {
+                  return '$adults ${declineWord('взрослый', adults)}';
+                }
+                return '$adults ${declineWord('взрослый', adults)}, $children ${declineWord('ребёнок', children)}';
+              }(),
               textAlign: TextAlign.start,
               style: const TextStyle(
                 fontFamily: 'Roboto',
