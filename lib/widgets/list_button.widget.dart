@@ -52,7 +52,7 @@ class ListButtonWidget extends StatelessWidget {
             child: GestureDetector(
               onTap: isActive ? onTap : () {},
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 17.0),
                 decoration: BoxDecoration(
                   color: backgroundColor,
                   borderRadius: BorderRadius.circular(10.0),

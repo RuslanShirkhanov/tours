@@ -159,7 +159,7 @@ class LoadingRoute extends HookWidget {
                                 if (people.snd.eq(0)) {
                                   return '${people.fst} ${declineWord('взрослый', people.fst)}';
                                 }
-                                return '${people.fst} ${declineWord('взрослый', people.fst).substring(0, 3)}. + ${people.snd} ${declineWord('ребёнок', people.snd).substring(0, 3)}.';
+                                return '${people.fst} ${declineWord('взрослый', people.fst).substring(0, 3)} + ${people.snd} ${declineWord('ребёнок', people.snd).substring(0, 3)}';
                               }(),
                           textAlign: TextAlign.center,
                           maxLines: 2,

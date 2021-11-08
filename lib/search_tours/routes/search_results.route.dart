@@ -943,7 +943,7 @@ class ParametersWidget extends StatelessWidget {
                 final day = U(date.day);
                 final month = U(date.month);
                 final nights = data.tour!.nightsCount;
-                return '$day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
+                return 'Вылет $day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
               }(),
               textAlign: TextAlign.start,
               style: const TextStyle(

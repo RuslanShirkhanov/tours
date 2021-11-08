@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/map_to_list.dart';
 import 'package:hot_tours/utils/pair.dart';
@@ -91,22 +92,6 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
     super.dispose();
   }
 
-  void showSelectedSnackBar(BuildContext context) =>
-      WidgetsBinding.instance!.scheduleFrameCallback(
-        (_) => Future.delayed(
-          const Duration(milliseconds: 175),
-          () => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              duration: Duration(milliseconds: 450),
-              behavior: SnackBarBehavior.floating,
-              content: SizedBox(
-                child: Text('Диапазон выбран'),
-              ),
-            ),
-          ),
-        ),
-      );
-
   void onSelectItem(int index) {
     setState(() {
       if (selectedItems.contains(index)) {
@@ -119,28 +104,6 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
 
   bool isItemAvailable(int index) => range.fst == null && range.snd == null;
   bool isItemSelected(int index) => selectedItems.contains(index);
-
-  void onSelectDate(DateTime value) {
-    setState(() {
-      if (range.fst == null && range.snd == null) {
-        range = Pair(value, value);
-        return;
-      }
-
-      if (range.fst != null && range.snd != null && range.fst == range.snd) {
-        if (value.compareTo(range.fst!) >= 0) {
-          range = Pair(range.fst, value);
-        } else {
-          range = Pair(value, range.fst);
-        }
-        showSelectedSnackBar(context);
-      }
-    });
-  }
-
-  bool isDateAvailable(DateTime value) =>
-      selectedItems.isEmpty && value.compareTo(currentDate) >= 0;
-  bool isDateSelected(DateTime value) => range.contains(value);
 
   bool get okIsActive => true;
   void onOk() {
@@ -264,14 +227,47 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
                             color: Color(0xff7d7d7d),
                           ),
                         ),
-                        const SizedBox(height: 10.0),
-                        DateTableListWidget(
-                          currentDate: currentDate,
-                          isAvailable: isDateAvailable,
-                          isSelected: isDateSelected,
-                          onSelect: onSelectDate,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
+                        const SizedBox(height: 30.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                          child: ListButtonWidget(
+                            isActive: selectedItems.isEmpty,
+                            text: () {
+                              final dates = range.days;
+                              if (dates.isEmpty) {
+                                return 'Даты вылета';
+                              }
+                              final first = dates.first;
+                              final last = dates.last;
+                              return '${first.day} ${declineWord(Date.monthToString(first.month), U(first.day)).substring(0, 3)} - ${last.day} ${declineWord(Date.monthToString(last.month), U(last.day)).substring(0, 3)}';
+                            }(),
+                            onTap: () => showRoute<Object?>(
+                              context: context,
+                              model: null,
+                              builder: (_) => PageRouteBuilder(
+                                pageBuilder: (context, fst, snd) =>
+                                    SelectWhenDialogRoute(
+                                  currentDate: currentDate,
+                                  range: range,
+                                  onContinue: (value) =>
+                                      setState(() => range = value),
+                                ),
+                                transitionsBuilder: (context, fst, snd, child) {
+                                  const begin = Offset(1.0, 0.0);
+                                  const end = Offset.zero;
+                                  const curve = Curves.ease;
+
+                                  final tween = Tween(begin: begin, end: end)
+                                      .chain(CurveTween(curve: curve));
+
+                                  return SlideTransition(
+                                    position: fst.drive(tween),
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -295,6 +291,129 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
                     kind: FooterButtonKind.reset,
                     isActive: resetIsActive,
                     onTap: onReset,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+}
+
+class SelectWhenDialogRoute extends StatefulWidget {
+  final DateTime currentDate;
+  final Pair<DateTime?, DateTime?> range;
+  final void Function(Pair<DateTime?, DateTime?>) onContinue;
+
+  const SelectWhenDialogRoute({
+    Key? key,
+    required this.currentDate,
+    required this.range,
+    required this.onContinue,
+  }) : super(key: key);
+
+  @override
+  State<SelectWhenDialogRoute> createState() => _SelectWhenDialogRouteState();
+}
+
+class _SelectWhenDialogRouteState extends State<SelectWhenDialogRoute> {
+  late Pair<DateTime?, DateTime?> range;
+
+  late final ScrollController scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    range = widget.range;
+
+    scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    scrollController.dispose();
+  }
+
+  void showSelectedSnackBar(BuildContext context) =>
+      WidgetsBinding.instance!.scheduleFrameCallback(
+        (_) => Future.delayed(
+          const Duration(milliseconds: 175),
+          () => ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              duration: Duration(milliseconds: 450),
+              behavior: SnackBarBehavior.floating,
+              content: SizedBox(
+                child: Text('Диапазон выбран'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+  void onSelect(DateTime value) {
+    setState(() {
+      if (range.fst == null && range.snd == null) {
+        range = Pair(value, value);
+        return;
+      }
+
+      if (range.fst != null && range.snd != null && range.fst == range.snd) {
+        if (value.compareTo(range.fst!) >= 0) {
+          range = Pair(range.fst, value);
+        } else {
+          range = Pair(value, range.fst);
+        }
+        showSelectedSnackBar(context);
+      }
+    });
+  }
+
+  bool isAvailable(DateTime value) => value.compareTo(widget.currentDate) >= 0;
+  bool isSelected(DateTime value) => range.contains(value);
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 70.0),
+                  child: Scrollbar(
+                    controller: scrollController,
+                    child: DateTableListWidget(
+                      currentDate: widget.currentDate,
+                      isAvailable: isAvailable,
+                      isSelected: isSelected,
+                      onSelect: onSelect,
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: FooterWidget(
+                  ok: FooterButtonModel(
+                    kind: FooterButtonKind.ok,
+                    isActive: range.fst != null && range.snd != null,
+                    onTap: () {
+                      widget.onContinue(range);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  cancel: FooterButtonModel(
+                    kind: FooterButtonKind.cancel,
+                    isActive: true,
+                    onTap: () => Navigator.pop(context),
+                  ),
+                  reset: FooterButtonModel(
+                    kind: FooterButtonKind.reset,
+                    isActive: range.fst != null && range.snd != null,
+                    onTap: () => setState(() => range = const Pair(null, null)),
                   ),
                 ),
               ),

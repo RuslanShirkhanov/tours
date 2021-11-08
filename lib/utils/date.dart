@@ -64,6 +64,9 @@ extension Utils on DateTime {
 
   int monthsCount(DateTime date) => 12 - date.month;
 
+  List<DateTime> get nextMonths =>
+      List.generate(12, (index) => DateTime(year, month + index));
+
   List<DateTime> get lastMonths => List.generate(
         12 - month + 1,
         (index) => DateTime(year, month + index),

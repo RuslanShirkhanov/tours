@@ -232,17 +232,12 @@ class DateTableListWidget extends HookWidget {
   final bool Function(DateTime) isSelected;
   final void Function(DateTime) onSelect;
 
-  final ScrollPhysics? physics;
-  final bool shrinkWrap;
-
   const DateTableListWidget({
     Key? key,
     required this.currentDate,
     required this.isAvailable,
     required this.isSelected,
     required this.onSelect,
-    this.physics,
-    this.shrinkWrap = false,
   }) : super(key: key);
 
   @override
@@ -252,17 +247,15 @@ class DateTableListWidget extends HookWidget {
     return Scrollbar(
       controller: scrollController,
       child: ListView.separated(
-        physics: physics,
-        shrinkWrap: shrinkWrap,
         controller: scrollController,
         padding: const EdgeInsets.symmetric(vertical: 20.0),
-        itemCount: currentDate.lastMonths.length,
+        itemCount: 12,
         itemBuilder: (context, index) => DateTableWidget(
           currentDate: currentDate,
           isAvailable: isAvailable,
           isSelected: isSelected,
           onSelect: onSelect,
-          date: currentDate.lastMonths[index],
+          date: currentDate.nextMonths[index],
         ),
         separatorBuilder: (context, index) => const Padding(
           padding: EdgeInsets.only(top: 15.0, bottom: 10.0),

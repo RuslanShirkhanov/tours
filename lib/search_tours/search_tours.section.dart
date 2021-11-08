@@ -153,7 +153,7 @@ class SearchToursSection extends HookWidget {
                                   }
                                   final first = dates.first;
                                   final last = dates.last;
-                                  return '${first.day} ${declineWord(Date.monthToString(first.month), U(first.day))} - ${last.day} ${declineWord(Date.monthToString(last.month), U(last.day))}';
+                                  return '${first.day} ${declineWord(Date.monthToString(first.month), U(first.day)).substring(0, 3)} - ${last.day} ${declineWord(Date.monthToString(last.month), U(last.day)).substring(0, 3)}';
                                 }(),
                                 onTap: () => showSelectDatesRoute(
                                   context: context,
@@ -199,7 +199,7 @@ class SearchToursSection extends HookWidget {
                                   if (children.eq(0)) {
                                     return '$adults ${declineWord('взрослый', adults)}';
                                   }
-                                  return '$adults ${declineWord('взрослый', adults).substring(0, 3)}. + $children ${declineWord('ребёнок', children).substring(0, 3)}.';
+                                  return '$adults ${declineWord('взрослый', adults).substring(0, 3)} + $children ${declineWord('ребёнок', children).substring(0, 3)}';
                                 }(),
                                 onTap: () => showSelectPeopleCountRoute(
                                   context: context,
