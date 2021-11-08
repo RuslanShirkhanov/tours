@@ -160,7 +160,7 @@ class HotToursSection extends HookWidget {
     useEffect(() {
       scrollController.addListener(() {
         if (scrollController.hasClients) {
-          if (scrollController.offset < 180) {
+          if (scrollController.offset < 500) {
             setState(scrollOffset)(-scrollController.offset);
           }
         }

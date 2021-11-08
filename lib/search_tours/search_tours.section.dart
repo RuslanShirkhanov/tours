@@ -112,8 +112,8 @@ class SearchToursSection extends HookWidget {
                     controller: scrollController,
                     padding: const EdgeInsets.only(
                       top: 70.0,
-                      left: 50.0,
-                      right: 50.0,
+                      left: 40.0,
+                      right: 40.0,
                       bottom: 20.0,
                     ),
                     child: Column(

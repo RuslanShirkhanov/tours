@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:hot_tours/api.dart';
+
 import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/string.dart';
-
 import 'package:hot_tours/utils/thousands.dart';
 
-import 'package:hot_tours/hot_tours/models/data.model.dart';
 import 'package:hot_tours/models/unsigned.dart';
+import 'package:hot_tours/hot_tours/models/data.model.dart';
 
 import 'package:hot_tours/widgets/image_widget.dart';
 import 'package:hot_tours/widgets/shown_stars.widget.dart';
@@ -99,7 +99,7 @@ class CardWidget extends StatelessWidget {
                           final day = U(date.day);
                           final month = U(date.month);
                           final nights = data.tour!.nightsCount;
-                          return 'Вылет $day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
+                          return '$day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
                         }(),
                         style: const TextStyle(
                           fontFamily: 'Roboto',
