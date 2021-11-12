@@ -174,6 +174,28 @@ abstract class Api {
     return [];
   }
 
+  static Future<String> getHotelDescription({
+    required U<int> hotelId,
+  }) async {
+    if (!await Api.hasConnection()) {
+      return '';
+    }
+
+    final uri = _makeUri('hotel_description', {
+      'hotel_id': hotelId,
+    });
+    final res = await _dio.get<Object>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
+    
+    if (data['kind'] == 'success') {
+      final xml = XmlDocument.parse(data['value'] as String);
+      final body = xml.getElement('html');
+      final ps = body!.findAllElements('p');
+      return ps.map((p) => p.text.trim()).join('\n').trim();
+    }
+    return '';
+  }
+
   static Future<List<DateTime>> getTourDates({
     required U<int> departCityId,
     required U<int> countryId,
