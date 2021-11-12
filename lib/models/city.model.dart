@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'unsigned.dart';
 
-class CityModel {
+class CityModel extends Equatable {
   final U<int> id;
   final U<int> countryId;
   final String name;
@@ -12,6 +14,9 @@ class CityModel {
     required this.name,
     required this.isPopular,
   });
+
+  @override
+  List<Object> get props => [name];
 
   static CityModel serialize(Map<String, dynamic> data) => CityModel(
         id: U<int>(data['Id'] as int),

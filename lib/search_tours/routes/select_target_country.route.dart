@@ -76,7 +76,10 @@ class SelectTargetCountryRoute extends HookWidget {
       setState<bool>(isLoading)(true);
 
       if (connection.value.isNotNone) {
-        Api.getCountries(townFromId: data.departCity!.id).then((value) {
+        Api.getCountries(
+          townFromId: data.departCity!.id,
+          showcase: false,
+        ).then((value) {
           initialData.value = value.sorted((a, b) => a.name.compareTo(b.name));
           setState<bool>(isLoading)(false);
         });

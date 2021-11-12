@@ -1,7 +1,7 @@
-import 'package:hot_tours/models/unsigned.dart';
-
+import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/pair.dart';
 
+import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/abstract_data.model.dart';
 import 'package:hot_tours/models/depart_city.model.dart';
 
@@ -45,7 +45,7 @@ class DataModel extends AbstractDataModel {
       Откуда: ${departCity!.name}
       Куда: ${targetCountry.join(', ')}
       Вид отдыха: ${what.isNotEmpty ? what.map((x) => x.toLowerCase()).join(', ') : 'не выбрано'}
-      Время вылета: ${when.map((x) => x.toLowerCase()).join(', ')}
+      Время вылета: ${range?.pretty ?? when.map((x) => x.toLowerCase()).join(', ')}
       Протяжённость отдыха: ${howLong.map((x) => x.toLowerCase()).join(', ')}
       Имя: ${name!}
       Номер: ${number!}

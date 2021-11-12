@@ -6,9 +6,9 @@ import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/show_route.dart';
 
+import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/search_tours/models/storage.model.dart';
-import 'package:hot_tours/models/unsigned.dart';
 
 import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/widgets/list_button.widget.dart';
@@ -111,7 +111,7 @@ class SearchToursSection extends HookWidget {
                   child: SingleChildScrollView(
                     controller: scrollController,
                     padding: const EdgeInsets.only(
-                      top: 70.0,
+                      top: 50.0,
                       left: 40.0,
                       right: 40.0,
                       bottom: 20.0,
@@ -143,7 +143,7 @@ class SearchToursSection extends HookWidget {
                           children: <Widget>[
                             Flexible(
                               child: ListButtonWidget(
-                                fontSize: 14.0,
+                                fontSize: 13.0,
                                 isActive:
                                     currentData.value.targetCountry != null,
                                 text: () {
@@ -162,10 +162,10 @@ class SearchToursSection extends HookWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 22.0),
+                            const SizedBox(width: 15.0),
                             Flexible(
                               child: ListButtonWidget(
-                                fontSize: 14.0,
+                                fontSize: 13.0,
                                 isActive:
                                     currentData.value.tourDates.isNotEmpty,
                                 text: currentData.value.nightsCount != null
@@ -180,12 +180,12 @@ class SearchToursSection extends HookWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 26.0),
+                        const SizedBox(height: 20.0),
                         Row(
                           children: <Widget>[
                             Flexible(
                               child: ListButtonWidget(
-                                fontSize: 14.0,
+                                fontSize: 13.0,
                                 isActive:
                                     currentData.value.tourDates.isNotEmpty &&
                                         currentData.value.nightsCount != null,
@@ -208,12 +208,10 @@ class SearchToursSection extends HookWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 22.0),
+                            const SizedBox(width: 15.0),
                             Flexible(
                               child: ListButtonWidget(
-                                isActive:
-                                    currentData.value.tourDates.isNotEmpty &&
-                                        currentData.value.peopleCount != null,
+                                isActive: currentData.value.isValid,
                                 path: 'assets/select.svg',
                                 onTap: () => showOtherParamsRoute(
                                   context: context,
@@ -224,7 +222,7 @@ class SearchToursSection extends HookWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 70.0),
+                        const SizedBox(height: 50.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[

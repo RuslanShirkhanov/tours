@@ -66,12 +66,16 @@ class SelectTargetCitiesRoute extends HookWidget {
 
     final targetCities = useState(<CityModel>[]);
 
+    final initial = useState(<int>[]);
+
     useEffect(() {
       setState<bool>(isLoading)(true);
 
       if (connection.value.isNotNone) {
         Api.getCities(countryId: data.targetCountry!.id).then((value) {
           targetCities.value = value.sorted((a, b) => a.name.compareTo(b.name));
+          initial.value =
+              data.targetCities.map(targetCities.value.indexOf).toList();
           setState<bool>(isLoading)(false);
         });
       }
@@ -82,9 +86,9 @@ class SelectTargetCitiesRoute extends HookWidget {
       isLoading: isLoading.value,
       title: 'Поиск туров',
       subtitle: 'Выберите курорт / регион',
-      primaryData: const [],
-      isPrimarySingle: true,
-      secondaryData: targetCities.value,
+      values: targetCities.value,
+      initial: initial,
+      isSingle: false,
       transform: (city) => city.name,
       onContinue: (indices) => onContinue(
         data.setTargetCities(

@@ -63,17 +63,22 @@ class SelectHotelsRoute extends HookWidget {
 
     final hotels = useState(<HotelModel>[]);
 
+    final initial = useState(<int>[]);
+
     useEffect(() {
       setState<bool>(isLoading)(true);
 
       Api.getHotels(
         countryId: data.targetCountry!.id,
-        towns: data.targetCities.map((city) => city.id).toList(),
+        towns: data.targetCities.isEmpty
+            ? []
+            : data.targetCities.map((city) => city.id).toList(),
         stars: StarModel.difference(selected: data.hotelStars)
             .map((star) => star.id)
             .toList(),
       ).then((value) {
         hotels.value = value;
+        initial.value = data.hotels.map(hotels.value.indexOf).toList();
 
         setState<bool>(isLoading)(false);
       });
@@ -84,9 +89,9 @@ class SelectHotelsRoute extends HookWidget {
       isLoading: isLoading.value,
       title: 'Поиск туров',
       subtitle: 'Выберите отель',
-      primaryData: hotels.value,
-      secondaryData: const [],
-      isSecondarySingle: true,
+      values: hotels.value,
+      initial: initial,
+      isSingle: false,
       transform: (city) => city.name,
       onContinue: (indices) => onContinue(
         data.setHotels(

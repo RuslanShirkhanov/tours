@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:hot_tours/utils/show_route.dart';
-import 'package:hot_tours/models/unsigned.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'package:hot_tours/utils/show_route.dart';
+
+import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
 
 import 'package:hot_tours/search_tours/routes/select_many.route.dart';
@@ -39,7 +41,7 @@ void showSelectRateRoute({
       ),
     );
 
-class SelectRateRoute extends StatelessWidget {
+class SelectRateRoute extends HookWidget {
   final DataModel data;
   final void Function(DataModel) onContinue;
 
@@ -54,13 +56,16 @@ class SelectRateRoute extends StatelessWidget {
     final rates =
         [4.5, 4.0, 3.5, 3.0, 1.5].map((rate) => U<double>(rate * 2.0)).toList();
 
+    final initial = useState([
+      if (data.rate != null) rates.indexOf(data.rate!),
+    ]);
+
     return SelectManyRoute<U<double>>(
       title: 'Поиск туров',
       subtitle: 'Выберите рейтинг отеля',
-      primaryData: rates,
-      isPrimarySingle: true,
-      secondaryData: const [],
-      isSecondarySingle: true,
+      values: rates,
+      initial: initial,
+      isSingle: true,
       transform: rateToString,
       onContinue: (indices) => onContinue(
         data.setRate(rates[indices[0]]),

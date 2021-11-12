@@ -5,9 +5,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:dio/dio.dart';
-import 'package:hot_tours/models/hotel_comment.model.dart';
-import 'package:hot_tours/utils/pair.dart';
+import 'package:xml/xml.dart';
 
+import 'package:hot_tours/utils/pair.dart';
 import 'package:hot_tours/utils/reqs.dart';
 
 import 'package:hot_tours/models/unsigned.dart';
@@ -16,10 +16,10 @@ import 'package:hot_tours/models/country.model.dart';
 import 'package:hot_tours/models/city.model.dart';
 import 'package:hot_tours/models/hotel.model.dart';
 import 'package:hot_tours/models/tour.model.dart';
+import 'package:hot_tours/models/hotel_comment.model.dart';
 
 import 'package:hot_tours/routes/feedback.route.dart';
 import 'package:hot_tours/routes/request_error.route.dart';
-import 'package:xml/xml.dart';
 
 abstract class Api {
   static final _dio = Dio();
@@ -53,12 +53,16 @@ abstract class Api {
   }) =>
       'https://hotels.sletat.ru/i/f/${hotelId}_$imageNumber.jpg';
 
-  static Future<List<DepartCityModel>> getDepartCities() async {
+  static Future<List<DepartCityModel>> getDepartCities({
+    required bool showcase,
+  }) async {
     if (!await Api.hasConnection()) {
       return const [];
     }
 
-    final uri = _makeUri('depart_cities', {});
+    final uri = _makeUri('depart_cities', {
+      'showcase': showcase,
+    });
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
@@ -74,6 +78,7 @@ abstract class Api {
 
   static Future<List<CountryModel>> getCountries({
     required U<int> townFromId,
+    required bool showcase,
   }) async {
     if (!await Api.hasConnection()) {
       return const [];
@@ -81,6 +86,7 @@ abstract class Api {
 
     final uri = _makeUri('countries', {
       'town_from_id': townFromId,
+      'showcase': showcase,
     });
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
@@ -123,9 +129,6 @@ abstract class Api {
     required List<U<int>> towns,
     required List<U<int>> stars,
   }) async {
-    assert(towns.isNotEmpty);
-    assert(stars.isNotEmpty);
-
     if (!await Api.hasConnection()) {
       return const [];
     }

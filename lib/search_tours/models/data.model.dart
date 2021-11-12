@@ -76,14 +76,14 @@ class DataModel extends AbstractDataModel {
       .trim()
       .replaceAll(RegExp(r'[\s]{2,}'), '\n');
 
-  bool get isValid => [
+  bool get isValid =>
+      [
         departCity,
         targetCountry,
-        tourDates,
         nightsCount,
         peopleCount,
-        childrenAges,
-      ].map((x) => x != null).reduce((x, y) => x && y);
+      ].map((x) => x != null).reduce((x, y) => x && y) &&
+      tourDates.isNotEmpty;
 
   DataModel setDepartCity(DepartCityModel value) => DataModel(
         departCity: value,

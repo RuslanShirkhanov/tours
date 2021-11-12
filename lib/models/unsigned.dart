@@ -1,4 +1,6 @@
-class U<T extends num> {
+import 'package:equatable/equatable.dart';
+
+class U<T extends num> extends Equatable {
   final T value;
 
   const U(this.value) : assert(value >= 0);
@@ -6,11 +8,7 @@ class U<T extends num> {
   static U<T> of<T extends num>(T value) => U<T>(value);
 
   @override
-  int get hashCode => value.hashCode;
-
-  @override
-  // ignore: avoid_renaming_method_parameters
-  bool operator ==(covariant U<T> that) => value == that.value;
+  List<Object> get props => [value];
 
   bool eq(T value) => this.value == value;
 

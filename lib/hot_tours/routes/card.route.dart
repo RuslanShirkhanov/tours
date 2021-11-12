@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:readmore/readmore.dart';
 
 import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/color.dart';
@@ -428,18 +429,44 @@ class DescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 14.0),
         width: double.infinity,
-        child: Text(
-          data.tour!.hotelDesc.trim().isNotEmpty
-              ? data.tour!.hotelDesc.trim()
-              : 'Описание отеля временно отсутствует.',
-          textAlign: TextAlign.start,
-          style: const TextStyle(
-            fontFamily: 'Roboto',
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.normal,
-            fontSize: 12.0,
-            color: Color(0xff4d4948),
-          ),
-        ),
+        child: data.tour!.hotelDesc.trim().isEmpty
+            ? const Text(
+                'Описание отеля временно отсутствует.',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 12.0,
+                  color: Color(0xff4d4948),
+                ),
+              )
+            : ReadMoreText(
+                data.tour!.hotelDesc.trim(),
+                trimMode: TrimMode.Line,
+                trimCollapsedText: 'Показать больше',
+                trimExpandedText: 'Показать меньше',
+                textAlign: TextAlign.start,
+                style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 12.0,
+                  color: Color(0xff4d4948),
+                ),
+                moreStyle: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 12.0,
+                  color: Color(0xff2eaeee),
+                ),
+                lessStyle: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 12.0,
+                  color: Color(0xff2eaeee),
+                ),
+              ),
       );
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/map_to_list.dart';
 import 'package:hot_tours/utils/pair.dart';
@@ -237,9 +236,7 @@ class _SelectWhenRouteState extends State<SelectWhenRoute> {
                               if (dates.isEmpty) {
                                 return 'Даты вылета';
                               }
-                              final first = dates.first;
-                              final last = dates.last;
-                              return '${first.day} ${declineWord(Date.monthToString(first.month), U(first.day)).substring(0, 3)} - ${last.day} ${declineWord(Date.monthToString(last.month), U(last.day)).substring(0, 3)}';
+                              return range.pretty;
                             }(),
                             onTap: () => showRoute<Object?>(
                               context: context,

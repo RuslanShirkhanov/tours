@@ -1,8 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 import 'unsigned.dart';
 
 import '../models/star.model.dart';
 
-class HotelModel {
+class HotelModel extends Equatable {
   final U<int> id;
   final U<int> townId;
   final String name;
@@ -18,6 +20,9 @@ class HotelModel {
     required this.rate,
     required this.photosCount,
   });
+
+  @override
+  List<Object> get props => [name];
 
   factory HotelModel.any() => HotelModel(
         id: const U<int>(0),

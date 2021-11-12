@@ -176,7 +176,7 @@ class HotToursSection extends HookWidget {
       setState<bool>(isLoading)(true);
 
       if (connection.value.isNotNone) {
-        Api.getDepartCities().then((value) {
+        Api.getDepartCities(showcase: false).then((value) {
           departCities.value = value.sorted((a, b) => a.name.compareTo(b.name));
           setState<DepartCityModel?>(selectedCity)(value[0]);
         });
@@ -190,7 +190,10 @@ class HotToursSection extends HookWidget {
       setState<bool>(isLoading)(true);
 
       if (selectedCity.value != null) {
-        Api.getCountries(townFromId: selectedCity.value!.id).then((value) {
+        Api.getCountries(
+          townFromId: selectedCity.value!.id,
+          showcase: true,
+        ).then((value) {
           targetCountries.value =
               value.sorted((a, b) => a.name.compareTo(b.name));
           if (!targetCountries.value.contains(selectedCountry.value)) {
@@ -217,8 +220,10 @@ class HotToursSection extends HookWidget {
         ).then((value) {
           scrollController.animateTo(0,
               duration: const Duration(milliseconds: 350), curve: Curves.ease);
-          tours.value = value.sorted(
-              (a, b) => a.hotelStar.id.value.compareTo(b.hotelStar.id.value));
+          tours.value = value
+              .sorted((a, b) =>
+                  a.hotelStar.id.value.compareTo(b.hotelStar.id.value))
+              .sorted((a, b) => a.cost.value.compareTo(b.cost.value));
 
           setState<bool>(isLoading)(false);
         });

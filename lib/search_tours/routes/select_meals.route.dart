@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:hot_tours/utils/show_route.dart';
 
 import 'package:hot_tours/models/meal.model.dart';
@@ -39,7 +41,7 @@ void showSelectMealsRoute({
       ),
     );
 
-class SelectMealsRoute extends StatelessWidget {
+class SelectMealsRoute extends HookWidget {
   final DataModel data;
   final void Function(DataModel) onContinue;
 
@@ -53,12 +55,16 @@ class SelectMealsRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     final meals = MealModel.getMeals();
 
+    final initial = useState(
+      data.meals.isEmpty ? <int>[] : data.meals.map(meals.indexOf).toList(),
+    );
+
     return SelectManyRoute<MealModel>(
       title: 'Поиск туров',
       subtitle: 'Выберите питание',
-      primaryData: meals,
-      secondaryData: const [],
-      isSecondarySingle: true,
+      values: meals,
+      initial: initial,
+      isSingle: false,
       transform: mealToString,
       onContinue: (indices) => onContinue(
         data.setMeals(indices.map((index) => meals[index]).toList()),

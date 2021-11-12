@@ -71,7 +71,8 @@ class SearchResultsRoute extends HookWidget {
 
     final _tours = tours
         .sorted((a, b) => a.hotelName.compareTo(b.hotelName))
-        .narrow((a, b) => a.hotelName == b.hotelName);
+        .narrow((a, b) => a.hotelName == b.hotelName)
+        .sorted((a, b) => a.first.cost.value.compareTo(b.first.cost.value));
 
     return Scaffold(
       body: SafeArea(
@@ -209,15 +210,9 @@ class CardWidget extends StatelessWidget {
                             child: Text(
                               tours.first.hotelDesc.isEmpty
                                   ? 'Описание отеля временно отсутствует. Ведётся добавление информации.'
-                                  : tours.first.hotelDesc.length > 70
-                                      ? tours.first.hotelDesc
-                                              .substring(0, 70)
-                                              .replaceAll('\n', ' ') +
-                                          '...'
-                                      : tours.first.hotelDesc
-                                          .replaceAll('\n', ' '),
+                                  : tours.first.hotelDesc.replaceAll('\n', ' '),
                               overflow: TextOverflow.ellipsis,
-                              maxLines: 5,
+                              maxLines: 2,
                               style: const TextStyle(
                                 fontFamily: 'Roboto',
                                 fontStyle: FontStyle.normal,
@@ -236,7 +231,7 @@ class CardWidget extends StatelessWidget {
                             isFlexible: true,
                             isActive: true,
                             text:
-                                '${tours.first.cost} ${tours.first.costCurrency.toUpperCase() == 'RUB' ? 'р.' : tours.first.costCurrency}',
+                                '${thousands(tours.first.cost)} ${tours.first.costCurrency.toUpperCase() == 'RUB' ? 'р.' : tours.first.costCurrency}',
                             onTap: onTap,
                           ),
                           const SizedBox(width: 8.0),
@@ -359,7 +354,12 @@ class CardRoute extends HookWidget {
                               ),
                             ),
                           ),
-                          ToursListWidget(data: data, tours: tours),
+                          ToursListWidget(
+                            data: data,
+                            tours: tours.sorted(
+                              (a, b) => a.cost.value.compareTo(b.cost.value),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -574,44 +574,51 @@ class ToursListWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                () {
-                      final date = Date.parseDate(tours[index].dateIn);
-                      final day = U(date.day);
-                      final month = U(date.month);
-                      final nights = tours[index].nightsCount;
-                      return '$day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
-                    }() +
-                    '\n' +
-                    () {
-                      final adults = tours[index].adultsCount;
-                      final children = tours[index].childrenCount;
-                      if (children.eq(0)) {
-                        return '$adults ${declineWord('взрослый', adults)}';
-                      }
-                      return '$adults ${declineWord('взрослый', adults)}, $children ${declineWord('ребёнок', children)}';
-                    }() +
-                    '\n' +
-                    (tours[index].roomTypeDesc.length > 25
-                        ? tours[index]
-                                .roomTypeDesc
-                                .capitalized
-                                .substring(0, 25) +
-                            '...'
-                        : tours[index].roomTypeDesc.capitalized) +
-                    '\n' +
-                    '${tours[index].mealTypeDesc.capitalized} (${tours[index].mealType.capitalized})',
-                textAlign: TextAlign.start,
-                style: const TextStyle(fontSize: 12.0),
+              Flexible(
+                flex: 3,
+                child: Text(
+                  () {
+                        final date = Date.parseDate(tours[index].dateIn);
+                        final day = U(date.day);
+                        final month = U(date.month);
+                        final nights = tours[index].nightsCount;
+                        return '$day ${declineWord(Date.monthToString(month.value), day)}, $nights ${declineWord('ночь', nights)}';
+                      }() +
+                      '\n' +
+                      () {
+                        final adults = tours[index].adultsCount;
+                        final children = tours[index].childrenCount;
+                        if (children.eq(0)) {
+                          return '$adults ${declineWord('взрослый', adults)}';
+                        }
+                        return '$adults ${declineWord('взрослый', adults)}, $children ${declineWord('ребёнок', children)}';
+                      }() +
+                      '\n' +
+                      (tours[index].roomTypeDesc.length > 25
+                          ? tours[index]
+                                  .roomTypeDesc
+                                  .capitalized
+                                  .substring(0, 25) +
+                              '...'
+                          : tours[index].roomTypeDesc.capitalized) +
+                      '\n' +
+                      tours[index].mealTypeDesc.capitalized,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(fontSize: 12.0),
+                ),
               ),
-              ButtonWidget(
-                isFlexible: true,
-                text:
-                    '${thousands(tours[index].cost)} ${tours[index].costCurrency.toUpperCase() == 'RUB' ? 'р.' : tours[index].costCurrency}',
-                isActive: true,
-                onTap: () => showInformationRoute(
-                  context: context,
-                  data: data.setTour(tours[index]),
+              const SizedBox(width: 10.0),
+              Flexible(
+                flex: 2,
+                child: ButtonWidget(
+                  isFlexible: true,
+                  text:
+                      '${thousands(tours[index].cost)} ${tours[index].costCurrency.toUpperCase() == 'RUB' ? 'р.' : tours[index].costCurrency}',
+                  isActive: true,
+                  onTap: () => showInformationRoute(
+                    context: context,
+                    data: data.setTour(tours[index]),
+                  ),
                 ),
               ),
             ],

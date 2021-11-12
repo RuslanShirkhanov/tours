@@ -73,7 +73,7 @@ class SelectDepartCityRoute extends HookWidget {
       setState<bool>(isLoading)(true);
 
       if (connection.value.isNotNone) {
-        Api.getDepartCities().then((value) {
+        Api.getDepartCities(showcase: false).then((value) {
           departCities.value = value.sorted((a, b) => a.name.compareTo(b.name));
           setState<bool>(isLoading)(false);
         });

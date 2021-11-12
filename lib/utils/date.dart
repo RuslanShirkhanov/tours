@@ -1,4 +1,7 @@
 import 'package:hot_tours/utils/pair.dart';
+import 'package:hot_tours/utils/string.dart';
+
+import 'package:hot_tours/models/unsigned.dart';
 
 abstract class Date {
   static DateTime parseDate(String value) {
@@ -115,5 +118,12 @@ extension DateRange on Pair<DateTime?, DateTime?> {
       yield date;
       date = date.copyWith(day: date.day + 1);
     } while (date.compareTo(snd!) <= 0);
+  }
+
+  String get pretty {
+    if (isValid) {
+      return '${fst!.day} ${declineWord(Date.monthToString(fst!.month), U(fst!.day)).substring(0, 3)} - ${snd!.day} ${declineWord(Date.monthToString(snd!.month), U(snd!.day)).substring(0, 3)}';
+    }
+    return '';
   }
 }

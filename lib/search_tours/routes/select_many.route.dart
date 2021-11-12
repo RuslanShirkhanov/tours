@@ -12,11 +12,9 @@ class SelectManyRoute<T> extends HookWidget {
   final String title;
   final String subtitle;
 
-  final List<T> primaryData;
-  final bool isPrimarySingle;
-
-  final List<T> secondaryData;
-  final bool isSecondarySingle;
+  final List<T> values;
+  final ValueNotifier<List<int>>? initial;
+  final bool isSingle;
 
   final String Function(T) transform;
   final void Function(List<int>) onContinue;
@@ -31,10 +29,9 @@ class SelectManyRoute<T> extends HookWidget {
     Key? key,
     required this.title,
     required this.subtitle,
-    required this.primaryData,
-    this.isPrimarySingle = false,
-    required this.secondaryData,
-    this.isSecondarySingle = false,
+    required this.values,
+    this.initial,
+    required this.isSingle,
     required this.transform,
     required this.onContinue,
     this.cancel,
@@ -47,44 +44,28 @@ class SelectManyRoute<T> extends HookWidget {
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
 
-    final selectedPrimary = useState(<int>[]);
-    final selectedSecondary = useState(<int>[]);
+    final selected = useState(initial?.value ?? []);
 
-    final canSelectPrimary = useMemoized(
-      () => isPrimarySingle
-          ? selectedPrimary.value.isEmpty && selectedSecondary.value.isEmpty
-          : selectedSecondary.value.isEmpty,
-      [selectedPrimary.value, selectedSecondary.value],
-    );
-    final canSelectSecondary = useMemoized(
-      () => isSecondarySingle
-          ? selectedSecondary.value.isEmpty && selectedPrimary.value.isEmpty
-          : selectedPrimary.value.isEmpty,
-      [selectedSecondary.value, selectedPrimary.value],
+    useEffect(() {
+      selected.value = initial?.value ?? selected.value;
+    }, [initial?.value]);
+
+    final canSelect = useMemoized(
+      () => selected.value.isEmpty ? true : !isSingle,
+      [selected.value],
     );
 
-    void reset() {
-      selectedPrimary.value = const [];
-      selectedSecondary.value = const [];
-    }
+    bool isSelected(int index) => selected.value.contains(index);
 
-    void onSelectPrimary(int index) {
-      if (selectedPrimary.value.contains(index)) {
-        selectedPrimary.value =
-            selectedPrimary.value.where((i) => i != index).toList();
+    void onSelect(int index) {
+      if (selected.value.contains(index)) {
+        selected.value = selected.value.where((i) => i != index).toList();
       } else {
-        selectedPrimary.value = [index, ...selectedPrimary.value];
+        selected.value = [...selected.value, index];
       }
     }
 
-    void onSelectSecondary(int index) {
-      if (selectedSecondary.value.contains(index)) {
-        selectedSecondary.value =
-            selectedSecondary.value.where((i) => i != index).toList();
-      } else {
-        selectedSecondary.value = [index, ...selectedSecondary.value];
-      }
-    }
+    void reset() => selected.value = const [];
 
     return Scaffold(
       body: SafeArea(
@@ -117,42 +98,19 @@ class SelectManyRoute<T> extends HookWidget {
                     ),
                     children: <Widget>[
                       Column(
-                        children: primaryData.mapToList((e, i) {
-                          final isSelected = selectedPrimary.value.contains(i);
+                        children: values.mapToList((e, i) {
+                          final _isSelected = isSelected(i);
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: AnimatedOpacity(
                               duration: const Duration(milliseconds: 350),
-                              opacity:
-                                  canSelectPrimary || isSelected ? 1.0 : 0.5,
+                              opacity: canSelect || _isSelected ? 1.0 : 0.5,
                               child: ListButtonWidget(
                                 hasCheckbox: true,
-                                checkboxStatus: isSelected,
+                                checkboxStatus: _isSelected,
                                 text: transform(e),
-                                onTap: canSelectPrimary || isSelected
-                                    ? () => onSelectPrimary(i)
-                                    : () {},
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      Column(
-                        children: secondaryData.mapToList((e, i) {
-                          final isSelected =
-                              selectedSecondary.value.contains(i);
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: AnimatedOpacity(
-                              duration: const Duration(milliseconds: 350),
-                              opacity:
-                                  canSelectSecondary || isSelected ? 1.0 : 0.5,
-                              child: ListButtonWidget(
-                                hasCheckbox: true,
-                                checkboxStatus: isSelected,
-                                text: transform(e),
-                                onTap: canSelectSecondary || isSelected
-                                    ? () => onSelectSecondary(i)
+                                onTap: canSelect || _isSelected
+                                    ? () => onSelect(i)
                                     : () {},
                               ),
                             ),
@@ -169,13 +127,8 @@ class SelectManyRoute<T> extends HookWidget {
               child: FooterWidget(
                 ok: FooterButtonModel(
                   kind: FooterButtonKind.ok,
-                  isActive: !canSelectPrimary || !canSelectSecondary,
-                  onTap: () => onContinue(
-                    selectedPrimary.value.isNotEmpty
-                        ? selectedPrimary.value.mapToList((index, _) => index)
-                        : selectedSecondary.value
-                            .mapToList((index, _) => index),
-                  ),
+                  isActive: selected.value.isNotEmpty,
+                  onTap: () => onContinue(selected.value), // !!!
                 ),
                 cancel: FooterButtonModel(
                   kind: FooterButtonKind.cancel,
@@ -184,8 +137,7 @@ class SelectManyRoute<T> extends HookWidget {
                 ),
                 reset: FooterButtonModel(
                   kind: FooterButtonKind.reset,
-                  isActive: selectedPrimary.value.isNotEmpty ||
-                      selectedSecondary.value.isNotEmpty,
+                  isActive: selected.value.isNotEmpty,
                   onTap: reset,
                 ),
               ),

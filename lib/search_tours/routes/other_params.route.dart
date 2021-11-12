@@ -172,7 +172,6 @@ class OtherParamsRoute extends HookWidget {
                           ),
                           const SizedBox(height: 20.0),
                           ListButtonWidget(
-                            isActive: currentData.value.targetCities.isEmpty,
                             text: currentData.value.hotels.isEmpty
                                 ? 'Отель'
                                 : currentData.value.hotels.length == 1
@@ -187,7 +186,6 @@ class OtherParamsRoute extends HookWidget {
                           ),
                           const SizedBox(height: 20.0),
                           ListButtonWidget(
-                            isActive: currentData.value.hotels.isEmpty,
                             text: currentData.value.meals.isEmpty
                                 ? 'Питание'
                                 : currentData.value.meals.length == 1
@@ -201,7 +199,6 @@ class OtherParamsRoute extends HookWidget {
                           ),
                           const SizedBox(height: 20.0),
                           ListButtonWidget(
-                            isActive: currentData.value.meals.isEmpty,
                             text: currentData.value.rate == null
                                 ? 'Рейтинг'
                                 : 'Рейтинг: ${rateToString(currentData.value.rate!)}',
@@ -252,7 +249,10 @@ class OtherParamsRoute extends HookWidget {
                   ),
                   reset: FooterButtonModel(
                     kind: FooterButtonKind.reset,
-                    isActive: currentData.value.targetCities.isEmpty,
+                    isActive: currentData.value.targetCities.isNotEmpty ||
+                        currentData.value.hotels.isNotEmpty ||
+                        currentData.value.meals.isNotEmpty ||
+                        currentData.value.rate != null,
                     onTap: reset,
                   ),
                 ),
