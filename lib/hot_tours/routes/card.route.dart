@@ -429,44 +429,48 @@ class DescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 14.0),
         width: double.infinity,
-        child: data.tour!.hotelDesc.trim().isEmpty
-            ? const Text(
-                'Описание отеля временно отсутствует.',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 12.0,
-                  color: Color(0xff4d4948),
+        child: FutureBuilder(
+          future: data.tour!.hotelDesc,
+          initialData: '',
+          builder: (_, snapshot) => (snapshot.data as String?)?.isEmpty ?? true
+              ? const Text(
+                  'Описание отеля временно отсутствует.',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 12.0,
+                    color: Color(0xff4d4948),
+                  ),
+                )
+              : ReadMoreText(
+                  snapshot.data as String,
+                  trimMode: TrimMode.Line,
+                  trimCollapsedText: 'Показать больше',
+                  trimExpandedText: 'Показать меньше',
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(
+                    fontFamily: 'Roboto',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 12.0,
+                    color: Color(0xff4d4948),
+                  ),
+                  moreStyle: const TextStyle(
+                    fontFamily: 'Roboto',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 12.0,
+                    color: Color(0xff2eaeee),
+                  ),
+                  lessStyle: const TextStyle(
+                    fontFamily: 'Roboto',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 12.0,
+                    color: Color(0xff2eaeee),
+                  ),
                 ),
-              )
-            : ReadMoreText(
-                data.tour!.hotelDesc.trim(),
-                trimMode: TrimMode.Line,
-                trimCollapsedText: 'Показать больше',
-                trimExpandedText: 'Показать меньше',
-                textAlign: TextAlign.start,
-                style: const TextStyle(
-                  fontFamily: 'Roboto',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 12.0,
-                  color: Color(0xff4d4948),
-                ),
-                moreStyle: const TextStyle(
-                  fontFamily: 'Roboto',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 12.0,
-                  color: Color(0xff2eaeee),
-                ),
-                lessStyle: const TextStyle(
-                  fontFamily: 'Roboto',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 12.0,
-                  color: Color(0xff2eaeee),
-                ),
-              ),
+        ),
       );
 }

@@ -1,3 +1,4 @@
+import 'package:hot_tours/api.dart';
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/star.model.dart';
 
@@ -8,7 +9,7 @@ class TourModel {
   final U<num> hotelRating; // 35
 
   final U<int> photosCount; // 46
-  final String hotelDesc; // 38
+  final Future<String> hotelDesc; // 38
   final String hotelDescUrl; // 2
 
   final String departCityName; // 33
@@ -66,7 +67,9 @@ class TourModel {
         ),
         hotelRating: U<num>(num.tryParse((data[35] as String).trim()) ?? 0.0),
         photosCount: U<int>(data[46] as int),
-        hotelDesc: (data[38] as String).trim(),
+        hotelDesc: Api.getHotelDescription(
+          hotelId: U<int>(data[3] as int),
+        ),
         hotelDescUrl: (data[2] as String).trim(),
         departCityName: (data[33] as String).trim(),
         targetCountryName: (data[31] as String).trim(),

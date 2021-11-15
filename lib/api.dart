@@ -186,12 +186,13 @@ abstract class Api {
     });
     final res = await _dio.get<Object>(uri);
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
-    
+
     if (data['kind'] == 'success') {
       final xml = XmlDocument.parse(data['value'] as String);
-      final body = xml.getElement('html');
-      final ps = body!.findAllElements('p');
-      return ps.map((p) => p.text.trim()).join('\n').trim();
+      try {
+        final root = xml.getElement('html')!.getElement('body');
+        return root!.text;
+      } catch (_) {}
     }
     return '';
   }
@@ -247,8 +248,7 @@ abstract class Api {
       return (data['value'] as List<dynamic>)
           .cast<List<dynamic>>()
           .map(TourModel.serialize)
-          .toList()
-          .cast<TourModel>();
+          .toList();
     }
     return const [];
   }
@@ -289,8 +289,7 @@ abstract class Api {
       return (data['value'] as List<dynamic>)
           .cast<List<dynamic>>()
           .map(TourModel.serialize)
-          .toList()
-          .cast<TourModel>();
+          .toList();
     }
 
     return const [];

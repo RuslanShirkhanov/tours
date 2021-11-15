@@ -207,17 +207,21 @@ class CardWidget extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Flexible(
-                            child: Text(
-                              tours.first.hotelDesc.isEmpty
-                                  ? 'Описание отеля временно отсутствует. Ведётся добавление информации.'
-                                  : tours.first.hotelDesc.replaceAll('\n', ' '),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                fontFamily: 'Roboto',
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14.0,
+                            child: FutureBuilder(
+                              future: tours.first.hotelDesc,
+                              initialData: '',
+                              builder: (_, snapshot) => Text(
+                                (snapshot.data as String?)?.isEmpty ?? true
+                                    ? 'Описание отеля временно отсутствует. Ведётся добавление информации.'
+                                    : snapshot.data as String,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.0,
+                                ),
                               ),
                             ),
                           ),
@@ -469,17 +473,21 @@ class DescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 14.0),
         width: double.infinity,
-        child: Text(
-          data.tour!.hotelDesc.trim().isNotEmpty
-              ? data.tour!.hotelDesc.trim()
-              : 'Описание отеля временно отсутствует.',
-          textAlign: TextAlign.start,
-          style: const TextStyle(
-            fontFamily: 'Roboto',
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.normal,
-            fontSize: 12.0,
-            color: Color(0xff4d4948),
+        child: FutureBuilder(
+          future: data.tour!.hotelDesc,
+          initialData: '',
+          builder: (_, snapshot) => Text(
+            (snapshot.data as String?)?.isEmpty ?? true
+                ? snapshot.data as String
+                : 'Описание отеля временно отсутствует.',
+            textAlign: TextAlign.start,
+            style: const TextStyle(
+              fontFamily: 'Roboto',
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.normal,
+              fontSize: 12.0,
+              color: Color(0xff4d4948),
+            ),
           ),
         ),
       );
