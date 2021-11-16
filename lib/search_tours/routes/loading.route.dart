@@ -79,7 +79,8 @@ class LoadingRoute extends HookWidget {
 
     useEffect(() {
       if (tours.value != null) {
-        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) {
+          Navigator.pop(context);
           tours.value!.isEmpty
               ? showNoSearchResultsRoute(
                   context: context,

@@ -10,6 +10,7 @@ import 'package:hot_tours/utils/show_route.dart';
 
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/abstract_data.model.dart';
+import 'package:hot_tours/search_tours/models/data.model.dart' as search_tours;
 
 import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/select_tours/widgets/form.widget.dart';
@@ -28,8 +29,12 @@ void showFormRoute({
           data: currentData!,
           onContinue: (newData) => Api.makeCreateLeadRequest(
             context: context,
-            kind: ReqKind.select,
-            note: newData.toString(),
+            kind: data is search_tours.DataModel
+                ? ReqKind.search
+                : ReqKind.select,
+            note: data is search_tours.DataModel
+                ? (newData as search_tours.DataModel).toString()
+                : newData.toString(),
           ),
         ),
         transitionsBuilder: (context, fst, snd, child) {
@@ -100,6 +105,7 @@ class FormRoute extends HookWidget {
                       ),
                       const SizedBox(height: 55.0),
                       FormWidget(
+                        data: data,
                         onSubmit: (formData) => onContinue(
                           data
                               .setName(formData.name)

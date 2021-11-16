@@ -188,11 +188,13 @@ abstract class Api {
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'success') {
-      final xml = XmlDocument.parse(data['value'] as String);
       try {
-        final root = xml.getElement('html')!.getElement('body');
-        return root!.text;
-      } catch (_) {}
+        final xml = XmlDocument.parse(data['value'] as String);
+        final root = xml.getElement('html')!.getElement('body')!;
+        return root.text.replaceAll(RegExp(' +'), ' ').trim();
+      } catch (error) {
+        return '';
+      }
     }
     return '';
   }
@@ -245,10 +247,11 @@ abstract class Api {
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'success') {
-      return (data['value'] as List<dynamic>)
+      final tours = (data['value'] as List<dynamic>)
           .cast<List<dynamic>>()
           .map(TourModel.serialize)
           .toList();
+      return Future.wait(tours);
     }
     return const [];
   }
@@ -286,10 +289,11 @@ abstract class Api {
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'success') {
-      return (data['value'] as List<dynamic>)
+      final tours = (data['value'] as List<dynamic>)
           .cast<List<dynamic>>()
           .map(TourModel.serialize)
           .toList();
+      return Future.wait(tours);
     }
 
     return const [];

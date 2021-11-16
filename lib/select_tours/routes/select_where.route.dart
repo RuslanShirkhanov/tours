@@ -88,7 +88,7 @@ class SelectWhereRoute extends HookWidget {
       isLoading: isLoading.value,
       primaryText: 'Где хотите отдохнуть?',
       primaryData: targetCountries.value.mapToList((c, _) => c.name),
-      isPrimarySingle: false,
+      isPrimarySingle: true,
       secondaryData: const <String>[],
       isSecondarySingle: true,
       hasAlternative: false,

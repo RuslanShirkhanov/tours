@@ -1,4 +1,3 @@
-import 'package:hot_tours/api.dart';
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/star.model.dart';
 
@@ -9,7 +8,6 @@ class TourModel {
   final U<num> hotelRating; // 35
 
   final U<int> photosCount; // 46
-  final Future<String> hotelDesc; // 38
   final String hotelDescUrl; // 2
 
   final String departCityName; // 33
@@ -39,7 +37,6 @@ class TourModel {
     required this.hotelStar,
     required this.hotelRating,
     required this.photosCount,
-    required this.hotelDesc,
     required this.hotelDescUrl,
     required this.departCityName,
     required this.targetCountryName,
@@ -58,7 +55,7 @@ class TourModel {
     required this.costCurrency,
   });
 
-  static TourModel serialize(List<dynamic> data) => TourModel(
+  static Future<TourModel> serialize(List<dynamic> data) async => TourModel(
         hotelId: U<int>(data[3] as int),
         hotelName: (data[7] as String).trim(),
         hotelStar: StarModel(
@@ -67,9 +64,6 @@ class TourModel {
         ),
         hotelRating: U<num>(num.tryParse((data[35] as String).trim()) ?? 0.0),
         photosCount: U<int>(data[46] as int),
-        hotelDesc: Api.getHotelDescription(
-          hotelId: U<int>(data[3] as int),
-        ),
         hotelDescUrl: (data[2] as String).trim(),
         departCityName: (data[33] as String).trim(),
         targetCountryName: (data[31] as String).trim(),
@@ -87,29 +81,4 @@ class TourModel {
         cost: U<int>(data[42] as int),
         costCurrency: (data[43] as String).trim(),
       );
-
-  static Map<String, dynamic> deserialize(TourModel data) => <String, dynamic>{
-        'hotelId': data.hotelId,
-        'hotelName': data.hotelName,
-        'hotelStar': data.hotelStar,
-        'hotelRating': data.hotelRating,
-        'photosCount': data.photosCount,
-        'hotelDesc': data.hotelDesc,
-        'hotelDescUrl': data.hotelDescUrl,
-        'departCity': data.departCityName,
-        'targetCountry': data.targetCountryName,
-        'targetCity': data.targetCityName,
-        'dateIn': data.dateIn,
-        'dateOut': data.dateOut,
-        'nightsCount': data.nightsCount,
-        'adultsCount': data.adultsCount,
-        'childrenCount': data.childrenCount,
-        'roomType': data.roomType,
-        'roomTypeDesc': data.roomTypeDesc,
-        'mealType': data.mealType,
-        'mealTypeDesc': data.mealTypeDesc,
-        'areTicketsIncluded': data.areTicketsIncluded,
-        'cost': data.cost,
-        'costCurrency': data.costCurrency,
-      };
 }

@@ -4,6 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:readmore/readmore.dart';
 
+import 'package:hot_tours/api.dart';
+
 import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/color.dart';
 import 'package:hot_tours/utils/string.dart';
@@ -278,58 +280,59 @@ class HeaderWidget extends StatelessWidget {
         padding: const EdgeInsets.only(
           top: 12.0,
           left: 14.0,
-          right: 35.0,
+          right: 14.0,
           bottom: 8.0,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(
-                      data.tour!.hotelName.capitalized,
-                      maxLines: 2,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 18.0,
-                        color: Color(0xff4d4948),
-                      ),
+                Flexible(
+                  child: Text(
+                    data.tour!.hotelName.capitalized,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 18.0,
+                      color: Color(0xff4d4948),
                     ),
-                    const SizedBox(width: 6.0),
-                    Container(
-                      width: 36.0,
-                      height: 18.0,
-                      decoration: BoxDecoration(
-                        color: fade(data.tour!.hotelRating),
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 1.5),
-                          child: Text(
-                            '${data.tour!.hotelRating}',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontFamily: 'Roboto',
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 13.0,
-                              color: Colors.white,
-                            ),
-                          ),
+                  ),
+                ),
+                Container(
+                  width: 36.0,
+                  height: 18.0,
+                  decoration: BoxDecoration(
+                    color: fade(data.tour!.hotelRating),
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 1.5),
+                      child: Text(
+                        '${data.tour!.hotelRating}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: 'Roboto',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 13.0,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-                const SizedBox(height: 6.0),
+              ],
+            ),
+            const SizedBox(height: 6.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
                 Text(
                   data.tour!.targetCityName,
                   style: const TextStyle(
@@ -340,9 +343,9 @@ class HeaderWidget extends StatelessWidget {
                     color: Color(0xff7d7d7d),
                   ),
                 ),
+                ShownStarsWidget(data: data.tour!.hotelStar),
               ],
             ),
-            ShownStarsWidget(data: data.tour!.hotelStar),
           ],
         ),
       );
@@ -426,51 +429,56 @@ class DescriptionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14.0),
-        width: double.infinity,
-        child: FutureBuilder(
-          future: data.tour!.hotelDesc,
-          initialData: '',
-          builder: (_, snapshot) => (snapshot.data as String?)?.isEmpty ?? true
-              ? const Text(
-                  'Описание отеля временно отсутствует.',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12.0,
-                    color: Color(0xff4d4948),
-                  ),
-                )
-              : ReadMoreText(
-                  snapshot.data as String,
-                  trimMode: TrimMode.Line,
-                  trimCollapsedText: 'Показать больше',
-                  trimExpandedText: 'Показать меньше',
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12.0,
-                    color: Color(0xff4d4948),
-                  ),
-                  moreStyle: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12.0,
-                    color: Color(0xff2eaeee),
-                  ),
-                  lessStyle: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12.0,
-                    color: Color(0xff2eaeee),
-                  ),
-                ),
+  Widget build(BuildContext context) => FutureBuilder(
+        future: Api.getHotelDescription(
+          hotelId: data.tour!.hotelId,
         ),
+        initialData: 'Загрузка...',
+        builder: (context, snapshot) {
+          final data = (snapshot.data as String?) ?? '';
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14.0),
+            width: double.infinity,
+            child: data.isEmpty
+                ? const Text(
+                    'Описание отеля временно отсутствует.',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12.0,
+                      color: Color(0xff4d4948),
+                    ),
+                  )
+                : ReadMoreText(
+                    data,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: 'Показать больше',
+                    trimExpandedText: 'Показать меньше',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12.0,
+                      color: Color(0xff4d4948),
+                    ),
+                    moreStyle: const TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12.0,
+                      color: Color(0xff2eaeee),
+                    ),
+                    lessStyle: const TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12.0,
+                      color: Color(0xff2eaeee),
+                    ),
+                  ),
+          );
+        },
       );
 }

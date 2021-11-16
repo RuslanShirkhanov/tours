@@ -44,12 +44,13 @@ class ButtonWidget extends StatelessWidget {
             ),
             child: Text(
               text,
+              maxLines: 1,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.normal,
-                fontSize: 20.0,
+                fontSize: 18.0,
                 color: textColor,
               ),
             ),

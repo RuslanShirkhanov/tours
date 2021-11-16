@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'unsigned.dart';
 
-class StarModel {
+class StarModel extends Equatable {
   final U<int> id;
   final String name;
 
@@ -10,11 +12,7 @@ class StarModel {
   });
 
   @override
-  int get hashCode => name.hashCode;
-
-  @override
-  // ignore: avoid_renaming_method_parameters
-  bool operator ==(covariant StarModel that) => name == that.name;
+  List<Object> get props => [name];
 
   static StarModel serialize(Map<String, dynamic> data) => StarModel(
         id: U<int>(data['id'] as int),

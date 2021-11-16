@@ -54,10 +54,10 @@ class SelectTargetCountryRoute extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isVisa = useState(false);
+    final isVisa = useState(true);
 
     final countries = useMemoized(
-      () => data.where((c) => c.isVisa == isVisa.value).toList(),
+      () => isVisa.value ? data : data.where((c) => !c.isVisa).toList(),
       [isVisa.value],
     );
 
@@ -93,7 +93,7 @@ class SelectTargetCountryRoute extends HookWidget {
                     padding: EdgeInsets.only(
                       left: 54.0,
                       right: 54.0,
-                      bottom: index == data.length - 2 ? 20.0 : 0.0,
+                      bottom: index == countries.length - 1 ? 20.0 : 0.0,
                     ),
                     child: ListButtonWidget(
                       text: countries[index].name,

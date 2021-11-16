@@ -11,12 +11,6 @@ class DepartCityModel {
     required this.isPopular,
   });
 
-  factory DepartCityModel.empty() => const DepartCityModel(
-        id: U<int>(0),
-        name: '',
-        isPopular: false,
-      );
-
   static DepartCityModel serialize(Map<String, dynamic> data) =>
       DepartCityModel(
         id: U<int>(data['Id'] as int),

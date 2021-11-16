@@ -4,14 +4,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:hot_tours/api.dart';
 
-import 'package:hot_tours/hot_tours/models/data.model.dart';
-import 'package:hot_tours/models/hotel_comment.model.dart';
-
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/widgets/nav_bar.widget.dart';
+import 'package:hot_tours/models/hotel_comment.model.dart';
+import 'package:hot_tours/search_tours/models/data.model.dart';
 
-import 'package:hot_tours/hot_tours/routes/card.route.dart';
+import 'package:hot_tours/widgets/nav_bar.widget.dart';
+import 'package:hot_tours/search_tours/widgets/header.widget.dart';
+
+import 'package:hot_tours/search_tours/widgets/hotel_comment.widget.dart';
 
 void showHotelCommentsRoute({
   required BuildContext context,
@@ -73,7 +74,7 @@ class HotelCommentsRoute extends HookWidget {
               hasSectionIndicator: false,
               title: 'Отзывы об отеле',
               hasSubtitle: false,
-              backgroundColor: const Color(0xffdc2323),
+              backgroundColor: const Color(0xff2eaeee),
               hasBackButton: true,
               hasLoadingIndicator: true,
               isLoading: isLoading.value,
@@ -134,81 +135,4 @@ class HotelCommentsRoute extends HookWidget {
       ),
     );
   }
-}
-
-class HotelCommentWidget extends StatelessWidget {
-  final HotelCommentModel model;
-
-  const HotelCommentWidget({
-    Key? key,
-    required this.model,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              '${model.userName}, ${model.date}, оценка: ${model.rate}',
-              textAlign: TextAlign.start,
-              style: const TextStyle(
-                fontFamily: 'Roboto',
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.bold,
-                fontSize: 14.0,
-              ),
-            ),
-            if (model.positive.isNotEmpty) const SizedBox(height: 15.0),
-            if (model.positive.isNotEmpty)
-              const Text(
-                'Достоинства:',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                  color: Color(0xff2eaeee),
-                ),
-              ),
-            if (model.positive.isNotEmpty)
-              Text(
-                model.positive,
-                textAlign: TextAlign.start,
-                style: const TextStyle(
-                  fontFamily: 'Roboto',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14.0,
-                ),
-              ),
-            if (model.negative.isNotEmpty) const SizedBox(height: 15.0),
-            if (model.negative.isNotEmpty)
-              const Text(
-                'Недостатки:',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                  color: Color(0xff2eaeee),
-                ),
-              ),
-            if (model.negative.isNotEmpty)
-              Text(
-                model.negative,
-                textAlign: TextAlign.start,
-                style: const TextStyle(
-                  fontFamily: 'Roboto',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 14.0,
-                ),
-              ),
-          ],
-        ),
-      );
 }

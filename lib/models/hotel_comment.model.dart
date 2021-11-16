@@ -19,15 +19,35 @@ class HotelCommentModel {
   });
 
   static HotelCommentModel serialize(XmlElement data) => HotelCommentModel(
-        userName: data.getElement('b:UserName')!.innerText.trim(),
-        date: data.getElement('b:CreateDateFormatted')!.innerText.trim(),
-        rate: U(int.parse(data.getElement('b:Rate')!.innerText.trim())),
+        userName: data
+            .getElement('b:UserName')!
+            .innerText
+            .replaceAll(RegExp(' +'), ' ')
+            .trim(),
+        date: data
+            .getElement('b:CreateDateFormatted')!
+            .innerText
+            .replaceAll(RegExp(' +'), ' ')
+            .trim(),
+        rate: U(int.parse(data
+            .getElement('b:Rate')!
+            .innerText
+            .replaceAll(RegExp(' +'), ' ')
+            .trim())),
         positive: () {
-          final text = data.getElement('b:Positive')!.innerText.trim();
+          final text = data
+              .getElement('b:Positive')!
+              .innerText
+              .replaceAll(RegExp(' +'), ' ')
+              .trim();
           return text.isEmpty ? text : text.substring(9, text.length - 1 - 9);
         }(),
         negative: () {
-          final text = data.getElement('b:Negative')!.innerText.trim();
+          final text = data
+              .getElement('b:Negative')!
+              .innerText
+              .replaceAll(RegExp(' +'), ' ')
+              .trim();
           return text.isEmpty ? text : text.substring(9, text.length - 1 - 9);
         }(),
       );

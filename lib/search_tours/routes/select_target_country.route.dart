@@ -68,7 +68,7 @@ class SelectTargetCountryRoute extends HookWidget {
 
     final isLoading = useState(false);
 
-    final isVisa = useState(false);
+    final isVisa = useState(true);
 
     final initialData = useState(<CountryModel>[]);
 
@@ -87,7 +87,9 @@ class SelectTargetCountryRoute extends HookWidget {
     }, [connection.value]);
 
     final targetCountries = useMemoized(
-      () => initialData.value.where((c) => c.isVisa == isVisa.value).toList(),
+      () => isVisa.value
+          ? initialData.value
+          : initialData.value.where((c) => !c.isVisa).toList(),
       [initialData.value, isVisa.value],
     );
 

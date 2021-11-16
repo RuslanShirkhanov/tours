@@ -24,15 +24,6 @@ class HotelModel extends Equatable {
   @override
   List<Object> get props => [name];
 
-  factory HotelModel.any() => HotelModel(
-        id: const U<int>(0),
-        townId: const U<int>(0),
-        name: 'Любой',
-        star: StarModel.getStars[0],
-        rate: const U<double>(0.0),
-        photosCount: const U<int>(0),
-      );
-
   static HotelModel serialize(Map<String, dynamic> data) => HotelModel(
         id: U<int>(data['Id'] as int),
         townId: U<int>(data['TownId'] as int),

@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'package:hot_tours/utils/date.dart';
+import 'package:hot_tours/utils/string.dart';
+
+import 'package:hot_tours/models/abstract_data.model.dart';
+import 'package:hot_tours/models/unsigned.dart';
+import 'package:hot_tours/search_tours/models/data.model.dart' as search_tours;
+
 import 'package:hot_tours/widgets/form_field.widget.dart';
 import 'package:hot_tours/widgets/form_submit.widget.dart';
 
@@ -16,10 +23,12 @@ class FormModel {
 }
 
 class FormWidget extends HookWidget {
+  final AbstractDataModel data;
   final void Function(FormModel) onSubmit;
 
   const FormWidget({
     Key? key,
+    required this.data,
     required this.onSubmit,
   }) : super(key: key);
 
@@ -47,7 +56,63 @@ class FormWidget extends HookWidget {
             focusNode: numberFocusNode,
             onChange: setNumber,
           ),
-          const SizedBox(height: 45.0),
+          if (data is search_tours.DataModel)
+            () {
+              final _data = data as search_tours.DataModel;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(height: 40.0),
+                  Text(
+                    '${_data.departCity!.name} ${_data.targetCountry!.name}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  Text(
+                    () {
+                          final date = _data.tourDates.first;
+                          final day = U(date.day);
+                          final month = U(date.month);
+                          return '$day ${declineWord(Date.monthToString(month.value), day)}';
+                        }() +
+                        ' - ' +
+                        () {
+                          final date = _data.tourDates.last;
+                          final day = U(date.day);
+                          final month = U(date.month);
+                          return '$day ${declineWord(Date.monthToString(month.value), day)}';
+                        }() +
+                        ', ' +
+                        () {
+                          final nights = _data.nightsCount!;
+                          return '${nights.fst} - ${nights.snd} ночей';
+                        }() +
+                        ', ' +
+                        () {
+                          final people = _data.peopleCount!;
+                          if (people.snd.eq(0)) {
+                            return '${people.fst} ${declineWord('взрослый', people.fst)}';
+                          }
+                          return '${people.fst} ${declineWord('взрослый', people.fst).substring(0, 3)} + ${people.snd} ${declineWord('ребёнок', people.snd).substring(0, 3)}';
+                        }(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              );
+            }(),
+          const SizedBox(height: 40.0),
           FormSubmitWidget(
             text: 'Отправить',
             onTap: () {
@@ -57,7 +122,7 @@ class FormWidget extends HookWidget {
                 onSubmit(formData.value);
               }
             },
-            backgroundColor: const Color(0xff2eaeee),
+            backgroundColor: const Color(0xffeba627),
           ),
         ],
       ),
