@@ -13,9 +13,9 @@ import 'package:hot_tours/models/tour.model.dart';
 class DataModel extends AbstractDataModel {
   final DepartCityModel? departCity;
   final CountryModel? targetCountry;
-  final List<DateTime> tourDates;
-  final Pair<U<int>, U<int>>? nightsCount;
-  final Pair<U<int>, U<int>>? peopleCount;
+  final Pair<DateTime?, DateTime?> tourDates;
+  final Pair<U<int>?, U<int>?> nightsCount;
+  final Pair<U<int>?, U<int>?> peopleCount;
   final List<U<int>> childrenAges;
   final List<CityModel> targetCities;
   final List<StarModel> hotelStars;
@@ -44,9 +44,9 @@ class DataModel extends AbstractDataModel {
   factory DataModel.empty() => const DataModel(
         departCity: null,
         targetCountry: null,
-        tourDates: [],
-        nightsCount: null,
-        peopleCount: null,
+        tourDates: Pair(null, null),
+        nightsCount: Pair(null, null),
+        peopleCount: Pair(null, null),
         childrenAges: [],
         targetCities: [],
         hotelStars: [],
@@ -76,19 +76,20 @@ class DataModel extends AbstractDataModel {
       .trim()
       .replaceAll(RegExp(r'[\s]{2,}'), '\n');
 
-  bool get isValid =>
-      [
+  bool get isValid => [
         departCity,
         targetCountry,
+        tourDates,
         nightsCount,
         peopleCount,
-      ].map((x) => x != null).reduce((x, y) => x && y) &&
-      tourDates.isNotEmpty;
+      ]
+          .map((x) => x is Pair ? x.isNotEmpty : x != null)
+          .reduce((x, y) => x && y);
 
   DataModel setDepartCity(DepartCityModel value) => DataModel(
         departCity: value,
         targetCountry: null,
-        tourDates: [],
+        tourDates: const Pair(null, null),
         nightsCount: nightsCount,
         peopleCount: peopleCount,
         childrenAges: childrenAges,
@@ -105,7 +106,7 @@ class DataModel extends AbstractDataModel {
   DataModel setTargetCountry(CountryModel value) => DataModel(
         departCity: departCity,
         targetCountry: value,
-        tourDates: [],
+        tourDates: const Pair(null, null),
         nightsCount: nightsCount,
         peopleCount: peopleCount,
         childrenAges: childrenAges,
@@ -119,7 +120,7 @@ class DataModel extends AbstractDataModel {
         number: number,
       );
 
-  DataModel setTourDates(List<DateTime> value) => DataModel(
+  DataModel setTourDates(Pair<DateTime, DateTime> value) => DataModel(
         departCity: departCity,
         targetCountry: targetCountry,
         tourDates: value,

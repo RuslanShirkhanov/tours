@@ -63,11 +63,11 @@ class SelectNightsCountRoute extends HookWidget {
 
     final initial = useState(
       <int>[
-        if (data.nightsCount != null)
+        if (data.nightsCount.isNotEmpty)
           ranges.indexOf(
             Pair(
-              data.nightsCount!.fst.value,
-              data.nightsCount!.snd.value,
+              data.nightsCount.fst!.value,
+              data.nightsCount.snd!.value,
             ),
           ),
       ],

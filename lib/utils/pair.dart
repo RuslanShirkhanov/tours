@@ -12,3 +12,9 @@ class Pair<A, B> extends Equatable {
   @override
   String toString() => '($fst, $snd)';
 }
+
+extension Range<A, B> on Pair<A?, B?> {
+  bool get isEmpty => fst == null && snd == null;
+  bool get isNotEmpty => fst != null && snd != null;
+  Pair<A, B> get checked => Pair(fst!, snd!);
+}

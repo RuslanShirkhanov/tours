@@ -4,11 +4,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:hot_tours/api.dart';
 
+import 'package:hot_tours/utils/pair.dart';
 import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/star.model.dart';
 import 'package:hot_tours/models/tour.model.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
@@ -61,9 +61,10 @@ class LoadingRoute extends HookWidget {
       Api.getSeasonTours(
         cityFromId: data.departCity!.id,
         countryId: data.targetCountry!.id,
-        peopleCount: data.peopleCount!,
+        peopleCount: data.peopleCount.checked,
         kidsAges: data.childrenAges,
-        nightsCount: data.nightsCount!,
+        nightsCount: data.nightsCount.checked,
+        tourDates: data.tourDates.checked,
         cities: data.targetCities.map((city) => city.id).toList(),
         stars: data.hotelStars.isEmpty
             ? const []
@@ -136,31 +137,19 @@ class LoadingRoute extends HookWidget {
                         ),
                         const SizedBox(height: 6.0),
                         Text(
-                          () {
-                                final date = data.tourDates.first;
-                                final day = U(date.day);
-                                final month = U(date.month);
-                                return '$day ${declineWord(Date.monthToString(month.value), day)}';
-                              }() +
-                              ' - ' +
-                              () {
-                                final date = data.tourDates.last;
-                                final day = U(date.day);
-                                final month = U(date.month);
-                                return '$day ${declineWord(Date.monthToString(month.value), day)}';
-                              }() +
+                          data.tourDates.pretty +
                               ', ' +
                               () {
-                                final nights = data.nightsCount!;
+                                final nights = data.nightsCount;
                                 return '${nights.fst} - ${nights.snd} ночей';
                               }() +
                               ', ' +
                               () {
-                                final people = data.peopleCount!;
-                                if (people.snd.eq(0)) {
-                                  return '${people.fst} ${declineWord('взрослый', people.fst)}';
+                                final people = data.peopleCount;
+                                if (people.snd!.eq(0)) {
+                                  return '${people.fst} ${declineWord('взрослый', people.fst!)}';
                                 }
-                                return '${people.fst} ${declineWord('взрослый', people.fst).substring(0, 3)} + ${people.snd} ${declineWord('ребёнок', people.snd).substring(0, 3)}';
+                                return '${people.fst} ${declineWord('взрослый', people.fst!).substring(0, 3)} + ${people.snd} ${declineWord('ребёнок', people.snd!).substring(0, 3)}';
                               }(),
                           textAlign: TextAlign.center,
                           maxLines: 2,

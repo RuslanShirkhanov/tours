@@ -46,7 +46,7 @@ class StorageModel {
           departCity: DepartCityModel.serialize(
             data['departCity']! as Map<String, dynamic>,
           ),
-          tourDates: [],
+          tourDates: const Pair(null, null),
           targetCountry: CountryModel.serialize(
             data['targetCountry']! as Map<String, dynamic>,
           ),
@@ -94,10 +94,10 @@ class StorageModel {
       <String, dynamic>{
         'departCity': DepartCityModel.deserialize(data.data.departCity!),
         'targetCountry': CountryModel.deserialize(data.data.targetCountry!),
-        'nightsMin': data.data.nightsCount!.fst.value,
-        'nightsMax': data.data.nightsCount!.snd.value,
-        'adults': data.data.peopleCount!.fst.value,
-        'children': data.data.peopleCount!.snd.value,
+        'nightsMin': data.data.nightsCount.fst!.value,
+        'nightsMax': data.data.nightsCount.snd!.value,
+        'adults': data.data.peopleCount.fst!.value,
+        'children': data.data.peopleCount.snd!.value,
         'childrenAges': data.data.childrenAges.map((age) => age.value).toList(),
         'targetCities':
             data.data.targetCities.map(CityModel.deserialize).toList(),

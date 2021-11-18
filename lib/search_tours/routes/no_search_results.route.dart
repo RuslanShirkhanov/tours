@@ -78,9 +78,9 @@ class NoSearchResultsRoute extends StatelessWidget {
                       ),
                       const SizedBox(height: 6.0),
                       Text(
-                        'ночей: ${data.nightsCount!.fst} - ${data.nightsCount!.snd}, '
-                        'взрослых: ${data.peopleCount!.fst}, '
-                        'детей: ${data.peopleCount!.snd}',
+                        'ночей: ${data.nightsCount.fst} - ${data.nightsCount.snd}, '
+                        'взрослых: ${data.peopleCount.fst}, '
+                        'детей: ${data.peopleCount.snd}',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: 'Roboto',

@@ -256,12 +256,36 @@ abstract class Api {
     return const [];
   }
 
+  static String showDate(DateTime value) {
+    String showDay(int value) {
+      final shown = value.toString();
+      return shown.length == 1 ? '0$shown' : shown;
+    }
+
+    String showMonth(int value) {
+      final shown = value.toString();
+      return shown.length == 1 ? '0$shown' : shown;
+    }
+
+    String showYear(int value) {
+      final shown = value.toString();
+      return shown.length == 1 ? '0$shown' : shown;
+    }
+
+    final day = showDay(value.day);
+    final month = showMonth(value.month);
+    final year = showYear(value.year);
+
+    return '$day/$month/$year';
+  }
+
   static Future<List<TourModel>> getSeasonTours({
     required U<int> cityFromId,
     required U<int> countryId,
     required Pair<U<int>, U<int>> peopleCount,
     required List<U<int>> kidsAges,
     required Pair<U<int>, U<int>> nightsCount,
+    required Pair<DateTime, DateTime> tourDates,
     required List<U<int>> meals,
     required List<U<int>> stars,
     required List<U<int>> hotels,
@@ -279,6 +303,8 @@ abstract class Api {
       if (kidsAges.isNotEmpty) 'kids_ages': kidsAges.join(','),
       'nights_min': nightsCount.fst,
       'nights_max': nightsCount.snd,
+      'depart_from': showDate(tourDates.fst),
+      'depart_to': showDate(tourDates.snd),
       if (meals.isNotEmpty) 'meals': meals.join(','),
       if (stars.isNotEmpty) 'stars': stars.join(','),
       if (hotels.isNotEmpty) 'hotels': hotels.join(','),

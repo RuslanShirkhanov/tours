@@ -108,12 +108,12 @@ class _SelectDatesRouteState extends State<SelectDatesRoute> {
 
   void onSelect(DateTime value) {
     setState(() {
-      if (range.fst == null && range.snd == null) {
+      if (range.isEmpty) {
         range = Pair(value, value);
         return;
       }
 
-      if (range.fst != null && range.snd != null && range.fst == range.snd) {
+      if (range.isNotEmpty && range.fst == range.snd) {
         if (value.compareTo(range.fst!) >= 0) {
           range = Pair(range.fst, value);
         } else {
@@ -131,14 +131,13 @@ class _SelectDatesRouteState extends State<SelectDatesRoute> {
 
   bool isSelected(DateTime value) => range.contains(value);
 
-  bool get okIsActive => range.fst != null && range.snd != null;
-  void onOk() =>
-      widget.onContinue(widget.data.setTourDates(range.days.toList()));
+  bool get okIsActive => range.isValid;
+  void onOk() => widget.onContinue(widget.data.setTourDates(range.checked));
 
   bool get cancelIsActive => true;
   void onCancel() => Navigator.of(context).pop();
 
-  bool get resetIsActive => range.fst != null || range.snd != null;
+  bool get resetIsActive => range.isNotEmpty;
   void onReset() => setState(() => range = const Pair(null, null));
 
   @override

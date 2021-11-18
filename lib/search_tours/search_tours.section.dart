@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:hot_tours/utils/date.dart';
+import 'package:hot_tours/utils/pair.dart';
 import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/show_route.dart';
 
-import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/search_tours/models/storage.model.dart';
 
@@ -151,9 +151,7 @@ class SearchToursSection extends HookWidget {
                                   if (dates.isEmpty) {
                                     return 'Даты вылета';
                                   }
-                                  final first = dates.first;
-                                  final last = dates.last;
-                                  return '${first.day} ${declineWord(Date.monthToString(first.month), U(first.day)).substring(0, 3)} - ${last.day} ${declineWord(Date.monthToString(last.month), U(last.day)).substring(0, 3)}';
+                                  return currentData.value.tourDates.pretty;
                                 }(),
                                 onTap: () => showSelectDatesRoute(
                                   context: context,
@@ -168,8 +166,8 @@ class SearchToursSection extends HookWidget {
                                 fontSize: 13.0,
                                 isActive:
                                     currentData.value.tourDates.isNotEmpty,
-                                text: currentData.value.nightsCount != null
-                                    ? '${currentData.value.nightsCount!.fst} - ${currentData.value.nightsCount!.snd} ночей'
+                                text: currentData.value.nightsCount.isNotEmpty
+                                    ? '${currentData.value.nightsCount.fst} - ${currentData.value.nightsCount.snd} ночей'
                                     : 'Кол-во ночей',
                                 onTap: () => showSelectNightsCountRoute(
                                   context: context,
@@ -186,20 +184,20 @@ class SearchToursSection extends HookWidget {
                             Flexible(
                               child: ListButtonWidget(
                                 fontSize: 13.0,
-                                isActive:
-                                    currentData.value.tourDates.isNotEmpty &&
-                                        currentData.value.nightsCount != null,
+                                isActive: currentData
+                                        .value.tourDates.isNotEmpty &&
+                                    currentData.value.nightsCount.isNotEmpty,
                                 text: () {
                                   final people = currentData.value.peopleCount;
-                                  if (people == null) {
+                                  if (people.isEmpty) {
                                     return 'Кол-во людей';
                                   }
                                   final adults = people.fst;
                                   final children = people.snd;
-                                  if (children.eq(0)) {
-                                    return '$adults ${declineWord('взрослый', adults)}';
+                                  if (children!.eq(0)) {
+                                    return '$adults ${declineWord('взрослый', adults!)}';
                                   }
-                                  return '$adults ${declineWord('взрослый', adults).substring(0, 3)} + $children ${declineWord('ребёнок', children).substring(0, 3)}';
+                                  return '$adults ${declineWord('взрослый', adults!).substring(0, 3)} + $children ${declineWord('ребёнок', children).substring(0, 3)}';
                                 }(),
                                 onTap: () => showSelectPeopleCountRoute(
                                   context: context,

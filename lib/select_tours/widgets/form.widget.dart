@@ -6,7 +6,6 @@ import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/string.dart';
 
 import 'package:hot_tours/models/abstract_data.model.dart';
-import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart' as search_tours;
 
 import 'package:hot_tours/widgets/form_field.widget.dart';
@@ -75,31 +74,19 @@ class FormWidget extends HookWidget {
                     ),
                   ),
                   Text(
-                    () {
-                          final date = _data.tourDates.first;
-                          final day = U(date.day);
-                          final month = U(date.month);
-                          return '$day ${declineWord(Date.monthToString(month.value), day)}';
-                        }() +
-                        ' - ' +
-                        () {
-                          final date = _data.tourDates.last;
-                          final day = U(date.day);
-                          final month = U(date.month);
-                          return '$day ${declineWord(Date.monthToString(month.value), day)}';
-                        }() +
+                    _data.tourDates.pretty +
                         ', ' +
                         () {
-                          final nights = _data.nightsCount!;
+                          final nights = _data.nightsCount;
                           return '${nights.fst} - ${nights.snd} ночей';
                         }() +
                         ', ' +
                         () {
-                          final people = _data.peopleCount!;
-                          if (people.snd.eq(0)) {
-                            return '${people.fst} ${declineWord('взрослый', people.fst)}';
+                          final people = _data.peopleCount;
+                          if (people.snd!.eq(0)) {
+                            return '${people.fst} ${declineWord('взрослый', people.fst!)}';
                           }
-                          return '${people.fst} ${declineWord('взрослый', people.fst).substring(0, 3)} + ${people.snd} ${declineWord('ребёнок', people.snd).substring(0, 3)}';
+                          return '${people.fst} ${declineWord('взрослый', people.fst!).substring(0, 3)} + ${people.snd} ${declineWord('ребёнок', people.snd!).substring(0, 3)}';
                         }(),
                     textAlign: TextAlign.center,
                     style: const TextStyle(

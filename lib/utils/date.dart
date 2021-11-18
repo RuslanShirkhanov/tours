@@ -98,7 +98,7 @@ extension Utils on DateTime {
 }
 
 extension DateRange on Pair<DateTime?, DateTime?> {
-  bool get isValid => fst != null && snd != null && fst!.compareTo(snd!) <= 0;
+  bool get isValid => isNotEmpty && fst!.compareTo(snd!) <= 0;
 
   bool contains(DateTime value) {
     if (!isValid) {
