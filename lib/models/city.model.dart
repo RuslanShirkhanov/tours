@@ -19,8 +19,8 @@ class CityModel extends Equatable {
   List<Object> get props => [name];
 
   static CityModel serialize(Map<String, dynamic> data) => CityModel(
-        id: U<int>(data['Id'] as int),
-        countryId: U<int>(data['CountryId'] as int),
+        id: U(data['Id'] as int),
+        countryId: U(data['CountryId'] as int),
         name: (data['Name'] as String).trim(),
         isPopular: data['IsPopular'] as bool,
       );

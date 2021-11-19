@@ -51,12 +51,12 @@ class StorageModel {
             data['targetCountry']! as Map<String, dynamic>,
           ),
           nightsCount: Pair(
-            U<int>(data['nightsMin'] as int),
-            U<int>(data['nightsMax'] as int),
+            U(data['nightsMin'] as int),
+            U(data['nightsMax'] as int),
           ),
           peopleCount: Pair(
-            U<int>(data['adults'] as int),
-            U<int>(data['children'] as int),
+            U(data['adults'] as int),
+            U(data['children'] as int),
           ),
           childrenAges: (data['childrenAges'] as List<dynamic>)
               .cast<int>()

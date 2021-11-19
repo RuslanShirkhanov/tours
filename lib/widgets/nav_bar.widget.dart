@@ -23,8 +23,8 @@ class NavBarWidget extends StatelessWidget {
 
   const NavBarWidget({
     Key? key,
-    this.sectionsCount = const U<int>(1),
-    this.sectionIndex = const U<int>(0),
+    this.sectionsCount = const U(1),
+    this.sectionIndex = const U(0),
     required this.hasSectionIndicator,
     required this.title,
     this.subtitle = '',
@@ -35,8 +35,8 @@ class NavBarWidget extends StatelessWidget {
     this.isLoading = false,
     required this.hasLoadingIndicator,
     this.loadingIndicatorColor = Colors.white,
-  })  : assert(sectionsCount > const U<int>(0)),
-        assert(sectionIndex + const U<int>(1) <= sectionsCount),
+  })  : assert(sectionsCount > const U(0)),
+        assert(sectionIndex + const U(1) <= sectionsCount),
         super(key: key);
 
   @override

@@ -25,15 +25,15 @@ class HotelModel extends Equatable {
   List<Object> get props => [name];
 
   static HotelModel serialize(Map<String, dynamic> data) => HotelModel(
-        id: U<int>(data['Id'] as int),
-        townId: U<int>(data['TownId'] as int),
+        id: U(data['Id'] as int),
+        townId: U(data['TownId'] as int),
         name: (data['Name'] as String).trim(),
         star: StarModel(
-          id: U<int>(data['StarId'] as int),
+          id: U(data['StarId'] as int),
           name: data['StarName'] as String,
         ),
         rate: U<num>(data['Rate'] as num),
-        photosCount: U<int>(data['PhotosCount'] as int),
+        photosCount: U(data['PhotosCount'] as int),
       );
 
   static Map<String, dynamic> deserialize(HotelModel data) => <String, dynamic>{

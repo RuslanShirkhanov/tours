@@ -250,7 +250,13 @@ class BuyButtonWidget extends StatelessWidget {
           ButtonWidget(
             text:
                 '${thousands(data.tour!.cost)} ${data.tour!.costCurrency.toUpperCase() == 'RUB' ? 'р.' : data.tour!.costCurrency}',
-            onTap: () => showFormRoute(context: context, data: data),
+            // onTap: () => showFormRoute(context: context, data: data), // !!!
+            onTap: () => Api.getActualizePrice(
+              requestId: data.tour!.requestId,
+              offerId: data.tour!.offerId,
+              sourceId: data.tour!.sourceId,
+              showcase: true,
+            ),
           ),
           const SizedBox(width: 13.0),
           const Text(

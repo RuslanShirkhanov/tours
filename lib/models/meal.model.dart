@@ -10,7 +10,7 @@ class MealModel {
   });
 
   static MealModel serialize(Map<String, dynamic> data) => MealModel(
-        id: U<int>(data['id'] as int),
+        id: U(data['id'] as int),
         name: (data['name'] as String).trim(),
       );
 
@@ -20,15 +20,15 @@ class MealModel {
       };
 
   static List<MealModel> getMeals() => const [
-        MealModel(id: U<int>(112), name: 'FB'),
-        MealModel(id: U<int>(113), name: 'HB'),
-        MealModel(id: U<int>(114), name: 'BB'),
-        MealModel(id: U<int>(115), name: 'AI'),
-        MealModel(id: U<int>(116), name: 'UAI'),
-        MealModel(id: U<int>(117), name: 'RO'),
-        MealModel(id: U<int>(121), name: 'FB+'),
-        MealModel(id: U<int>(122), name: 'HB+'),
-        MealModel(id: U<int>(129), name: 'SC'),
+        MealModel(id: U(112), name: 'FB'),
+        MealModel(id: U(113), name: 'HB'),
+        MealModel(id: U(114), name: 'BB'),
+        MealModel(id: U(115), name: 'AI'),
+        MealModel(id: U(116), name: 'UAI'),
+        MealModel(id: U(117), name: 'RO'),
+        MealModel(id: U(121), name: 'FB+'),
+        MealModel(id: U(122), name: 'HB+'),
+        MealModel(id: U(129), name: 'SC'),
       ];
 }
 

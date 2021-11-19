@@ -146,7 +146,7 @@ abstract class ReqsController {
     return _model.getReq(kind);
   }
 
-  static const rollback = U<int>(15);
+  static const rollback = U(15);
 
   static bool canSetReq(ReqKind kind) => _model.canSetReq(kind);
 

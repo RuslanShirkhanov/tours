@@ -6,6 +6,7 @@ import 'package:hot_tours/api.dart';
 
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/tour.model.dart';
+
 import 'package:hot_tours/widgets/image_widget.dart';
 
 class SliderWidget extends HookWidget {
@@ -50,7 +51,7 @@ class SliderWidget extends HookWidget {
                   : NetworkImageWidget(
                       url: Api.makeImageUri(
                         hotelId: tour.hotelId,
-                        imageNumber: U<int>(currentIndex.value),
+                        imageNumber: U(currentIndex.value),
                       ),
                     ),
             ),

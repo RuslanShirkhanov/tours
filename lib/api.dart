@@ -247,11 +247,8 @@ abstract class Api {
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'success') {
-      final tours = (data['value'] as List<dynamic>)
-          .cast<List<dynamic>>()
-          .map(TourModel.serialize)
-          .toList();
-      return Future.wait(tours);
+      final value = data['value'] as Map<String, dynamic>;
+      return TourModel.serialize(value);
     }
     return const [];
   }
@@ -315,12 +312,31 @@ abstract class Api {
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'success') {
-      final tours = (data['value'] as List<dynamic>)
-          .cast<List<dynamic>>()
-          .map(TourModel.serialize)
-          .toList();
-      return Future.wait(tours);
+      final value = data['value'] as Map<String, dynamic>;
+      return TourModel.serialize(value);
     }
+    return const [];
+  }
+
+  static Future<List<Object>> getActualizePrice({
+    required U<int> requestId,
+    required U<int> offerId,
+    required U<int> sourceId,
+    required bool showcase,
+  }) async {
+    if (!await Api.hasConnection()) {
+      return const [];
+    }
+
+    final uri = _makeUri('actualize_price', {
+      'request_id': requestId,
+      'offer_id': offerId,
+      'source_id': sourceId,
+      'showcase': showcase,
+    });
+    final res = await _dio.get<Object>(uri);
+
+    print(res.data);
 
     return const [];
   }

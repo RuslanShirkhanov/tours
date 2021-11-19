@@ -47,7 +47,7 @@ class CardWidget extends StatelessWidget {
                         : NetworkImageWidget(
                             url: Api.makeImageUri(
                               hotelId: data.tour!.hotelId,
-                              imageNumber: const U<int>(0),
+                              imageNumber: const U(0),
                             ),
                           ),
                   ),
