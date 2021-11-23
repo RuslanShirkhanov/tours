@@ -128,7 +128,7 @@ class SelectManyRoute<T> extends HookWidget {
                 ok: FooterButtonModel(
                   kind: FooterButtonKind.ok,
                   isActive: selected.value.isNotEmpty,
-                  onTap: () => onContinue(selected.value), // !!!
+                  onTap: () => onContinue(selected.value),
                 ),
                 cancel: FooterButtonModel(
                   kind: FooterButtonKind.cancel,

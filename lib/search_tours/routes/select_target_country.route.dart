@@ -7,6 +7,7 @@ import 'package:hot_tours/api.dart';
 import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/utils/sorted.dart';
 import 'package:hot_tours/utils/connection.dart';
+import 'package:hot_tours/utils/common_storage.dart';
 
 import 'package:hot_tours/models/country.model.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
@@ -131,7 +132,12 @@ class SelectTargetCountryRoute extends HookWidget {
                     child: ListButtonWidget(
                       text: targetCountries[index].name,
                       onTap: () => onContinue(
-                        data.setTargetCountry(targetCountries[index]),
+                        data.setTargetCountry(
+                          CommonStorageController.setValue(
+                            key: CDK.targetCountry,
+                            value: targetCountries[index],
+                          ),
+                        ),
                       ),
                     ),
                   ),

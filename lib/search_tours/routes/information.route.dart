@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hot_tours/api.dart';
 
 import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/utils/thousands.dart';
@@ -133,13 +132,13 @@ class BuyButtonWidget extends StatelessWidget {
             isActive: true,
             text:
                 '${thousands(data.tour!.cost)} ${data.tour!.costCurrency.toUpperCase() == 'RUB' ? 'р.' : data.tour!.costCurrency}',
-            // onTap: () => showFormRoute(context: context, data: data), // !!!
-            onTap: () => Api.getActualizePrice(
-              requestId: data.tour!.requestId,
-              offerId: data.tour!.offerId,
-              sourceId: data.tour!.sourceId,
-              showcase: true,
-            ),
+            onTap: () => showFormRoute(context: context, data: data), // !!!
+            // onTap: () => Api.getActualizePrice(
+            //   requestId: data.tour!.requestId,
+            //   offerId: data.tour!.offerId,
+            //   sourceId: data.tour!.sourceId,
+            //   showcase: true,
+            // ),
             borderColor: const Color(0xffeba627),
             backgroundColor: const Color(0xffeba627),
           ),

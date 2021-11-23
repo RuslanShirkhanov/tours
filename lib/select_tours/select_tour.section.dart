@@ -7,6 +7,7 @@ import 'package:hot_tours/api.dart';
 import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/utils/sorted.dart';
 import 'package:hot_tours/utils/connection.dart';
+import 'package:hot_tours/utils/common_storage.dart';
 
 import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/depart_city.model.dart';
@@ -79,7 +80,12 @@ class SelectTourSection extends HookWidget {
       if (connection.value.isNotNone) {
         Api.getDepartCities(showcase: false).then((value) {
           departCities.value = value.sorted((a, b) => a.name.compareTo(b.name));
-          setState(selectedCity)(value[0]);
+          setState<DepartCityModel?>(selectedCity)(
+            CommonStorageController.getValue(
+              key: CDK.departCity,
+              initial: value[0],
+            ),
+          );
           setState<bool>(isLoading)(false);
         });
       }
@@ -134,10 +140,15 @@ class SelectTourSection extends HookWidget {
                         ListButtonWidget(
                           text: selectedCity.value?.name ?? '',
                           onTap: () => showSelectFromRoute(
-                            context: context,
-                            data: departCities.value,
-                            onSelect: setState<DepartCityModel?>(selectedCity),
-                          ),
+                              context: context,
+                              data: departCities.value,
+                              onSelect: (value) =>
+                                  setState<DepartCityModel?>(selectedCity)(
+                                    CommonStorageController.setValue(
+                                      key: CDK.departCity,
+                                      value: value,
+                                    ),
+                                  )),
                         ),
                       ],
                     ),

@@ -40,20 +40,22 @@ class StarModel extends Equatable {
 
   static String idToName(U<int> id) {
     final stars = StarModel.getAllStars;
-    assert(stars.map((star) => star.id).contains(id));
-    if (id == const U(405)) {
-      return '5*';
-    }
-    return stars.firstWhere((star) => star.id == id).name;
+    return stars
+        .firstWhere(
+          (star) => star.id == id,
+          orElse: () => stars.last,
+        )
+        .name;
   }
 
   static U<int> nameToId(String name) {
     final stars = StarModel.getAllStars;
-    assert(stars.map((star) => star.name).contains(name));
-    if (name == 'Apts' || name == 'Villas') {
-      return const U(404);
-    }
-    return stars.firstWhere((star) => star.name == name).id;
+    return stars
+        .firstWhere(
+          (star) => star.name == name,
+          orElse: () => stars.last,
+        )
+        .id;
   }
 
   static List<StarModel> difference({

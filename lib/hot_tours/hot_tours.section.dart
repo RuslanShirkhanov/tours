@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/utils/sorted.dart';
 import 'package:hot_tours/utils/connection.dart';
+import 'package:hot_tours/utils/common_storage.dart';
 
 import 'package:hot_tours/api.dart';
 
@@ -178,7 +179,13 @@ class HotToursSection extends HookWidget {
       if (connection.value.isNotNone) {
         Api.getDepartCities(showcase: false).then((value) {
           departCities.value = value.sorted((a, b) => a.name.compareTo(b.name));
-          setState<DepartCityModel?>(selectedCity)(value[0]);
+
+          setState<DepartCityModel?>(selectedCity)(
+            CommonStorageController.getValue(
+              key: CDK.departCity,
+              initial: value[0],
+            ),
+          );
         });
       }
     }, [connection.value]);
@@ -197,7 +204,12 @@ class HotToursSection extends HookWidget {
           targetCountries.value =
               value.sorted((a, b) => a.name.compareTo(b.name));
           if (!targetCountries.value.contains(selectedCountry.value)) {
-            setState<CountryModel?>(selectedCountry)(value[0]);
+            setState<CountryModel?>(selectedCountry)(
+              CommonStorageController.getValue(
+                key: CDK.targetCountry,
+                initial: value[0],
+              ),
+            );
           }
         });
       }
@@ -239,7 +251,7 @@ class HotToursSection extends HookWidget {
                 children: <Widget>[
                   if (!isLoading.value && tours.value.isEmpty)
                     const Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: EdgeInsets.only(top: 280.0),
                       child: Center(
                         child: Text(
                           'К сожалению, туры не найдены :(',
@@ -288,10 +300,15 @@ class HotToursSection extends HookWidget {
                       child: ListButtonWidget(
                         text: selectedCity.value?.name ?? '',
                         onTap: () => showSelectDepartCityRoute(
-                          context: context,
-                          data: departCities.value,
-                          onSelect: setState<DepartCityModel?>(selectedCity),
-                        ),
+                            context: context,
+                            data: departCities.value,
+                            onSelect: (value) =>
+                                setState<DepartCityModel?>(selectedCity)(
+                                  CommonStorageController.setValue(
+                                    key: CDK.departCity,
+                                    value: value,
+                                  ),
+                                )),
                       ),
                     ),
                     const SizedBox(height: 15.0),
@@ -303,10 +320,15 @@ class HotToursSection extends HookWidget {
                             'icons/flags/png/${countryCode(selectedCountry.value?.name ?? '')}.png',
                         text: selectedCountry.value?.name ?? '',
                         onTap: () => showSelectTargetCountryRoute(
-                          context: context,
-                          data: targetCountries.value,
-                          onSelect: setState<CountryModel?>(selectedCountry),
-                        ),
+                            context: context,
+                            data: targetCountries.value,
+                            onSelect: (value) =>
+                                setState<CountryModel?>(selectedCountry)(
+                                  CommonStorageController.setValue(
+                                    key: CDK.targetCountry,
+                                    value: value,
+                                  ),
+                                )),
                       ),
                     ),
                     const SizedBox(height: 18.0),

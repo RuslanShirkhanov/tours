@@ -2,7 +2,7 @@ import 'package:hot_tours/models/unsigned.dart';
 import 'package:hot_tours/models/star.model.dart';
 
 class TourModel {
-  final U<int> requestId; // !!!
+  final U<int> requestId;
   final U<int> offerId; // 0
   final U<int> sourceId; // 1
 
@@ -30,8 +30,6 @@ class TourModel {
   final String mealType; // 10
   final String mealTypeDesc; // 37
 
-  final bool areTicketsIncluded; // 22
-
   final U<int> cost; // 42
   final String costCurrency; // 43
 
@@ -57,7 +55,6 @@ class TourModel {
     required this.roomTypeDesc,
     required this.mealType,
     required this.mealTypeDesc,
-    required this.areTicketsIncluded,
     required this.cost,
     required this.costCurrency,
   });
@@ -88,7 +85,6 @@ class TourModel {
             roomTypeDesc: (data[37] as String).trim(),
             mealType: (data[10] as String).trim(),
             mealTypeDesc: (data[36] as String).trim(),
-            areTicketsIncluded: int.parse((data[22] as String).trim()) == 1,
             cost: U(data[42] as int),
             costCurrency: (data[43] as String).trim(),
           );

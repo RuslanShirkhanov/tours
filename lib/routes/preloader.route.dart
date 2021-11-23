@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:hot_tours/utils/reqs.dart';
 
 import 'package:hot_tours/routes/hub.route.dart';
+import 'package:hot_tours/utils/common_storage.dart';
 
 class PreloaderRoute extends StatelessWidget {
   const PreloaderRoute({Key? key}) : super(key: key);
 
   Future<void> navigate(BuildContext context) async {
     if (!Navigator.of(context).canPop()) {
+      await CommonStorageController.init();
       await ReqsController.init();
       await Future.delayed(
         const Duration(milliseconds: 750),

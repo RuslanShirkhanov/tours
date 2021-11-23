@@ -86,7 +86,7 @@ class DataModel extends AbstractDataModel {
           .map((x) => x is Pair ? x.isNotEmpty : x != null)
           .reduce((x, y) => x && y);
 
-  DataModel setDepartCity(DepartCityModel value) => DataModel(
+  DataModel setDepartCity(DepartCityModel? value) => DataModel(
         departCity: value,
         targetCountry: null,
         tourDates: const Pair(null, null),
@@ -103,7 +103,7 @@ class DataModel extends AbstractDataModel {
         number: number,
       );
 
-  DataModel setTargetCountry(CountryModel value) => DataModel(
+  DataModel setTargetCountry(CountryModel? value) => DataModel(
         departCity: departCity,
         targetCountry: value,
         tourDates: const Pair(null, null),

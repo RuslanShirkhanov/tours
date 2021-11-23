@@ -7,6 +7,7 @@ import 'package:hot_tours/api.dart';
 import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/utils/sorted.dart';
 import 'package:hot_tours/utils/connection.dart';
+import 'package:hot_tours/utils/common_storage.dart';
 
 import 'package:hot_tours/models/depart_city.model.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
@@ -139,7 +140,12 @@ class SelectDepartCityRoute extends HookWidget {
                               child: ListButtonWidget(
                                 text: departCities.value[i].name,
                                 onTap: () => onContinue(
-                                  data.setDepartCity(departCities.value[i]),
+                                  data.setDepartCity(
+                                    CommonStorageController.setValue(
+                                      key: CDK.departCity,
+                                      value: departCities.value[i],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

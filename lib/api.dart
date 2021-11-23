@@ -92,11 +92,19 @@ abstract class Api {
     final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
     if (data['kind'] == 'success') {
-      return (data['value'] as List<dynamic>)
+      final result = (data['value'] as List<dynamic>)
           .cast<Map<String, dynamic>>()
           .map(CountryModel.serialize)
-          .toList()
           .cast<CountryModel>();
+      return (showcase
+              ? result
+              : result.where(
+                  (country) =>
+                      country.hasTickets &&
+                      country.hotelIsNotInStop &&
+                      country.areTicketsIncluded,
+                ))
+          .toList();
     }
     return const [];
   }
@@ -318,28 +326,27 @@ abstract class Api {
     return const [];
   }
 
-  static Future<List<Object>> getActualizePrice({
-    required U<int> requestId,
-    required U<int> offerId,
-    required U<int> sourceId,
-    required bool showcase,
-  }) async {
-    if (!await Api.hasConnection()) {
-      return const [];
-    }
+  // !!!
+  // static Future<List<Object>> getActualizePrice({
+  //   required U<int> requestId,
+  //   required U<int> offerId,
+  //   required U<int> sourceId,
+  //   required bool showcase,
+  // }) async {
+  //   if (!await Api.hasConnection()) {
+  //     return const [];
+  //   }
 
-    final uri = _makeUri('actualize_price', {
-      'request_id': requestId,
-      'offer_id': offerId,
-      'source_id': sourceId,
-      'showcase': showcase,
-    });
-    final res = await _dio.get<Object>(uri);
+  //   final uri = _makeUri('actualize_price', {
+  //     'request_id': requestId,
+  //     'offer_id': offerId,
+  //     'source_id': sourceId,
+  //     'showcase': showcase,
+  //   });
+  //   final res = await _dio.get<Object>(uri);
 
-    print(res.data);
-
-    return const [];
-  }
+  //   return const [];
+  // }
 
   static Future<bool> createLead({
     required String note,

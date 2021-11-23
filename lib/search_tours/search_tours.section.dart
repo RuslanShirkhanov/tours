@@ -6,6 +6,7 @@ import 'package:hot_tours/utils/date.dart';
 import 'package:hot_tours/utils/pair.dart';
 import 'package:hot_tours/utils/string.dart';
 import 'package:hot_tours/utils/show_route.dart';
+import 'package:hot_tours/utils/common_storage.dart';
 
 import 'package:hot_tours/search_tours/models/data.model.dart';
 import 'package:hot_tours/search_tours/models/storage.model.dart';
@@ -78,7 +79,19 @@ class SearchToursSection extends HookWidget {
       setState<bool>(isLoading)(true);
 
       StorageController.read().then((storage) {
-        currentData.value = storage.data;
+        currentData.value = storage.data
+            .setDepartCity(
+              CommonStorageController.getValue(
+                key: CDK.departCity,
+                initial: storage.data.departCity,
+              ),
+            )
+            .setTargetCountry(
+              CommonStorageController.getValue(
+                key: CDK.targetCountry,
+                initial: storage.data.targetCountry,
+              ),
+            );
 
         setState<bool>(isLoading)(false);
       });

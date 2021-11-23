@@ -1,50 +1,43 @@
+import 'package:equatable/equatable.dart';
+
 import 'unsigned.dart';
 
-class CountryModel {
+class CountryModel extends Equatable {
   final U<int> id;
-  final U<int> rank;
   final String name;
-  final String alias;
-  final U<int> flag;
   final bool isVisa;
   final bool hasTickets;
+  final bool hotelIsNotInStop;
   final bool areTicketsIncluded;
-  final bool isHotelNotInStop;
 
   const CountryModel({
     required this.id,
-    required this.rank,
     required this.name,
-    required this.alias,
-    required this.flag,
     required this.isVisa,
     required this.hasTickets,
+    required this.hotelIsNotInStop,
     required this.areTicketsIncluded,
-    required this.isHotelNotInStop,
   });
+
+  @override
+  List<Object> get props => [id];
 
   static CountryModel serialize(Map<String, dynamic> data) => CountryModel(
         id: U(data['Id'] as int),
-        rank: U(data['Rank'] as int),
         name: (data['Name'] as String).trim(),
-        alias: (data['Alias'] as String).trim(),
-        flag: U(data['Flags'] as int),
         isVisa: data['IsVisa'] as bool,
         hasTickets: data['HasTickets'] as bool,
+        hotelIsNotInStop: data['HotelIsNotInStop'] as bool,
         areTicketsIncluded: data['TicketsIncluded'] as bool,
-        isHotelNotInStop: data['HotelIsNotInStop'] as bool,
       );
 
   static Map<String, dynamic> deserialize(CountryModel data) =>
       <String, dynamic>{
         'Id': data.id.value,
-        'Rank': data.rank.value,
         'Name': data.name,
-        'Alias': data.alias,
-        'Flags': data.flag.value,
         'IsVisa': data.isVisa,
         'HasTickets': data.hasTickets,
+        'HotelIsNotInStop': data.hotelIsNotInStop,
         'TicketsIncluded': data.areTicketsIncluded,
-        'HotelIsNotInStop': data.isHotelNotInStop,
       };
 }
