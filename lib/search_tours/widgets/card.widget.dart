@@ -101,34 +101,35 @@ class CardWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const SizedBox(height: 10.0),
-                      Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: FutureBuilder(
-                              future: Api.getHotelDescription(
-                                hotelId: tours.first.hotelId,
-                              ),
-                              initialData: 'Загрузка...',
-                              builder: (context, snapshot) {
-                                final data = (snapshot.data as String?) ?? '';
-                                return Text(
-                                  data.isEmpty
-                                      ? 'Описание отеля временно отсутствует. Ведётся добавление информации.'
-                                      : data,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 14.0,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                      // !!!
+                      // Row(
+                      //   children: <Widget>[
+                      //     Flexible(
+                      //       child: FutureBuilder(
+                      //         future: Api.getHotelDescription(
+                      //           hotelId: tours.first.hotelId,
+                      //         ),
+                      //         initialData: 'Загрузка...',
+                      //         builder: (context, snapshot) {
+                      //           final data = (snapshot.data as String?) ?? '';
+                      //           return Text(
+                      //             data.isEmpty
+                      //                 ? 'Описание отеля временно отсутствует. Ведётся добавление информации.'
+                      //                 : data,
+                      //             overflow: TextOverflow.ellipsis,
+                      //             maxLines: 2,
+                      //             style: const TextStyle(
+                      //               fontFamily: 'Roboto',
+                      //               fontStyle: FontStyle.normal,
+                      //               fontWeight: FontWeight.normal,
+                      //               fontSize: 14.0,
+                      //             ),
+                      //           );
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       const SizedBox(height: 16.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

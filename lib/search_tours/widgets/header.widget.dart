@@ -43,29 +43,33 @@ class HeaderWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 36.0,
                   height: 18.0,
-                  decoration: BoxDecoration(
-                    color: fade(data.tour!.hotelRating),
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 1.5),
-                      child: Text(
-                        '${data.tour!.hotelRating}',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontFamily: 'Roboto',
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 13.0,
-                          color: Colors.white,
+                  child: data.tour!.hotelRating == null
+                      ? const SizedBox()
+                      : Container(
+                          decoration: BoxDecoration(
+                            color: fade(data.tour!.hotelRating!),
+                            borderRadius: BorderRadius.circular(4.0),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 1.5),
+                              child: Text(
+                                '${data.tour!.hotelRating}',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 13.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),

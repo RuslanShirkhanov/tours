@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
 
+extension UE<T extends num> on T {
+  U<T> get u => U<T>(this);
+}
+
 class U<T extends num> extends Equatable {
   final T value;
 

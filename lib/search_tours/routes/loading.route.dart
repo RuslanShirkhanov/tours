@@ -55,8 +55,6 @@ class LoadingRoute extends HookWidget {
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
 
-    final tours = useState<List<TourModel>?>(null);
-
     useEffect(() {
       Api.getSeasonTours(
         cityFromId: data.departCity!.id,
@@ -74,15 +72,20 @@ class LoadingRoute extends HookWidget {
         hotels: data.hotels.map((hotel) => hotel.id).toList(),
         meals: data.meals.map((meal) => meal.id).toList(),
       ).then((value) {
-        tours.value = value;
-      });
-    }, []);
-
-    useEffect(() {
-      if (tours.value != null) {
+        List<TourModel> tours = const [];
+        if (data.rate != null) {
+          tours = value
+              .where(
+                (tour) =>
+                    tour.hotelRating == null || tour.hotelRating! >= data.rate!,
+              )
+              .toList();
+        } else {
+          tours = value;
+        }
         WidgetsBinding.instance?.addPostFrameCallback((_) {
           Navigator.pop(context);
-          tours.value!.isEmpty
+          tours.isEmpty
               ? showNoSearchResultsRoute(
                   context: context,
                   data: data,
@@ -90,11 +93,11 @@ class LoadingRoute extends HookWidget {
               : showSearchResultsRoute(
                   context: context,
                   data: data,
-                  tours: tours.value!,
+                  tours: tours,
                 );
         });
-      }
-    }, [tours.value]);
+      });
+    }, []);
 
     return Scaffold(
       body: SafeArea(

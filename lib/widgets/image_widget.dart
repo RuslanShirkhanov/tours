@@ -32,8 +32,8 @@ class NetworkImageWidget extends StatelessWidget {
         child: Image.network(
           url,
           fit: fit,
-          errorBuilder: (context, _, trace) => blackPlug(),
-          loadingBuilder: (context, child, event) => event == null
+          errorBuilder: (_, __, trace) => blackPlug(),
+          loadingBuilder: (_, child, event) => event == null
               ? child
               : Center(
                   child: SizedBox(

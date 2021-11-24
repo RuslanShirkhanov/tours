@@ -9,7 +9,7 @@ class TourModel {
   final U<int> hotelId; // 3
   final String hotelName; // 7
   final StarModel hotelStar; // 8
-  final U<num> hotelRating; // 35
+  final U<num>? hotelRating; // 35
 
   final U<int> photosCount; // 46
   final String hotelDescUrl; // 2
@@ -70,7 +70,7 @@ class TourModel {
               id: StarModel.nameToId((data[8] as String).trim()),
               name: data[8] as String,
             ),
-            hotelRating: U(num.tryParse((data[35] as String).trim()) ?? 0.0),
+            hotelRating: num.tryParse((data[35] as String).trim())?.u,
             photosCount: U(data[46] as int),
             hotelDescUrl: (data[2] as String).trim(),
             departCityName: (data[33] as String).trim(),
