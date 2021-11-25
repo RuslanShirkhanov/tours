@@ -240,7 +240,7 @@ class HotToursSection extends HookWidget {
           setState<bool>(isLoading)(false);
         });
       }
-    }, [selectedCountry.value, selectedStars.value]);
+    }, [selectedCity.value, selectedCountry.value, selectedStars.value]);
 
     return Scaffold(
       body: SafeArea(
