@@ -11,12 +11,14 @@ class ActualizedPriceModel {
   });
 
   static ActualizedPriceModel serialize({
+    required bool showcase,
     required TourModel tour,
     required List<dynamic> data,
-  }) =>
-      ActualizedPriceModel(
-        cost: U(int.tryParse(data[19] as String) ?? tour.cost.value) *
-            tour.adultsCount,
-        costCurrency: data[23] as String,
-      );
+  }) {
+    final cost = U(int.tryParse(data[19] as String) ?? tour.cost.value);
+    return ActualizedPriceModel(
+      cost: showcase ? cost * tour.adultsCount : cost,
+      costCurrency: data[23] as String,
+    );
+  }
 }

@@ -352,7 +352,11 @@ abstract class Api {
       final actualizePriceResultData =
           actualizePriceResult['Data'] as Map<String, dynamic>;
       final result = actualizePriceResultData['data'] as List<dynamic>;
-      return ActualizedPriceModel.serialize(tour: tour, data: result);
+      return ActualizedPriceModel.serialize(
+        showcase: showcase,
+        tour: tour,
+        data: result,
+      );
     }
     return null;
   }
