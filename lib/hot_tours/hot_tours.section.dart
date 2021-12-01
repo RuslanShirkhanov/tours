@@ -223,6 +223,7 @@ class HotToursSection extends HookWidget {
       setState<bool>(isLoading)(true);
 
       if (selectedCity.value != null && selectedCountry.value != null) {
+        setState<List<TourModel>>(tours)(const []);
         Api.getHotTours(
           cityFromId: selectedCity.value!.id,
           countryId: selectedCountry.value!.id,
@@ -250,18 +251,23 @@ class HotToursSection extends HookWidget {
               child: Column(
                 children: <Widget>[
                   if (!isLoading.value && tours.value.isEmpty)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 280.0),
-                      child: Center(
-                        child: Text(
-                          'К сожалению, туры не найдены :(',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 18.0,
-                            color: Color(0xff4d4948),
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 350),
+                      opacity:
+                          !isLoading.value && tours.value.isEmpty ? 1.0 : 0.0,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 280.0),
+                        child: Center(
+                          child: Text(
+                            'К сожалению, туры не найдены :(',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 18.0,
+                              color: Color(0xff4d4948),
+                            ),
                           ),
                         ),
                       ),
@@ -277,9 +283,10 @@ class HotToursSection extends HookWidget {
                           controller: scrollController,
                           children: tours.value
                               .map((tour) => Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: CardWidget(data: data.setTour(tour)),
-                                  ))
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: CardWidget(
+                                    data: data.setTour(tour),
+                                  )))
                               .toList(),
                         ),
                       ),

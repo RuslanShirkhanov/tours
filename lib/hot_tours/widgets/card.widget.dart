@@ -113,6 +113,7 @@ class CardWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           ButtonWidget(
+                            isActive: true,
                             text:
                                 '${thousands(data.tour!.cost)} ${data.tour!.costCurrency.toUpperCase() == 'RUB' ? 'р.' : data.tour!.costCurrency}',
                             onTap: () =>

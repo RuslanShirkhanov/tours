@@ -108,7 +108,7 @@ class FormRoute extends HookWidget {
                       SizedBox(
                         width: 320.0,
                         child: Text(
-                          'Отель: ${data.tour!.hotelName.capitalized}, дата вылета: ${data.tour!.dateIn}, ночей: ${data.tour!.nightsCount}, взрослых: ${data.tour!.adultsCount}, детей: ${data.tour!.childrenCount}, номер: ${data.tour!.roomTypeDesc.uncapitalized} (${data.tour!.roomType.capitalized}), питание: ${data.tour!.mealTypeDesc.uncapitalized} (${data.tour!.mealType.capitalized}), стоимость: ${data.tour!.cost} ${data.tour!.costCurrency}',
+                          'Отель: ${data.tour!.hotelName.capitalized}, дата вылета: ${data.tour!.dateIn}, ночей: ${data.tour!.nightsCount}, взрослых: ${data.tour!.adultsCount}, детей: ${data.tour!.childrenCount}, номер: ${data.tour!.roomTypeDesc.uncapitalized} (${data.tour!.roomType.capitalized}), питание: ${data.tour!.mealTypeDesc.uncapitalized} (${data.tour!.mealType.capitalized}), стоимость: ${data.actualizedPrice!.cost} ${data.actualizedPrice!.costCurrency}',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontFamily: 'Roboto',

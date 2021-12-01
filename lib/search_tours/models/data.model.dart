@@ -9,6 +9,7 @@ import 'package:hot_tours/models/star.model.dart';
 import 'package:hot_tours/models/hotel.model.dart';
 import 'package:hot_tours/models/meal.model.dart';
 import 'package:hot_tours/models/tour.model.dart';
+import 'package:hot_tours/models/actualized_price.model.dart';
 
 class DataModel extends AbstractDataModel {
   final DepartCityModel? departCity;
@@ -23,6 +24,7 @@ class DataModel extends AbstractDataModel {
   final List<MealModel> meals;
   final U<double>? rate;
   final TourModel? tour;
+  final ActualizedPriceModel? actualizedPrice;
 
   const DataModel({
     required this.departCity,
@@ -37,6 +39,7 @@ class DataModel extends AbstractDataModel {
     required this.meals,
     required this.rate,
     required this.tour,
+    required this.actualizedPrice,
     required String? name,
     required String? number,
   }) : super(name: name, number: number);
@@ -54,6 +57,7 @@ class DataModel extends AbstractDataModel {
         meals: [],
         rate: null,
         tour: null,
+        actualizedPrice: null,
         name: null,
         number: null,
       );
@@ -71,7 +75,7 @@ class DataModel extends AbstractDataModel {
       Дети: ${tour!.childrenCount}
       Имя: $name
       Номер: $number
-      Цена: ${tour!.cost} ${tour!.costCurrency}
+      Цена: ${actualizedPrice!.cost} ${actualizedPrice!.costCurrency}
     '''
       .trim()
       .replaceAll(RegExp(r'[\s]{2,}'), '\n');
@@ -99,6 +103,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -116,6 +121,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -133,6 +139,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -150,6 +157,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -167,6 +175,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -184,6 +193,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -201,6 +211,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -218,6 +229,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -235,6 +247,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -252,6 +265,7 @@ class DataModel extends AbstractDataModel {
         meals: value,
         rate: rate,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -269,6 +283,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: value,
         tour: null,
+        actualizedPrice: null,
         name: name,
         number: number,
       );
@@ -286,6 +301,25 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: value,
+        actualizedPrice: null,
+        name: name,
+        number: number,
+      );
+
+  DataModel setActualizedPrice(ActualizedPriceModel value) => DataModel(
+        departCity: departCity,
+        targetCountry: targetCountry,
+        tourDates: tourDates,
+        nightsCount: nightsCount,
+        peopleCount: peopleCount,
+        childrenAges: childrenAges,
+        targetCities: targetCities,
+        hotelStars: hotelStars,
+        hotels: hotels,
+        meals: meals,
+        rate: rate,
+        tour: tour,
+        actualizedPrice: value,
         name: name,
         number: number,
       );
@@ -304,6 +338,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: tour,
+        actualizedPrice: actualizedPrice,
         name: value,
         number: number,
       );
@@ -322,6 +357,7 @@ class DataModel extends AbstractDataModel {
         meals: meals,
         rate: rate,
         tour: tour,
+        actualizedPrice: actualizedPrice,
         name: name,
         number: value,
       );

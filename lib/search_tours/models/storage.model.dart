@@ -35,6 +35,7 @@ class StorageModel {
         meals: storage.data.meals,
         rate: storage.data.rate,
         tour: data.tour,
+        actualizedPrice: data.actualizedPrice,
         name: data.name,
         number: data.number,
       );
@@ -85,6 +86,7 @@ class StorageModel {
               .toList(),
           rate: U<double>(data['rate'] as double),
           tour: null,
+          actualizedPrice: null,
           name: null,
           number: null,
         ),

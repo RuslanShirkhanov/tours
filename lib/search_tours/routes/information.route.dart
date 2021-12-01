@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import 'package:hot_tours/api.dart';
+
 import 'package:hot_tours/utils/show_route.dart';
 import 'package:hot_tours/utils/thousands.dart';
 
+import 'package:hot_tours/models/actualized_price.model.dart';
 import 'package:hot_tours/search_tours/models/data.model.dart';
 
 import 'package:hot_tours/widgets/nav_bar.widget.dart';
@@ -49,9 +52,19 @@ class InformationRoute extends HookWidget {
     required this.data,
   }) : super(key: key);
 
+  void Function(T) setState<T>(ValueNotifier<T> state) =>
+      (T value) => state.value = value;
+
   @override
   Widget build(BuildContext context) {
     final scrollController = useScrollController();
+
+    final actualizedPrice = useState<ActualizedPriceModel?>(null);
+
+    useEffect(() {
+      Api.getActualizePrice(tour: data.tour!, showcase: false)
+          .then(setState(actualizedPrice));
+    }, []);
 
     return Scaffold(
       body: SafeArea(
@@ -63,7 +76,8 @@ class InformationRoute extends HookWidget {
               hasSubtitle: false,
               backgroundColor: const Color(0xff2eaeee),
               hasBackButton: true,
-              hasLoadingIndicator: false,
+              isLoading: actualizedPrice.value == null,
+              hasLoadingIndicator: true,
             ),
             Expanded(
               child: Padding(
@@ -89,7 +103,13 @@ class InformationRoute extends HookWidget {
                           const SizedBox(height: 10.0),
                           ParametersWidget(data: data),
                           const SizedBox(height: 35.0),
-                          BuyButtonWidget(data: data),
+                          BuyButtonWidget(
+                            data: actualizedPrice.value == null
+                                ? data
+                                : data.setActualizedPrice(
+                                    actualizedPrice.value!,
+                                  ),
+                          ),
                         ],
                       ),
                     ),
@@ -128,17 +148,11 @@ class BuyButtonWidget extends StatelessWidget {
           ),
           const SizedBox(width: 13.0),
           ButtonWidget(
-            isFlexible: true,
-            isActive: true,
-            text:
-                '${thousands(data.tour!.cost)} ${data.tour!.costCurrency.toUpperCase() == 'RUB' ? 'р.' : data.tour!.costCurrency}',
-            onTap: () => showFormRoute(context: context, data: data), // !!!
-            // onTap: () => Api.getActualizePrice(
-            //   requestId: data.tour!.requestId,
-            //   offerId: data.tour!.offerId,
-            //   sourceId: data.tour!.sourceId,
-            //   showcase: true,
-            // ),
+            isActive: data.actualizedPrice != null,
+            text: data.actualizedPrice == null
+                ? 'Загрузка...'
+                : '${thousands(data.actualizedPrice!.cost)} ${data.actualizedPrice!.costCurrency.toUpperCase() == 'RUB' ? 'р.' : data.actualizedPrice!.costCurrency}',
+            onTap: () => showFormRoute(context: context, data: data),
             borderColor: const Color(0xffeba627),
             backgroundColor: const Color(0xffeba627),
           ),

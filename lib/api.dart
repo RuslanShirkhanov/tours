@@ -17,6 +17,7 @@ import 'package:hot_tours/models/city.model.dart';
 import 'package:hot_tours/models/hotel.model.dart';
 import 'package:hot_tours/models/tour.model.dart';
 import 'package:hot_tours/models/hotel_comment.model.dart';
+import 'package:hot_tours/models/actualized_price.model.dart';
 
 import 'package:hot_tours/routes/feedback.route.dart';
 import 'package:hot_tours/routes/request_error.route.dart';
@@ -326,27 +327,35 @@ abstract class Api {
     return const [];
   }
 
-  // !!!
-  // static Future<List<Object>> getActualizePrice({
-  //   required U<int> requestId,
-  //   required U<int> offerId,
-  //   required U<int> sourceId,
-  //   required bool showcase,
-  // }) async {
-  //   if (!await Api.hasConnection()) {
-  //     return const [];
-  //   }
+  static Future<ActualizedPriceModel?> getActualizePrice({
+    required TourModel tour,
+    required bool showcase,
+  }) async {
+    if (!await Api.hasConnection()) {
+      return null;
+    }
 
-  //   final uri = _makeUri('actualize_price', {
-  //     'request_id': requestId,
-  //     'offer_id': offerId,
-  //     'source_id': sourceId,
-  //     'showcase': showcase,
-  //   });
-  //   final res = await _dio.get<Object>(uri);
+    final uri = _makeUri('actualize_price', {
+      'request_id': tour.requestId,
+      'offer_id': tour.offerId,
+      'source_id': tour.sourceId,
+      'currency_alias': tour.costCurrency,
+      'showcase': showcase,
+    });
+    final res = await _dio.get<Object>(uri);
+    final data = jsonDecode(res.data as String) as Map<String, dynamic>;
 
-  //   return const [];
-  // }
+    if (data['kind'] == 'success') {
+      final value = data['value'] as Map<String, dynamic>;
+      final actualizePriceResult =
+          value['ActualizePriceResult'] as Map<String, dynamic>;
+      final actualizePriceResultData =
+          actualizePriceResult['Data'] as Map<String, dynamic>;
+      final result = actualizePriceResultData['data'] as List<dynamic>;
+      return ActualizedPriceModel.serialize(tour: tour, data: result);
+    }
+    return null;
+  }
 
   static Future<bool> createLead({
     required String note,

@@ -13,7 +13,7 @@ import 'package:hot_tours/widgets/nav_bar.widget.dart';
 import 'package:hot_tours/search_tours/widgets/card.widget.dart';
 import 'package:hot_tours/select_tours/widgets/button.widget.dart';
 
-import 'package:hot_tours/search_tours/routes/card.roure.dart';
+import 'package:hot_tours/search_tours/routes/card.route.dart';
 import 'package:hot_tours/select_tours/routes/form.route.dart'
     as select_tours_from_route;
 
