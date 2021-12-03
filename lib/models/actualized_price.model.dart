@@ -16,9 +16,19 @@ class ActualizedPriceModel {
     required List<dynamic> data,
   }) {
     final cost = U(int.tryParse(data[19] as String) ?? tour.cost.value);
+    final costCurrency0 = data[21] as String?;
+    final costCurrency1 = data[23] as String?;
+    String costCurrency = '';
+    if (costCurrency0 == null || costCurrency0.isEmpty) {
+      if (costCurrency1 == null || costCurrency1.isEmpty) {
+        costCurrency = 'RUB';
+      }
+    } else {
+      costCurrency = costCurrency0;
+    }
     return ActualizedPriceModel(
       cost: showcase ? cost * tour.adultsCount : cost,
-      costCurrency: data[23] as String,
+      costCurrency: costCurrency,
     );
   }
 }
