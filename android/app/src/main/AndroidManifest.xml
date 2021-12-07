@@ -2,7 +2,7 @@
     package="com.example.hot_tours">
    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="Поиск туров"
+        android:label="Все-туры.рф"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
