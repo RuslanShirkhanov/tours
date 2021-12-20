@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -198,6 +199,29 @@ class ContactsRoute extends HookWidget {
                           state: isLoading,
                           url: 'tg://resolve?domain=vseturi',
                         ),
+                      ),
+                      const SizedBox(height: 45.0),
+                      FutureBuilder(
+                        future: PackageInfo.fromPlatform(),
+                        builder: (_, snapshot) {
+                          if (snapshot.hasData) {
+                            if (snapshot.data is PackageInfo) {
+                              final data = snapshot.data as PackageInfo;
+                              return Text(
+                                '${data.appName} v${data.version}',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 16.0,
+                                  color: Colors.grey,
+                                ),
+                              );
+                            }
+                          }
+                          return const SizedBox();
+                        },
                       ),
                     ],
                   ),
